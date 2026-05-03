@@ -1,0 +1,15 @@
+{
+  "kind": "performer",
+  "urn": "performer/@deepvaluekim-cmd/vibe-investing/risk-analyst",
+  "description": "Challenges the thesis and highlights downside risks.",
+  "tags": [
+    "investing",
+    "discord",
+    "local"
+  ],
+  "payload": {
+    "dances": [
+      "dance/@deepvaluekim-cmd/vibe-investing/risk-reviewer"
+    ]
+  }
+}

@@ -1,0 +1,186 @@
+{
+  "sourceRepo": "https://github.com/monarchjuno/vibe-investing.git",
+  "sourceRef": "main",
+  "author": "deepvaluekim-cmd",
+  "stage": "vibe-investing",
+  "importedSkills": [
+    {
+      "slug": "openbb-data-fetcher",
+      "sourcePath": "skills/data-access/openbb-data-fetcher"
+    },
+    {
+      "slug": "company-analysis",
+      "sourcePath": "skills/fundamental-analysis/company-analysis"
+    },
+    {
+      "slug": "traditional-market-analysis",
+      "sourcePath": "skills/market-analysis/traditional-market-analysis"
+    },
+    {
+      "slug": "quant-research",
+      "sourcePath": "skills/quantitative-analysis/quant-research"
+    },
+    {
+      "slug": "financial-report",
+      "sourcePath": "skills/output-formats/financial-report"
+    }
+  ],
+  "customDances": [
+    {
+      "slug": "investment-analysis-coordinator",
+      "description": "Coordinates a multi-role investment analysis act from intake to report handoff.",
+      "content": "Summarize the request, delegate to the most relevant specialists first, keep assumptions explicit, and converge toward one clear final recommendation with open risks."
+    },
+    {
+      "slug": "risk-reviewer",
+      "description": "Stress-tests an investment thesis for downside, uncertainty, and hidden assumptions.",
+      "content": "Focus on downside cases, fragile assumptions, missing data, regime sensitivity, and reasons the thesis could be wrong. Prefer explicit uncertainty over false precision."
+    }
+  ],
+  "performers": [
+    {
+      "slug": "investment-coordinator",
+      "description": "Lead coordinator for the investment analysis team.",
+      "danceSlugs": [
+        "investment-analysis-coordinator"
+      ]
+    },
+    {
+      "slug": "data-analyst",
+      "description": "Collects and validates data for the rest of the team.",
+      "danceSlugs": [
+        "openbb-data-fetcher"
+      ]
+    },
+    {
+      "slug": "fundamental-analyst",
+      "description": "Performs bottom-up company and valuation analysis.",
+      "danceSlugs": [
+        "company-analysis"
+      ]
+    },
+    {
+      "slug": "quant-analyst",
+      "description": "Handles signal, factor, and technical analysis.",
+      "danceSlugs": [
+        "quant-research"
+      ]
+    },
+    {
+      "slug": "macro-analyst",
+      "description": "Adds market regime and macro context.",
+      "danceSlugs": [
+        "traditional-market-analysis"
+      ]
+    },
+    {
+      "slug": "risk-analyst",
+      "description": "Challenges the thesis and highlights downside risks.",
+      "danceSlugs": [
+        "risk-reviewer"
+      ]
+    },
+    {
+      "slug": "report-editor",
+      "description": "Synthesizes the final report and artifact package.",
+      "danceSlugs": [
+        "financial-report"
+      ]
+    }
+  ],
+  "act": {
+    "slug": "investment-analysis-team",
+    "description": "Task-centric investment analysis team for Discord-driven runtime sessions.",
+    "actRules": [
+      "Start with the participant most aligned to the user's requested focus.",
+      "Escalate missing data and weak assumptions explicitly.",
+      "Route final synthesis through the report editor before completion."
+    ],
+    "participants": [
+      {
+        "key": "Coordinator",
+        "performerSlug": "investment-coordinator"
+      },
+      {
+        "key": "Data",
+        "performerSlug": "data-analyst"
+      },
+      {
+        "key": "Fundamental",
+        "performerSlug": "fundamental-analyst"
+      },
+      {
+        "key": "Quant",
+        "performerSlug": "quant-analyst"
+      },
+      {
+        "key": "Macro",
+        "performerSlug": "macro-analyst"
+      },
+      {
+        "key": "Risk",
+        "performerSlug": "risk-analyst"
+      },
+      {
+        "key": "Report",
+        "performerSlug": "report-editor"
+      }
+    ],
+    "relations": [
+      {
+        "name": "intake-and-routing",
+        "between": [
+          "Coordinator",
+          "Data"
+        ],
+        "direction": "both",
+        "description": "Coordinator and Data align on scope, symbols, and missing inputs before specialist work begins."
+      },
+      {
+        "name": "data-support",
+        "between": [
+          "Data",
+          "Fundamental"
+        ],
+        "direction": "both",
+        "description": "Data supports the Fundamental analyst with validated company and valuation inputs."
+      },
+      {
+        "name": "signal-support",
+        "between": [
+          "Data",
+          "Quant"
+        ],
+        "direction": "both",
+        "description": "Data supports the Quant analyst with market, factor, and price series inputs."
+      },
+      {
+        "name": "regime-context",
+        "between": [
+          "Macro",
+          "Fundamental"
+        ],
+        "direction": "both",
+        "description": "Macro provides regime context that can strengthen or weaken the base fundamental thesis."
+      },
+      {
+        "name": "challenge-review",
+        "between": [
+          "Risk",
+          "Coordinator"
+        ],
+        "direction": "both",
+        "description": "Risk challenges the active thesis and feeds unresolved concerns back to the Coordinator."
+      },
+      {
+        "name": "final-synthesis",
+        "between": [
+          "Coordinator",
+          "Report"
+        ],
+        "direction": "both",
+        "description": "Coordinator hands consolidated findings to Report for final summary and artifact packaging."
+      }
+    ]
+  }
+}

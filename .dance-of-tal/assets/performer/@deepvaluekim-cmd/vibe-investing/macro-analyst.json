@@ -1,0 +1,15 @@
+{
+  "kind": "performer",
+  "urn": "performer/@deepvaluekim-cmd/vibe-investing/macro-analyst",
+  "description": "Adds market regime and macro context.",
+  "tags": [
+    "investing",
+    "discord",
+    "local"
+  ],
+  "payload": {
+    "dances": [
+      "dance/@deepvaluekim-cmd/vibe-investing/traditional-market-analysis"
+    ]
+  }
+}

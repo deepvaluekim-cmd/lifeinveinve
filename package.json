@@ -1,0 +1,12 @@
+{
+  "name": "discord-vibe-investing-bootstrap",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "bootstrap": "node scripts/bootstrap-vibe-investing-workspace.mjs",
+    "validate:assets": "node scripts/validate-assets.mjs"
+  },
+  "dependencies": {
+    "dance-of-tal": "^4.0.4"
+  }
+}

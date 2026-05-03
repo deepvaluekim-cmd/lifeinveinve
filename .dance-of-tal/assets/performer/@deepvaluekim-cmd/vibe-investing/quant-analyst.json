@@ -1,0 +1,15 @@
+{
+  "kind": "performer",
+  "urn": "performer/@deepvaluekim-cmd/vibe-investing/quant-analyst",
+  "description": "Handles signal, factor, and technical analysis.",
+  "tags": [
+    "investing",
+    "discord",
+    "local"
+  ],
+  "payload": {
+    "dances": [
+      "dance/@deepvaluekim-cmd/vibe-investing/quant-research"
+    ]
+  }
+}

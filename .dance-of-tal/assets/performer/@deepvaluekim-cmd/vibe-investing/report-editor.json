@@ -1,0 +1,15 @@
+{
+  "kind": "performer",
+  "urn": "performer/@deepvaluekim-cmd/vibe-investing/report-editor",
+  "description": "Synthesizes the final report and artifact package.",
+  "tags": [
+    "investing",
+    "discord",
+    "local"
+  ],
+  "payload": {
+    "dances": [
+      "dance/@deepvaluekim-cmd/vibe-investing/financial-report"
+    ]
+  }
+}

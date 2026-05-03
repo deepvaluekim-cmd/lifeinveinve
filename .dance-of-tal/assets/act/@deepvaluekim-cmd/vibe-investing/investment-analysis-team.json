@@ -1,0 +1,103 @@
+{
+  "kind": "act",
+  "urn": "act/@deepvaluekim-cmd/vibe-investing/investment-analysis-team",
+  "description": "Task-centric investment analysis team for Discord-driven runtime sessions.",
+  "tags": [
+    "investing",
+    "discord",
+    "local"
+  ],
+  "payload": {
+    "actRules": [
+      "Start with the participant most aligned to the user's requested focus.",
+      "Escalate missing data and weak assumptions explicitly.",
+      "Route final synthesis through the report editor before completion."
+    ],
+    "participants": [
+      {
+        "key": "Coordinator",
+        "performer": "performer/@deepvaluekim-cmd/vibe-investing/investment-coordinator"
+      },
+      {
+        "key": "Data",
+        "performer": "performer/@deepvaluekim-cmd/vibe-investing/data-analyst"
+      },
+      {
+        "key": "Fundamental",
+        "performer": "performer/@deepvaluekim-cmd/vibe-investing/fundamental-analyst"
+      },
+      {
+        "key": "Quant",
+        "performer": "performer/@deepvaluekim-cmd/vibe-investing/quant-analyst"
+      },
+      {
+        "key": "Macro",
+        "performer": "performer/@deepvaluekim-cmd/vibe-investing/macro-analyst"
+      },
+      {
+        "key": "Risk",
+        "performer": "performer/@deepvaluekim-cmd/vibe-investing/risk-analyst"
+      },
+      {
+        "key": "Report",
+        "performer": "performer/@deepvaluekim-cmd/vibe-investing/report-editor"
+      }
+    ],
+    "relations": [
+      {
+        "name": "intake-and-routing",
+        "between": [
+          "Coordinator",
+          "Data"
+        ],
+        "direction": "both",
+        "description": "Coordinator and Data align on scope, symbols, and missing inputs before specialist work begins."
+      },
+      {
+        "name": "data-support",
+        "between": [
+          "Data",
+          "Fundamental"
+        ],
+        "direction": "both",
+        "description": "Data supports the Fundamental analyst with validated company and valuation inputs."
+      },
+      {
+        "name": "signal-support",
+        "between": [
+          "Data",
+          "Quant"
+        ],
+        "direction": "both",
+        "description": "Data supports the Quant analyst with market, factor, and price series inputs."
+      },
+      {
+        "name": "regime-context",
+        "between": [
+          "Macro",
+          "Fundamental"
+        ],
+        "direction": "both",
+        "description": "Macro provides regime context that can strengthen or weaken the base fundamental thesis."
+      },
+      {
+        "name": "challenge-review",
+        "between": [
+          "Risk",
+          "Coordinator"
+        ],
+        "direction": "both",
+        "description": "Risk challenges the active thesis and feeds unresolved concerns back to the Coordinator."
+      },
+      {
+        "name": "final-synthesis",
+        "between": [
+          "Coordinator",
+          "Report"
+        ],
+        "direction": "both",
+        "description": "Coordinator hands consolidated findings to Report for final summary and artifact packaging."
+      }
+    ]
+  }
+}
