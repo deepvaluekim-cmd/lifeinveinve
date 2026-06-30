@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ASSET TIMELINE — 글로벌 타임라인 (DEMO)</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config={theme:{extend:{
+  colors:{brand:{50:'#eefbf5',100:'#d4f3e6',200:'#a9e6cd',300:'#73d0aa',500:'#297d63',600:'#1f6450',700:'#184f40'},lime:'#8db65b',olive:'#587a4f',up:'#e0392b',down:'#1769d6'},
+  fontFamily:{sans:['Pretendard Variable','Pretendard','Inter','-apple-system','Segoe UI','Apple SD Gothic Neo','Malgun Gothic','sans-serif']},
+}}}
+</script>
+<style>
+*{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+body{font-feature-settings:'cv01','tnum';letter-spacing:-0.005em}
+h1,h2,h3{letter-spacing:-0.02em}
+.num{font-family:Inter,'Pretendard Variable',sans-serif;font-variant-numeric:tabular-nums;letter-spacing:-0.01em}
+@keyframes shimmer{0%{background-position:-468px 0}100%{background-position:468px 0}}
+.skel{background:#eceef1;background-image:linear-gradient(90deg,#eceef1 0,#f6f7f9 40px,#eceef1 80px);background-size:600px 100%;animation:shimmer 1.4s infinite linear;border-radius:6px}
+::-webkit-scrollbar{width:9px;height:9px}::-webkit-scrollbar-thumb{background:#d3d7dd;border-radius:6px}
+.fade{animation:fade .25s ease}@keyframes fade{from{opacity:.3;transform:translateY(4px)}to{opacity:1;transform:none}}
+.tag{display:inline-block;background:#eefbf5;color:#1f6450;border:1px solid #d4f3e6;border-radius:9999px;padding:2px 9px;font-size:11px;line-height:1.4}
+.chip{border:1px solid #e2e5ea;border-radius:9999px;padding:3px 10px;font-size:12px;color:#4b5563;cursor:pointer}
+.chip:hover{background:#f3f4f6}
+.view-active{background:#eefbf5;color:#184f40;font-weight:600;border-color:#a9e6cd!important}
+.menu{position:relative}
+.menu>.dd{display:none;position:absolute;top:100%;left:50%;transform:translateX(-50%);background:#fff;border:1px solid #e5e7eb;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.10);min-width:150px;padding:6px;z-index:40}
+.menu:hover>.dd{display:block}
+.dd a{display:block;padding:7px 12px;font-size:13px;color:#475569;border-radius:6px;white-space:nowrap;text-align:center;cursor:pointer}
+.dd a:hover{background:#f6f7f9}
+@keyframes pulse2{0%,100%{opacity:1}50%{opacity:.35}}
+.live{animation:pulse2 1.3s infinite}
+</style>
+</head>
+<body class="bg-[#f6f7f9] text-slate-800 font-sans antialiased">
+<div class="flex flex-col h-screen overflow-hidden">
+
+  <!-- 포털 상단 -->
+  <header class="h-14 shrink-0 bg-white border-b border-slate-200 flex items-center px-6 gap-8 z-30">
+    <div class="flex items-center gap-2.5">
+      <div class="w-8 h-8 rounded-lg grid place-items-center font-bold text-white text-sm" style="background:#8db65b">LE</div>
+      <span class="font-semibold text-slate-700 tracking-tight text-[15px]">ASSET TIMELINE · DEMO</span>
+    </div>
+    <nav id="portal-nav" class="flex items-center gap-7 h-full text-[13px] text-slate-600"></nav>
+    <button class="ml-auto relative text-slate-400 hover:text-slate-600">🔔<span class="absolute -top-1 -right-1 w-2 h-2 bg-up rounded-full"></span></button>
+  </header>
+
+  <!-- Timeline 앱 컨텍스트 -->
+  <div class="h-12 shrink-0 bg-white border-b border-slate-200 flex items-center px-6 gap-5 z-20">
+    <div class="text-xs text-slate-400">운용본부 <span class="mx-1">›</span> <span class="text-slate-600 font-medium">Timeline</span></div>
+    <nav class="flex items-center gap-1 h-full">
+      <button onclick="topTab('local')" data-tab="local" class="tabbtn h-full px-3 text-sm border-b-2 border-transparent text-slate-500">타임라인</button>
+      <button onclick="topTab('global')" data-tab="global" class="tabbtn h-full px-3 text-sm border-b-2 border-transparent text-slate-500 flex items-center gap-1.5">글로벌 타임라인 <span class="text-[10px] bg-brand-500 text-white px-1.5 py-0.5 rounded">NEW</span></button>
+    </nav>
+    <div class="ml-auto relative">
+      <input placeholder="종목 또는 태그 검색..." oninput="filterStocks(this.value)" class="w-72 text-sm pl-9 pr-3 py-1.5 rounded-lg bg-slate-100 focus:bg-white focus:ring-2 focus:ring-brand-100 outline-none border border-transparent focus:border-brand-200"/>
+      <span class="absolute left-3 top-2 text-slate-400">🔍</span>
+    </div>
+    <button class="text-sm bg-brand-500 hover:bg-brand-600 text-white px-3 py-1.5 rounded-lg">✎ 작성</button>
+    <div class="flex items-center gap-2"><div class="w-7 h-7 rounded-full bg-brand-100 text-brand-600 grid place-items-center text-xs font-semibold">D</div><div class="leading-tight"><div class="text-[13px] font-medium">데모 사용자</div><div class="text-[10px] text-slate-400">리서치팀</div></div></div>
+  </div>
+
+  <div class="flex-1 overflow-hidden">
+
+  <!-- 탭1: 기존 타임라인 -->
+  <div id="tab-local" class="flex h-full">
+    <aside class="w-60 shrink-0 bg-white border-r border-slate-200 overflow-y-auto p-4 text-sm">
+      <div class="text-xs text-slate-400 mb-3">필터</div>
+      <div class="mb-5"><div class="font-semibold text-slate-600 mb-2 text-[13px]">Recent Tags</div><div id="f-tags" class="flex flex-wrap gap-1.5"></div></div>
+      <div class="mb-5"><div class="font-semibold text-slate-600 mb-2 text-[13px]">Market</div><div id="f-market" class="flex flex-wrap gap-1.5"></div></div>
+      <div class="mb-5"><div class="font-semibold text-slate-600 mb-2 text-[13px]">Country</div><div id="f-country" class="flex flex-wrap gap-1.5"></div></div>
+      <div class="mb-5"><div class="font-semibold text-slate-600 mb-2 text-[13px]">GICS Sector</div><div id="f-gics" class="flex flex-wrap gap-1.5"></div></div>
+    </aside>
+    <main class="flex-1 overflow-y-auto px-8 py-5"><div class="max-w-[760px] mx-auto"><div class="flex items-center gap-2 text-slate-400 mb-4"><span class="border border-slate-200 rounded px-2 py-1 text-xs">▤ ▾</span></div><div id="feed" class="space-y-5"></div></div></main>
+    <aside class="w-72 shrink-0 bg-white border-l border-slate-200 overflow-y-auto p-4"><div class="text-sm font-semibold text-slate-600 mb-3">💬 Recent Comments</div><div id="recent" class="space-y-4"></div><a class="block mt-5 text-xs text-brand-600 hover:underline">View AI Response Status →</a></aside>
+  </div>
+
+  <!-- 탭2: 글로벌 타임라인 -->
+  <div id="tab-global" class="flex h-full" style="display:none">
+    <aside class="w-64 shrink-0 bg-white border-r border-slate-200 overflow-y-auto p-4 text-sm">
+      <div class="text-xs text-slate-400 mb-3">필터 · 글로벌 리서치</div>
+      <div class="mb-5">
+        <div class="font-semibold text-slate-600 mb-2 text-[13px]">보기</div>
+        <div class="text-[10px] text-slate-400 px-1 mb-1">데일리</div>
+        <div class="space-y-1 mb-2.5">
+          <button onclick="openDaily('market')" data-d="market" class="navbtn w-full text-left px-3 py-1.5 rounded-lg border border-slate-200 flex items-center gap-2 text-[13px] hover:bg-slate-50"><span>📰</span> 데일리 시황 <span class="ml-auto text-[10px] bg-brand-500 text-white px-1.5 py-0.5 rounded">최우선</span></button>
+          <button onclick="openDaily('expert')" data-d="expert" class="navbtn w-full text-left px-3 py-1.5 rounded-lg border border-slate-200 flex items-center gap-2 text-[13px] hover:bg-slate-50"><span>🎧</span> 데일리 익스퍼트 콜</button>
+          <button onclick="openDaily('substack')" data-d="substack" class="navbtn w-full text-left px-3 py-1.5 rounded-lg border border-slate-200 flex items-center gap-2 text-[13px] hover:bg-slate-50"><span>✉️</span> 데일리 서브스택</button>
+          <button onclick="openDaily('earn')" data-d="earn" class="navbtn w-full text-left px-3 py-1.5 rounded-lg border border-slate-200 flex items-center gap-2 text-[13px] hover:bg-slate-50"><span>📅</span> 실적/컨콜 요약</button>
+        </div>
+        <div class="text-[10px] text-slate-400 px-1 mb-1">리서치</div>
+        <div class="space-y-1 mb-2.5">
+          <button onclick="showG('stock')" data-g="stock" class="navbtn w-full text-left px-3 py-1.5 rounded-lg border border-slate-200 flex items-center gap-2 text-[13px] hover:bg-slate-50"><span>📈</span> 종목</button>
+          <button onclick="showG('industry')" data-g="industry" class="navbtn w-full text-left px-3 py-1.5 rounded-lg border border-slate-200 flex items-center gap-2 text-[13px] hover:bg-slate-50"><span>🏭</span> 산업 <span class="ml-auto text-[10px] text-slate-400">ETF</span></button>
+        </div>
+        <div class="text-[10px] text-slate-400 px-1 mb-1">모니터</div>
+        <div class="space-y-1 mb-2.5">
+          <button onclick="showG('sector')" data-g="sector" class="navbtn w-full text-left px-3 py-1.5 rounded-lg border border-slate-200 flex items-center gap-2 text-[13px] hover:bg-slate-50"><span>🗂️</span> 섹터 대시보드</button>
+          <button onclick="showG('hub')" data-g="hub" class="navbtn w-full text-left px-3 py-1.5 rounded-lg border border-slate-200 flex items-center gap-2 text-[13px] hover:bg-slate-50"><span>📊</span> 대시보드 허브</button>
+        </div>
+        <div class="text-[10px] text-slate-400 px-1 mb-1">기타</div>
+        <div class="space-y-1">
+          <button onclick="showG('collect')" data-g="collect" class="navbtn w-full text-left px-3 py-1.5 rounded-lg border border-slate-200 flex items-center gap-2 text-[13px] hover:bg-slate-50"><span>🛰️</span> 데이터 수집 상태 <span class="ml-auto text-[10px] bg-emerald-500 text-white px-1.5 py-0.5 rounded live">LIVE</span></button>
+        </div>
+      </div>
+      <!-- 데이터 수집 상태 -->
+      <div class="mb-5">
+        <div onclick="showG('collect')" class="font-semibold text-slate-600 mb-2 text-[13px] flex items-center gap-1.5 cursor-pointer hover:text-brand-600">데이터 수집 상태 <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 live"></span><span class="ml-auto text-[10px] text-brand-600 font-normal">전체 보기 →</span></div>
+        <div id="status-panel" onclick="showG('collect')" class="rounded-lg border border-slate-200 p-2.5 space-y-2 bg-slate-50/50 cursor-pointer hover:border-brand-200"></div>
+      </div>
+      <div class="mb-5"><div class="font-semibold text-slate-600 mb-2 text-[13px]">Market</div><div class="flex flex-wrap gap-1.5"><span class="chip" style="background:#eefbf5;border-color:#d4f3e6;color:#1f6450">NASDAQ</span><span class="chip">NYSE</span></div></div>
+      <div class="mb-5"><div class="font-semibold text-slate-600 mb-2 text-[13px]">GICS Sector</div><div id="g-gics" class="flex flex-wrap gap-1.5"></div></div>
+      <div class="mb-2"><div class="font-semibold text-slate-600 mb-2 text-[13px]">Recent Tags</div><div class="flex flex-wrap gap-1.5"><span class="tag">#AI반도체</span><span class="tag">#클라우드</span><span class="tag">#실적</span></div></div>
+      <div class="mt-5 pt-4 border-t border-slate-100 text-[11px] text-slate-400">데이터: FMP·AlphaSense(크롤링)<br/>저장: Supabase · dev 배포</div>
+    </aside>
+
+    <main class="flex-1 overflow-y-auto">
+      <section id="g-daily" class="gview p-6">
+        <div class="flex gap-6 max-w-[1100px]">
+          <div class="w-52 shrink-0"><div class="text-xs font-semibold text-slate-400 mb-2 px-1">일자별 리포트 (누적)</div><div id="date-list" class="space-y-1"></div><div class="mt-3 px-3 py-2.5 rounded-lg opacity-60"><div class="skel h-3.5 w-16 mb-1.5"></div><div class="skel h-2.5 w-20"></div></div></div>
+          <div id="daily-card" class="flex-1 bg-white rounded-xl border border-slate-200 p-7 shadow-sm"></div>
+        </div>
+      </section>
+      <section id="g-earn" class="gview p-6 hidden">
+        <div class="max-w-[1100px]">
+          <div class="flex items-center gap-2 mb-3"><h2 class="text-lg font-bold">실적/컨콜 요약</h2><span class="tag">2026 July</span><span class="text-xs text-slate-400">실적 캘린더 + 종목별 요약</span></div>
+          <div id="earn-cal" class="bg-white rounded-xl border border-slate-200 p-4 mb-5 shadow-sm"></div>
+          <div class="flex items-center justify-between mb-2"><div class="text-sm font-semibold text-slate-500">실적 리스트</div><button onclick="earnSumAll()" class="text-xs bg-brand-500 hover:bg-brand-600 text-white px-3 py-1.5 rounded-lg">⚡ 전체 자동 요약</button></div>
+          <div id="earn-list" class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm"></div>
+        </div>
+      </section>
+      <section id="g-stock" class="gview p-6 hidden">
+        <div class="flex gap-6 max-w-[1140px]">
+          <div class="w-64 shrink-0 bg-white rounded-xl border border-slate-200 overflow-hidden self-start">
+            <div class="px-4 py-2.5 border-b border-slate-100">
+              <div class="flex justify-between items-center text-xs"><span class="font-semibold text-slate-500">종목 유니버스</span><span class="num text-slate-400"><b id="cov-count" class="text-brand-600"></b> 커버 / <span id="tot-count"></span></span></div>
+              <div class="h-1 bg-slate-100 rounded mt-1.5 overflow-hidden"><div id="cov-bar" class="h-full bg-brand-400 transition-all"></div></div>
+              <div class="flex gap-1 mt-2">
+                <button onclick="setCov('all')" data-cov="all" class="covbtn flex-1 text-[11px] py-1 rounded border border-slate-200">전체</button>
+                <button onclick="setCov('cov')" data-cov="cov" class="covbtn flex-1 text-[11px] py-1 rounded border border-slate-200">커버리지</button>
+                <button onclick="setCov('unc')" data-cov="unc" class="covbtn flex-1 text-[11px] py-1 rounded border border-slate-200">미커버</button>
+              </div>
+              <div class="flex items-center gap-3 mt-2 text-[10px] text-slate-400"><span class="flex items-center gap-1"><span class="w-2 h-2 rounded-sm bg-brand-300"></span>커버리지(음영)</span><span class="flex items-center gap-1"><span class="w-2 h-2 rounded-sm border border-slate-300"></span>미커버</span></div>
+            </div>
+            <div id="stock-list" class="overflow-y-auto" style="max-height:66vh"></div>
+          </div>
+          <div id="stock-detail" class="flex-1 bg-white rounded-xl border border-slate-200 p-6 shadow-sm"></div>
+        </div>
+      </section>
+      <section id="g-industry" class="gview p-6 hidden">
+        <div class="flex gap-6 max-w-[1140px]">
+          <div class="w-64 shrink-0 bg-white rounded-xl border border-slate-200 overflow-hidden self-start">
+            <div class="px-4 py-2.5 border-b border-slate-100 text-xs"><span class="font-semibold text-slate-500">산업 · 섹터 ETF</span></div>
+            <div id="ind-list" class="overflow-y-auto" style="max-height:70vh"></div>
+          </div>
+          <div id="ind-detail" class="flex-1 bg-white rounded-xl border border-slate-200 p-6 shadow-sm"></div>
+        </div>
+      </section>
+      <section id="g-sector" class="gview p-6 hidden">
+        <div class="max-w-[1100px]">
+          <div class="flex items-center gap-2 mb-1"><h2 class="text-lg font-bold">섹터 / 테마 대시보드</h2><span class="text-[11px] bg-slate-200 text-slate-500 px-2 py-0.5 rounded">태깅 누적 후 활성화 · 후순위</span></div>
+          <p class="text-sm text-slate-400 mb-4">커버리지 종목에 부여한 <b>테마 태그</b>로 필터 → 묶음 주가추이 조회.</p>
+          <div class="text-sm font-semibold text-slate-500 mb-2">섹터 히트맵</div>
+          <div id="sector-heatmap" class="grid grid-cols-6 gap-2 mb-6"></div>
+          <div class="text-sm font-semibold text-slate-500 mb-2">테마별 추이</div>
+          <div id="tag-chips" class="flex flex-wrap gap-2 mb-6"></div>
+          <div id="sector-grid" class="grid grid-cols-3 gap-4"></div>
+        </div>
+      </section>
+      <section id="g-hub" class="gview p-6 hidden"></section>
+      <section id="g-collect" class="gview p-6 hidden"></section>
+    </main>
+  </div>
+
+  </div>
+</div>
+
+<script>
+/* ========== 포털 메뉴 ========== */
+const menus=[['운용본부',['Timeline','의결권 판단']],['운용지원',['Fund Board','수익자 관리','조합']],['리스크/컴플',['시리즈이슈 점검','공시 정보 확인']],['마케팅',['펀드 리포트','Mailing','AUM','예탁원 설정/환매']],['HR/경영',['HR 관리','경영지원']],['펀드',['Portfolio','Universe','Cayman']],['대체',['대체']],['기타',['Agents','Stock Tags','ETF Info','Global Indices']]];
+document.getElementById('portal-nav').innerHTML=menus.map((m,i)=>{const active=i===0;const items=m[1].map(it=>`<a class="${it==='Timeline'?'text-brand-600 font-semibold':''}">${it}</a>`).join('');return `<div class="menu h-full flex items-center"><span class="cursor-default ${active?'text-brand-600 font-semibold border-b-2 border-brand-500 h-full flex items-center':''}">${m[0]}</span><div class="dd">${items}</div></div>`;}).join('');
+
+/* ========== 기존 타임라인 데이터 ========== */
+const recentTags=['#매크로','#반도체','#ai','#llm','#클라우드','#반도체장비','#소비재','#전기차','#에너지','#바이오','#금융','#소재'];
+const markets=['ASX','HKEX','KONEX','KOSDAQ','KRW','KRX','NASDAQ','NYSE','SSE','TSE','TSEC','TWSE'];
+const countries=['Australia','Canada','China','Hong Kong','Japan','Netherlands','South Korea','Taiwan','USA'];
+const gics=['Communication Services','Consumer Discretionary','Consumer Staples','Energy','Financials','Health Care','Industrials','Information Technology','Materials','Real Estate','Utilities'];
+const feed=[
+  {a:'홍길동',t:'17분 전',title:'2026-06-30 주간 시황 메모 (샘플)',tags:['#매크로'],like:0,cm:0,at:1,body:`<p class="font-semibold mb-2">(샘플) 지수 과열 우려로 일부 섹터 조정</p><ul class="list-disc pl-5 space-y-1 text-slate-600"><li>방어 섹터로 순환매</li></ul>`},
+  {a:'김철수',t:'17분 전',title:'섹터 세미나 노트 (샘플)',tags:['#반도체','#클라우드','#ai'],like:0,cm:0,at:0,body:`<p class="text-slate-600">샘플 텍스트.</p>`},
+  {a:'이영희',t:'22시간 전',title:'2026 하반기 미국 증시 전망 (샘플)',tags:['#nvda','#aapl','#msft'],like:1,cm:0,at:0,body:`<p class="text-slate-600">샘플 요약…</p>`},
+];
+const recent=[
+  {a:'홍길동',t:'19시간 전',x:'샘플 코멘트.',tags:['#반도체']},
+  {a:'김철수',t:'4일 전',x:'샘플 코멘트.',tags:['#ai']},
+];
+const pill=t=>`<span class="tag">${t}</span>`,chip=t=>`<span class="chip">${t}</span>`;
+function renderLocal(){
+  document.getElementById('f-tags').innerHTML=recentTags.map(pill).join(' ');
+  document.getElementById('f-market').innerHTML=markets.map(chip).join(' ');
+  document.getElementById('f-country').innerHTML=countries.map(chip).join(' ');
+  document.getElementById('f-gics').innerHTML=gics.map(chip).join(' ');
+  document.getElementById('g-gics').innerHTML=['Information Technology','Communication Services','Consumer Discretionary'].map(chip).join(' ');
+  document.getElementById('feed').innerHTML=feed.map(p=>`<article class="bg-white rounded-xl border border-slate-200 p-5 shadow-sm"><div class="text-xs text-slate-400 mb-1">${p.a} · ${p.t}</div><h3 class="text-[17px] font-bold mb-2">${p.title}</h3><div class="flex flex-wrap gap-1.5 mb-3">${p.tags.map(pill).join(' ')}</div><div class="flex items-center gap-4 text-xs text-slate-400 border-b border-slate-100 pb-3 mb-3"><span class="cursor-pointer hover:text-slate-600">⤢ 더보기</span><span>${p.like?'❤️':'🤍'} ${p.like}</span><span>💬 ${p.cm}</span>${p.at?`<span>📎 ${p.at}</span>`:''}<span class="ml-auto">↗</span><span>🔖</span></div><div class="text-sm leading-relaxed">${p.body}</div></article>`).join('');
+  document.getElementById('recent').innerHTML=recent.map(c=>`<div class="border-b border-slate-50 pb-3"><div class="flex justify-between text-[11px] text-slate-400 mb-1"><span class="font-medium text-slate-600">${c.a}</span><span>${c.t}</span></div><p class="text-[13px] text-slate-600 mb-2 leading-snug">${c.x}</p><div class="flex flex-wrap gap-1">${c.tags.map(pill).join(' ')}</div></div>`).join('');
+}
+
+/* ========== 차트/시뮬레이션 헬퍼 ========== */
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+function hash(s){let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619);}return h>>>0;}
+function genSeries(ticker,base){
+  const r=mulberry32(hash(ticker));const N=30;let p=base*(0.78+r()*0.15);const cl=[];
+  for(let i=0;i<N;i++){p*=1+(r()-0.475)*0.05;cl.push(p);}
+  const candles=cl.map((c,i)=>{const o=i?cl[i-1]:c*(1-(r()-0.5)*0.02);const hi=Math.max(o,c)*(1+r()*0.013);const lo=Math.min(o,c)*(1-r()*0.013);return{o,h:hi,l:lo,c};});
+  const last=cl[N-1],prev=cl[N-2];const v=cl.slice(-12);const mn=Math.min(...v),mx=Math.max(...v);
+  return{px:+last.toFixed(2),chg:+((last-prev)/prev*100).toFixed(2),candles,v:v.map(x=>mx>mn?(x-mn)/(mx-mn)*100:50)};
+}
+const fmt=n=>n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+const cls=v=>v>=0?'text-up':'text-down',ar=v=>v>=0?'▲':'▼';
+/* TradingView식 캔들 차트 */
+const CW=660,CH=262,GX=8,GT=14,GB=16,VOLH=46,AX=46;
+function candleChart(candles,marks){
+  const n=candles.length,hi=Math.max(...candles.map(c=>c.h)),lo=Math.min(...candles.map(c=>c.l)),pad=(hi-lo)*0.08||1,top=hi+pad,bot=lo-pad;
+  const pBot=CH-GB-VOLH;const yY=p=>GT+(top-p)/(top-bot)*(pBot-GT),cw=(CW-2*GX-AX)/n,bw=Math.max(cw*0.62,2);
+  let grid='';for(let g=0;g<=4;g++){const p=top-(top-bot)*g/4,y=yY(p);grid+=`<line x1="${GX}" y1="${y.toFixed(1)}" x2="${CW-AX}" y2="${y.toFixed(1)}" stroke="#eef0f2"/><text x="${CW-AX+4}" y="${(y+3).toFixed(1)}" font-size="9" fill="#9aa3ad" class="num">${fmt(p)}</text>`;}
+  const ma=candles.map((c,i)=>{const k=Math.min(8,i+1);let s=0;for(let j=i-k+1;j<=i;j++)s+=candles[j].c;return s/k;});
+  const maPath=ma.map((mv,i)=>`${(GX+cw*i+cw/2).toFixed(1)},${yY(mv).toFixed(1)}`).join(' ');
+  const vmax=Math.max(...candles.map(c=>(c.h-c.l)+Math.abs(c.c-c.o)))||1;
+  const vol=candles.map((c,i)=>{const x=GX+cw*i+cw/2,vh=Math.max(((c.h-c.l)+Math.abs(c.c-c.o))/vmax*(VOLH-6),1),up=c.c>=c.o;return `<rect x="${(x-bw/2).toFixed(1)}" y="${(CH-GB-vh).toFixed(1)}" width="${bw.toFixed(1)}" height="${vh.toFixed(1)}" fill="${up?'#f3b8b3':'#bcd0f2'}"/>`;}).join('');
+  const body=candles.map((c,i)=>{const x=GX+cw*i+cw/2,up=c.c>=c.o,col=up?'#e0392b':'#1769d6',yo=yY(c.o),yc=yY(c.c),yt=Math.min(yo,yc),hg=Math.max(Math.abs(yo-yc),1);return `<line x1="${x.toFixed(1)}" y1="${yY(c.h).toFixed(1)}" x2="${x.toFixed(1)}" y2="${yY(c.l).toFixed(1)}" stroke="${col}" stroke-width="1"/><rect x="${(x-bw/2).toFixed(1)}" y="${yt.toFixed(1)}" width="${bw.toFixed(1)}" height="${hg.toFixed(1)}" fill="${col}"/>`;}).join('');
+  const lc=candles[n-1],ly=yY(lc.c),lcol=lc.c>=lc.o?'#e0392b':'#1769d6';
+  const lastTag=`<line x1="${GX}" y1="${ly.toFixed(1)}" x2="${CW-AX}" y2="${ly.toFixed(1)}" stroke="${lcol}" stroke-width="1" stroke-dasharray="3 2" opacity="0.45"/><rect x="${CW-AX}" y="${(ly-8).toFixed(1)}" width="${AX}" height="16" rx="2" fill="${lcol}"/><text x="${(CW-AX/2).toFixed(1)}" y="${(ly+3.5).toFixed(1)}" text-anchor="middle" font-size="9" fill="#fff" class="num">${fmt(lc.c)}</text>`;
+  const m=(marks||[]).map(k=>{const x=GX+cw*k.i+cw/2,y=yY(candles[k.i].c),lw=k.l.length*6.6+14;let lx=Math.max(2,Math.min(x-lw/2,CW-AX-lw));return `<line x1="${x.toFixed(1)}" y1="${(y+5).toFixed(1)}" x2="${x.toFixed(1)}" y2="${(y+20).toFixed(1)}" stroke="${k.c}" stroke-width="1" stroke-dasharray="2 2"/><rect x="${lx.toFixed(1)}" y="${(y+20).toFixed(1)}" width="${lw.toFixed(1)}" height="16" rx="8" fill="${k.c}"/><text x="${(lx+lw/2).toFixed(1)}" y="${(y+31).toFixed(1)}" text-anchor="middle" font-size="9.5" fill="#fff" font-weight="600">${k.l}</text><circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="3" fill="${k.c}" stroke="#fff" stroke-width="1.5"/>`;}).join('');
+  return `<svg viewBox="0 0 ${CW} ${CH}" class="w-full" style="height:270px"><line x1="${GX}" y1="${(pBot+6).toFixed(1)}" x2="${CW-AX}" y2="${(pBot+6).toFixed(1)}" stroke="#f1f3f5"/><text x="${GX}" y="${(pBot+2).toFixed(1)}" font-size="8.5" fill="#b6bdc6">Vol</text>${grid}${vol}<polyline fill="none" stroke="#d9a441" stroke-width="1.2" opacity="0.85" points="${maPath}"/>${body}${lastTag}${m}</svg>`;
+}
+function smoothPath(P){if(P.length<2)return'';let d=`M ${P[0][0]} ${P[0][1]}`;for(let i=0;i<P.length-1;i++){const p0=P[i-1]||P[i],p1=P[i],p2=P[i+1],p3=P[i+2]||p2,t=0.18;d+=` C ${(p1[0]+(p2[0]-p0[0])*t).toFixed(1)} ${(p1[1]+(p2[1]-p0[1])*t).toFixed(1)}, ${(p2[0]-(p3[0]-p1[0])*t).toFixed(1)} ${(p2[1]-(p3[1]-p1[1])*t).toFixed(1)}, ${p2[0]} ${p2[1]}`;}return d;}
+function spark(v,c){const n=v.length,P=v.map((val,i)=>[+(i*200/(n-1)).toFixed(1),+(50-val/100*42-3).toFixed(1)]);return `<svg viewBox="0 0 200 52" class="w-full h-12 mb-3"><path d="${smoothPath(P)}" fill="none" stroke="${c}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;}
+
+/* ========== 종목 유니버스 (커버리지 + 전체 500) ========== */
+const COVERAGE=[
+ ['NVDA','NVIDIA','AI 반도체',[['2026-06-30','데일리','DC 채널체크 긍정적. GTC 모멘텀 유효 — 비중 유지.'],['2026-05-22','실적','DC 매출 가이던스 상회, 마진우려 완화.'],['2026-03-10','첫 콜','AI 가속기 독점 지위 + CUDA 락인. 신규 편입.']]],
+ ['AAPL','Apple','소비재',[['2026-06-29','전문가콜','공급망 인터뷰: 아이폰17 발주 소폭 상향, 폴디드광학 공급 다변화.'],['2026-04-15','첫 콜','온디바이스 AI + 서비스 매출 안정성. 방어주 편입.']]],
+ ['MSFT','Microsoft','클라우드',[['2026-06-25','데일리','Azure AI 매출 가속. Copilot 기업 채택 확대.'],['2026-02-08','첫 콜','클라우드+AI 양축. 핵심 보유.']]],
+ ['AMZN','Amazon','클라우드',[['2026-06-20','데일리','AWS 성장 안정, 리테일 마진 개선.']]],
+ ['GOOGL','Alphabet','클라우드',[['2026-06-18','데일리','Gemini 통합 가속, 검색 점유 방어.']]],
+ ['META','Meta','AI 반도체',[['2026-06-12','데일리','광고 회복 + Llama 생태계 확장.']]],
+ ['TSLA','Tesla','전기차',[['2026-06-10','데일리','인도량 둔화, 로보택시 일정 주시.']]],
+ ['AVGO','Broadcom','AI 반도체',[['2026-06-28','데일리','커스텀 ASIC 수주 확대. AI 수혜 2순위 픽.']]],
+ ['AMD','AMD','AI 반도체',[['2026-06-22','데일리','MI 시리즈 점유 확대 시도.']]],
+ ['NFLX','Netflix','소비재',[['2026-06-05','데일리','광고요금제 가입자 순증.']]],
+ ['COST','Costco','소비재',[['2026-06-01','데일리','동일점 매출 견조.']]],
+ ['LLY','Eli Lilly','헬스케어',[['2026-06-15','데일리','비만치료제 수요 견조, 캐파 증설.']]],
+];
+const UNIV=[
+ ['MU','Micron','반도체'],['INTC','Intel','반도체'],['QCOM','Qualcomm','반도체'],['TXN','Texas Instr.','반도체'],['AMAT','Applied Mat.','반도체'],['LRCX','Lam Research','반도체'],['KLAC','KLA','반도체'],['ASML','ASML','반도체'],['ARM','Arm','반도체'],['MRVL','Marvell','반도체'],['ADI','Analog Dev.','반도체'],['MCHP','Microchip','반도체'],['ON','ON Semi','반도체'],
+ ['ORCL','Oracle','소프트웨어'],['CRM','Salesforce','소프트웨어'],['NOW','ServiceNow','소프트웨어'],['SNOW','Snowflake','소프트웨어'],['PLTR','Palantir','소프트웨어'],['PANW','Palo Alto','소프트웨어'],['CRWD','CrowdStrike','소프트웨어'],['ZS','Zscaler','소프트웨어'],['DDOG','Datadog','소프트웨어'],['NET','Cloudflare','소프트웨어'],['ADBE','Adobe','소프트웨어'],['INTU','Intuit','소프트웨어'],['ADSK','Autodesk','소프트웨어'],
+ ['UBER','Uber','소비재'],['ABNB','Airbnb','소비재'],['BKNG','Booking','소비재'],['SBUX','Starbucks','소비재'],['MCD','McDonald','소비재'],['NKE','Nike','소비재'],['HD','Home Depot','소비재'],['LOW','Lowe','소비재'],['WMT','Walmart','소비재'],['TGT','Target','소비재'],['PG','P&G','소비재'],['KO','Coca-Cola','소비재'],['PEP','PepsiCo','소비재'],['DIS','Disney','소비재'],
+ ['V','Visa','금융'],['MA','Mastercard','금융'],['JPM','JPMorgan','금융'],['BAC','Bank of America','금융'],['GS','Goldman Sachs','금융'],['MS','Morgan Stanley','금융'],['WFC','Wells Fargo','금융'],['AXP','Amex','금융'],['BLK','BlackRock','금융'],['SCHW','Schwab','금융'],['PYPL','PayPal','금융'],['COIN','Coinbase','금융'],
+ ['XOM','Exxon','에너지'],['CVX','Chevron','에너지'],['COP','ConocoPhillips','에너지'],['SLB','Schlumberger','에너지'],['OXY','Occidental','에너지'],
+ ['UNH','UnitedHealth','헬스케어'],['JNJ','J&J','헬스케어'],['PFE','Pfizer','헬스케어'],['MRK','Merck','헬스케어'],['ABBV','AbbVie','헬스케어'],['TMO','Thermo Fisher','헬스케어'],['ABT','Abbott','헬스케어'],['ISRG','Intuitive','헬스케어'],['VRTX','Vertex','헬스케어'],['REGN','Regeneron','헬스케어'],['GILD','Gilead','헬스케어'],['AMGN','Amgen','헬스케어'],
+ ['CAT','Caterpillar','산업재'],['DE','Deere','산업재'],['BA','Boeing','산업재'],['GE','GE','산업재'],['HON','Honeywell','산업재'],['UPS','UPS','산업재'],['RTX','RTX','산업재'],['LMT','Lockheed','산업재'],
+ ['F','Ford','전기차'],['GM','GM','전기차'],['RIVN','Rivian','전기차'],['LCID','Lucid','전기차'],
+ ['TMUS','T-Mobile','통신'],['CMCSA','Comcast','통신'],['T','AT&T','통신'],['VZ','Verizon','통신'],['NEE','NextEra','에너지'],['LIN','Linde','소재'],['SHW','Sherwin','소재'],['FCX','Freeport','소재'],['NEM','Newmont','소재'],
+];
+const SECS=['AI 반도체','반도체','클라우드','소프트웨어','소비재','전기차','에너지','금융','헬스케어','산업재','소재','통신'];
+const stocks=[];
+COVERAGE.forEach(c=>{const s=genSeries(c[0],40+hash(c[0])%860);const cm=c[3];const marks=cm.map((x,j)=>({i:Math.max(2,29-j*8),l:x[1]==='첫 콜'?'첫 콜':(x[1]==='실적'?'실적':'코멘트'),c:x[1]==='첫 콜'?'#e0392b':'#1f6450'}));stocks.push({t:c[0],n:c[1],sec:c[2],cov:true,cm,marks,...s});});
+UNIV.forEach(u=>{const s=genSeries(u[0],40+hash(u[0])%860);stocks.push({t:u[0],n:u[1],sec:u[2],cov:false,cm:[],marks:[],...s});});
+const AL='ABCDEFGHIJKLMNOPQRSTUVWXYZ';let gi=0;
+while(stocks.length<500){const t=AL[(gi*7)%26]+AL[(gi*13+5)%26]+AL[(gi*17+2)%26]+(gi%3?AL[(gi*11+1)%26]:'');if(!stocks.some(x=>x.t===t)){const sec=SECS[gi%SECS.length];const s=genSeries(t,40+hash(t)%860);stocks.push({t,n:sec+' 유니버스',sec,cov:false,cm:[],marks:[],...s});}gi++;if(gi>6000)break;}
+const sectors={'AI 반도체':{chg:4.2},'클라우드':{chg:1.6},'소비재':{chg:0.4},'전기차':{chg:-1.1}};
+
+/* ========== 데이터 수집 상태 ========== */
+const statusItems=[
+ {n:'FMP 시세·지수',s:'done',note:'06:40 완료'},
+ {n:'AlphaSense 전문가콜',s:'run',note:'12 / 45',pct:27},
+ {n:'실적 발표 스크립트',s:'done',note:'08:10 완료'},
+ {n:'SEC · 공시 PDF',s:'wait',note:'대기'},
+ {n:'크롤러 (맥미니)',s:'warn',note:'재시도 1회'},
+];
+const ST={done:['bg-emerald-500','완료'],run:['bg-amber-400','수집중'],wait:['bg-slate-300','대기'],warn:['bg-up','점검']};
+function renderStatus(){
+  document.getElementById('status-panel').innerHTML=statusItems.map(it=>{const c=ST[it.s][0];const bar=it.s==='run'?`<div class="h-1 bg-slate-200 rounded mt-1 overflow-hidden"><div class="h-full bg-amber-400" style="width:${it.pct}%"></div></div>`:'';return `<div><div class="flex items-center gap-2 text-[12px]"><span class="w-2 h-2 rounded-full ${c} ${it.s==='run'?'live':''} shrink-0"></span><span class="text-slate-600 truncate">${it.n}</span><span class="ml-auto text-[10px] num ${it.s==='warn'?'text-up':'text-slate-400'} shrink-0">${it.note}</span></div>${bar}</div>`;}).join('')+`<div class="pt-1.5 mt-1 border-t border-slate-200 text-[10px] text-slate-400 flex justify-between"><span>마지막 동기화</span><span class="num">06:42</span></div>`;
+}
+
+/* ========== 데일리 ========== */
+const reports={
+ '06-30':{day:'월',summary:'나스닥이 +1.2%로 사상 최고가 부근 마감. <b>AI 반도체</b>가 지수를 견인했고 차주 NVIDIA GTC를 앞둔 기대가 매수세를 자극. 반면 일부 소프트웨어·필수소비재는 차익 실현 출회. 금리는 보합, 달러 약세로 위험선호 심리 유지. 거래대금은 평균을 소폭 상회.',
+   idx:[['Nasdaq','20,118','+1.24',1],['S&P 500','6,173','+0.81',1],['Dow','43,902','-0.12',0],['VIX','14.2','-3.1',0]],
+   movers:{up:[['AI 반도체','+3.2'],['전력·유틸','+1.6'],['커뮤니케이션','+0.9']],down:[['소프트웨어','-0.5'],['필수소비재','-0.3']]},
+   wl:[['NVDA','+2.9','AI 가속기 수요 지속 + 차주 GTC 신제품 로드맵 기대. DC 채널 체크 긍정적 — 비중 유지.'],['AVGO','+3.1','커스텀 ASIC 수주 파이프라인 확대, AI 수혜 2순위 픽으로 부각.'],['AAPL','+0.4','온디바이스 AI 기대 + 서비스 매출 호조. 아이폰17 발주 소폭 상향 코멘트.'],['MSFT','+0.8','Azure AI 매출 가속, Copilot 좌석 확대 지속.'],['TSLA','-1.4','2분기 인도량 둔화 우려에 차익 실현. 로보택시 일정 주시.']],
+   issues:['중국 상무부, 미국 기업 대상 수출 통제 리스트 확대 (희토류·드론 관련)','차주 NVIDIA GTC — 신제품 로드맵·가이던스 주목','목요일 6월 PCE 물가지수 발표 예정 (Fed 경로 변수)','반도체 장비주 수주 코멘트 긍정적, 메모리 가격 반등 조짐'],
+   exp:[{s:'AAPL',src:'공급망 전문가',sum:'아이폰17 부품 발주 소폭 상향. 폴디드 광학 공급사 다변화 진행.'},{s:'NVDA',src:'데이터센터 채널',sum:'하이퍼스케일러 발주 견조, 공급 병목 완화 신호.'},{s:'AVGO',src:'네트워킹 전문가',sum:'커스텀 ASIC 수주 파이프라인 확대.'}],
+   sub:[{a:'SemiAnalysis',title:'HBM 공급 타이트',sum:'HBM4 전환 가속, 후공정 캐파가 병목.',tags:['#반도체','#HBM']},{a:'Stratechery',title:'클라우드 AI 경쟁 구도',sum:'하이퍼스케일러 캡엑스 상향 사이클.',tags:['#클라우드']}]},
+ '06-27':{day:'금',summary:'주말을 앞두고 3대 지수 동반 강세. 반도체·네트워킹 강세가 이어졌고, 전력/데이터센터 테마가 재부각. 변동성(VIX)은 추가 하락하며 위험선호 지속. 다만 거래량은 다소 한산.',
+   idx:[['Nasdaq','19,872','+0.45',1],['S&P 500','6,123','+0.30',1],['Dow','43,955','+0.21',1],['VIX','14.7','-1.0',0]],
+   movers:{up:[['반도체','+1.9'],['에너지','+1.2']],down:[['전기차','-0.8']]},
+   wl:[['AVGO','+3.1','커스텀 ASIC 수주 모멘텀 지속.'],['NVDA','+1.2','DC 채널 견조, 공급 병목 완화.'],['TSLA','-1.4','인도량 둔화 우려에 약세.']],
+   issues:['데이터센터 전력 PPA 체결 뉴스 다수','다음 주 빅테크 실적 시즌 진입 (7/17~)'],
+   exp:[{s:'NVDA',src:'DC 채널',sum:'하이퍼스케일러 발주 견조.'},{s:'MSFT',src:'엔터프라이즈',sum:'Copilot 좌석 확대 지속.'}],
+   sub:[{a:'Doomberg',title:'에너지·전력 수요',sum:'데이터센터 전력 병목 심화.',tags:['#에너지','#데이터센터']}]},
+ '06-26':{day:'목',summary:'지수는 보합권 혼조. 전일 강세에 따른 숨고르기 흐름. 소프트웨어 일부 차익 실현, 방어 섹터로 순환매. VIX 소폭 반등.',
+   idx:[['Nasdaq','19,783','-0.20',0],['S&P 500','6,105','-0.10',0],['Dow','43,860','+0.05',1],['VIX','14.9','+0.8',1]],
+   movers:{up:[['헬스케어','+0.7']],down:[['소프트웨어','-1.1'],['반도체','-0.4']]},
+   wl:[['MSFT','+0.8','Azure AI 가속 지속.'],['LLY','+1.2','비만 치료제 수요 견조.']],
+   issues:['주 후반 PCE 대기 관망세','반도체 단기 과열 부담 일부 해소'],
+   exp:[{s:'AAPL',src:'공급망 인터뷰',sum:'생산 차질 제한적.'}],
+   sub:[{a:'The Diff',title:'AI 캡엑스 ROI',sum:'투자 회수 논쟁 본격화.',tags:['#ai']}]},
+};
+let curDate='06-30';
+function renderDateList(){document.getElementById('date-list').innerHTML=Object.keys(reports).map(d=>{const r=reports[d],on=d===curDate;return `<div onclick="pickDate('${d}')" class="px-3 py-2.5 rounded-lg cursor-pointer ${on?'bg-brand-50 border border-brand-100':'hover:bg-slate-50'}"><div class="text-sm ${on?'font-semibold text-brand-600':'font-medium'}">${d} (${r.day})</div><div class="text-[11px] ${on?'text-slate-500':'text-slate-400'}">미국 시황${on?' · 자동 생성 06:40':''}</div></div>`;}).join('');}
+function pickDate(d){curDate=d;renderDateList();renderDaily();}
+let dailyType='market';
+function renderDaily(){renderDateList();const r=reports[curDate];const meta={market:['데일리 시황','지수 · 관심종목 자동 코멘트'],expert:['데일리 익스퍼트 콜','AlphaSense 전문가콜 요약'],substack:['데일리 서브스택','유료 뉴스레터 요약']}[dailyType];let inner='';
+  if(dailyType==='market'){
+    const idx=r.idx.map(x=>`<div class="rounded-lg border border-slate-100 p-3"><div class="text-xs text-slate-400">${x[0]}</div><div class="font-bold num">${x[1]}</div><div class="${cls(+x[2])} text-xs font-medium num">${ar(+x[2])} ${Math.abs(x[2])}%</div></div>`).join('');
+    const mv=(a,up)=>a.map(m=>`<span class="text-xs px-2 py-1 rounded ${up?'text-up':'text-down'}" style="background:${up?'rgba(224,57,43,.08)':'rgba(23,105,214,.08)'}">${m[0]} <span class="num">${m[1]}%</span></span>`).join(' ');
+    const movers=`<div class="flex flex-wrap gap-1.5 mb-2">${mv(r.movers.up,1)}</div><div class="flex flex-wrap gap-1.5">${mv(r.movers.down,0)}</div>`;
+    const wl=r.wl.map(x=>`<div class="flex gap-3 py-2 border-b border-slate-50 last:border-0"><div class="w-16 shrink-0"><b>${x[0]}</b><div class="${cls(+x[1])} num text-xs">${ar(+x[1])} ${Math.abs(x[1])}%</div></div><p class="text-slate-600 flex-1">${x[2]}</p></div>`).join('');
+    const issues=r.issues.map(i=>`<li>${i}</li>`).join('');
+    inner=`<div class="rounded-lg bg-slate-50 border border-slate-100 p-4 mb-6 text-sm leading-relaxed text-slate-700">${r.summary}</div>
+    <h3 class="text-sm font-semibold text-slate-500 mb-2">① 주요 지수</h3><div class="grid grid-cols-4 gap-3 mb-6">${idx}</div>
+    <h3 class="text-sm font-semibold text-slate-500 mb-2">② 섹터 동향</h3><div class="mb-6">${movers}</div>
+    <h3 class="text-sm font-semibold text-slate-500 mb-2">③ 관심종목 코멘트 <span class="text-[10px] text-slate-400">· 자동 생성</span></h3><div class="text-sm leading-relaxed mb-6">${wl}</div>
+    <h3 class="text-sm font-semibold text-slate-500 mb-2">④ 주요 이슈 · 일정</h3><ul class="list-disc pl-5 space-y-1 text-sm text-slate-600">${issues}</ul>`;
+  }
+  else if(dailyType==='expert'){inner=r.exp.map(e=>`<div class="rounded-lg border border-slate-100 p-4 mb-3"><div class="flex items-center justify-between mb-1"><div class="text-sm font-semibold">${e.s} <span class="tag ml-1">${e.src}</span></div><span class="tag" style="background:#f3eefb;color:#6b46c1;border-color:#e6dcfa">AlphaSense</span></div><p class="text-sm text-slate-600">${e.sum}</p></div>`).join('')+`<div class="rounded-lg bg-slate-50 border border-slate-100 p-4 opacity-70"><div class="text-xs text-slate-400 mb-2">추가 종목 요약 생성중…</div><div class="skel h-3 w-full mb-2"></div><div class="skel h-3 w-2/3"></div></div>`;}
+  else{inner=r.sub.map(s=>`<div class="rounded-lg border border-slate-100 p-4 mb-3"><div class="flex items-center justify-between mb-1"><div class="text-sm font-semibold">${s.title}</div><span class="text-[11px] text-slate-400">${s.a}</span></div><p class="text-sm text-slate-600 mb-2">${s.sum}</p><div class="flex gap-1">${s.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div></div>`).join('');}
+  document.getElementById('daily-card').innerHTML=`<div class="flex items-center justify-between border-b border-slate-100 pb-4 mb-5"><div><div class="text-xs text-slate-400">${meta[1]} · 자동 생성</div><h2 class="text-xl font-bold mt-0.5">2026-${curDate} ${meta[0]}</h2></div><span class="text-[11px] text-slate-400">HTML · Supabase 누적</span></div>${inner}`;}
+const earnings=[
+ {t:'AVGO',n:'Broadcom',d:'07-09',when:'장후',eps:'1.70',st:'발표',surp:'+3.4%'},
+ {t:'COST',n:'Costco',d:'07-10',when:'장후',eps:'5.80',st:'발표',surp:'+2.1%'},
+ {t:'TSLA',n:'Tesla',d:'07-17',when:'장후',eps:'0.62',st:'예정'},
+ {t:'NFLX',n:'Netflix',d:'07-17',when:'장후',eps:'6.20',st:'예정'},
+ {t:'MSFT',n:'Microsoft',d:'07-18',when:'장후',eps:'3.42',st:'예정'},
+ {t:'GOOGL',n:'Alphabet',d:'07-22',when:'장후',eps:'2.05',st:'예정'},
+ {t:'TXN',n:'Texas Instr.',d:'07-22',when:'장후',eps:'1.38',st:'예정'},
+ {t:'META',n:'Meta',d:'07-23',when:'장후',eps:'6.10',st:'예정'},
+ {t:'AMD',n:'AMD',d:'07-29',when:'장후',eps:'0.95',st:'예정'},
+ {t:'LLY',n:'Eli Lilly',d:'07-30',when:'장전',eps:'5.10',st:'예정'},
+ {t:'AAPL',n:'Apple',d:'07-31',when:'장후',eps:'1.42',st:'예정'},
+ {t:'AMZN',n:'Amazon',d:'07-31',when:'장후',eps:'1.32',st:'예정'},
+];
+function renderEarn(){
+  const map={};earnings.forEach(e=>{(map[e.d]=map[e.d]||[]).push(e);});
+  let mm=6,dd=29;const dim={6:30,7:31,8:31},cal=[];for(let i=0;i<35;i++){cal.push([mm,dd]);dd++;if(dd>dim[mm]){dd=1;mm++;}}
+  const dow=['월','화','수','목','금','토','일'];
+  const head=dow.map(d=>`<div class="text-center text-[11px] text-slate-400 py-1 font-medium">${d}</div>`).join('');
+  const cells=cal.map(([m,d])=>{const key=`${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`;const evs=map[key]||[];const today=key==='06-30';const chips=evs.slice(0,3).map(e=>`<div class="text-[9px] rounded px-1 mt-0.5 truncate num ${e.st==='발표'?'bg-slate-100 text-slate-500':'bg-brand-50 text-brand-700'}">${e.t}</div>`).join('');return `<div class="border border-slate-100 rounded-md p-1 min-h-[54px] ${today?'ring-1 ring-brand-300 bg-brand-50':''}"><div class="text-[10px] num ${m!==7?'text-slate-300':'text-slate-500'}">${d}</div>${chips}${evs.length>3?`<div class="text-[8px] text-slate-400 mt-0.5">+${evs.length-3}</div>`:''}</div>`;}).join('');
+  document.getElementById('earn-cal').innerHTML=`<div class="grid grid-cols-7 gap-1">${head}${cells}</div>`;
+  const rows=earnings.map((e,i)=>({e,i})).sort((a,b)=>a.e.d.localeCompare(b.e.d)).map(({e,i})=>{const done=e.st==='발표';return `<div class="px-4 py-2.5 border-b border-slate-50 hover:bg-slate-50"><div class="flex items-center gap-3"><div class="w-20 shrink-0"><div class="text-sm font-semibold">${e.t}</div><div class="text-[11px] text-slate-400">${e.n}</div></div><div class="w-16 shrink-0 text-xs text-slate-500 num">${e.d}<div class="text-[10px] text-slate-400">${e.when}</div></div><div class="flex-1 text-xs text-slate-500">컨센 EPS <span class="num font-medium">${e.eps}</span>${done?` · 서프라이즈 <span class="num font-semibold ${e.surp[0]==='+'?'text-up':'text-down'}">${e.surp}</span>`:''}</div>${e.sum?'<span class="text-[11px] px-2 py-0.5 rounded-full shrink-0 bg-emerald-50 text-emerald-600">요약 완료</span>':`<button onclick="earnSum(${i})" class="text-[11px] shrink-0 bg-brand-50 text-brand-600 border border-brand-100 px-2 py-1 rounded hover:bg-brand-100">⚡ 요약 생성</button>`}<span class="text-[11px] px-2 py-0.5 rounded-full shrink-0 ${done?'bg-slate-100 text-slate-500':'bg-amber-50 text-amber-600'}">${e.st}</span></div>${e.sum?`<div class="mt-2 text-xs text-slate-600 bg-slate-50 border border-slate-100 rounded p-2"><b class="text-brand-600">컨콜 요약</b> · ${e.sum}</div>`:''}</div>`;}).join('');
+  document.getElementById('earn-list').innerHTML=rows;
+}
+function earnSum(i){earnings[i].sum='가이던스 컨센 상회 · 마진 개선 코멘트 · AI/클라우드 수요 견조. (자동 생성 요약)';renderEarn();}
+function earnSumAll(){earnings.forEach(e=>{if(!e.sum)e.sum='가이던스 컨센 부합~상회, 주요 세그먼트 코멘트 요약. (자동 생성)';});renderEarn();}
+
+/* ========== 종목 ========== */
+const PERIODS=['1D','1W','1M','1Y'],PCOUNT={'1D':32,'1W':28,'1M':30,'1Y':52},PVOL={'1D':0.018,'1W':0.03,'1M':0.05,'1Y':0.075};
+let period='1M';
+function genCandles(t,per){const r=mulberry32(hash(t+per));const N=PCOUNT[per],vol=PVOL[per];let p=(40+hash(t)%860)*(0.8+r()*0.15);const cl=[];for(let i=0;i<N;i++){p*=1+(r()-0.475)*vol;cl.push(p);}return cl.map((c,i)=>{const o=i?cl[i-1]:c*(1-(r()-0.5)*0.01);return{o,h:Math.max(o,c)*(1+r()*vol*0.5),l:Math.min(o,c)*(1-r()*vol*0.5),c};});}
+function scaleMarks(marks,N){return (marks||[]).map(m=>({l:m.l,c:m.c,i:Math.max(0,Math.min(N-1,Math.round(m.i/29*(N-1))))}));}
+function setPeriod(p){period=p;renderDetail();}
+let curStk=0,filter='',covMode='all';
+function setCov(m){covMode=m;document.querySelectorAll('.covbtn').forEach(b=>{const on=b.dataset.cov===m;b.classList.toggle('bg-brand-50',on);b.classList.toggle('text-brand-700',on);b.classList.toggle('border-brand-200',on);b.classList.toggle('font-semibold',on);});renderStockList();}
+function renderStockList(){
+  let items=stocks.map((s,i)=>({s,i})).filter(({s})=>!filter||s.t.toLowerCase().includes(filter)||s.n.toLowerCase().includes(filter));
+  if(covMode==='cov')items=items.filter(({s})=>s.cov);else if(covMode==='unc')items=items.filter(({s})=>!s.cov);
+  items.sort((a,b)=>(b.s.cov-a.s.cov));
+  const _cv=stocks.filter(s=>s.cov).length;
+  document.getElementById('cov-count').textContent=_cv;
+  document.getElementById('tot-count').textContent=stocks.length;
+  document.getElementById('cov-bar').style.width=(_cv/stocks.length*100).toFixed(1)+'%';
+  document.getElementById('stock-list').innerHTML=items.map(({s,i})=>`<div onclick="pickStock(${i})" class="px-3 py-2 border-b border-slate-50 cursor-pointer flex justify-between items-center ${i===curStk?'bg-brand-100':(s.cov?'bg-brand-50 hover:bg-brand-100/70':'hover:bg-slate-50')}"><div class="flex items-center gap-2 min-w-0"><span class="w-1.5 h-1.5 rounded-full shrink-0 ${s.cov?'bg-brand-500':'bg-slate-300'}"></span><div class="min-w-0"><div class="text-sm font-semibold flex items-center gap-1.5">${s.t}${s.cov?'<span class="text-[9px] bg-brand-500 text-white px-1 rounded">커버</span>':'<span class="text-[9px] text-slate-400 border border-slate-200 px-1 rounded">미커버</span>'}</div><div class="text-[11px] text-slate-400 truncate">${s.n}</div></div></div><div class="text-right shrink-0"><div class="text-sm num">$${fmt(s.px)}</div><div class="text-[11px] num ${cls(s.chg)}">${ar(s.chg)} ${Math.abs(s.chg)}%</div></div></div>`).join('')||'<div class="p-6 text-center text-sm text-slate-400">결과 없음</div>';
+}
+function filterStocks(q){filter=q.trim().toLowerCase();renderStockList();}
+function pickStock(i){curStk=i;renderStockList();renderDetail();}
+function addComment(){const t=prompt('새 코멘트 입력 (오늘 날짜로 추가됩니다)');if(t&&t.trim()){const s=stocks[curStk];s.cm.unshift(['2026-06-30','신규',t.trim()]);if(!s.cov){s.cov=true;s.marks=[{i:27,l:'첫 콜',c:'#e0392b'}];}renderStockList();renderDetail();}}
+function renderDetail(){const s=stocks[curStk];
+  const cd=genCandles(s.t,period);
+  const pbtns=PERIODS.map(function(p){return '<span onclick="setPeriod(\''+p+'\')" class="px-2 py-0.5 rounded cursor-pointer '+(p===period?'bg-brand-50 text-brand-600 font-semibold':'hover:bg-slate-50')+'">'+p+'</span>';}).join('');
+  const covBadge=s.cov?'<span class="tag ml-1">커버리지</span>':'<span class="ml-1 text-[11px] text-amber-700 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-full">미커버 · 커버 권장</span>';
+  const tl=(s.cov&&s.cm.length)?s.cm.map((c,j)=>`<li class="ml-5"><span class="absolute -left-[7px] w-3 h-3 rounded-full ${j===0?'bg-brand-500':'bg-brand-200'}"></span><div class="text-xs text-slate-400">${c[0]} · ${c[1]}</div><p class="text-sm">${c[2]}</p></li>`).join('')
+    :`<li class="ml-5 text-sm text-slate-500">아직 코멘트가 없는 <b>미커버</b> 종목입니다. <button onclick="addComment()" class="text-brand-600 underline">첫 코멘트 작성</button> 시 커버리지로 전환됩니다.</li>`;
+  document.getElementById('stock-detail').innerHTML=`<div class="flex items-end justify-between border-b border-slate-100 pb-4 mb-4"><div><div class="text-xs text-slate-400">${s.t} · NASDAQ ${covBadge} <span class="tag ml-1">${s.sec}</span></div><h2 class="text-2xl font-bold">${s.n}</h2></div><div class="text-right"><div class="text-2xl font-bold num">$${fmt(s.px)}</div><div class="${cls(s.chg)} text-sm font-semibold num">${ar(s.chg)} ${Math.abs(s.chg)}%</div></div></div><div class="flex items-center justify-between mb-1"><div class="text-sm font-semibold text-slate-500">주가 추이 <span class="text-[10px] text-slate-400 font-normal">· TradingView · ${period}</span></div><div class="flex gap-1 text-[11px] text-slate-400">${pbtns}</div></div><div class="rounded-lg border border-slate-100 p-2 mb-1">${candleChart(cd,scaleMarks(s.marks,cd.length))}</div><p class="text-[11px] text-slate-400 mb-5">● 마커 = 코멘트 시점. 캔들 구간↔코멘트 매핑으로 "이때 처음 다뤘다"를 시각화.</p><div class="flex items-center justify-between mb-3"><div class="text-sm font-semibold text-slate-500">코멘트 타임라인</div><button onclick="addComment()" class="text-xs bg-brand-500 hover:bg-brand-600 text-white px-3 py-1.5 rounded-lg">+ 코멘트 추가</button></div><ol class="relative border-l-2 border-slate-100 ml-2 space-y-5">${tl}</ol>`;
+}
+
+/* ========== 산업 (ETF) ========== */
+const ETFS=[
+ {t:'SMH',n:'반도체 (VanEck)',sec:'반도체'},{t:'SOXX',n:'반도체 (iShares)',sec:'반도체'},{t:'XLK',n:'기술 섹터',sec:'소프트웨어'},{t:'IGV',n:'소프트웨어',sec:'소프트웨어'},{t:'XLF',n:'금융 섹터',sec:'금융'},{t:'XLE',n:'에너지 섹터',sec:'에너지'},{t:'XLV',n:'헬스케어 섹터',sec:'헬스케어'},{t:'XLY',n:'경기소비재',sec:'소비재'},{t:'XLP',n:'필수소비재',sec:'소비재'},{t:'XLI',n:'산업재 섹터',sec:'산업재'},{t:'XLC',n:'커뮤니케이션',sec:'통신'},{t:'ITB',n:'주택건설',sec:'산업재'},
+];
+ETFS.forEach(e=>{Object.assign(e,genSeries(e.t,60+hash(e.t)%200));e.cm=[];});
+ETFS[0].cm=[['2026-06-30','코멘트','AI 사이클 상단 구간, 변동성 확대.']];ETFS[2].cm=[['2026-06-28','코멘트','메가캡 쏠림 지속.']];
+let curInd=0;
+function renderIndList(){document.getElementById('ind-list').innerHTML=ETFS.map((e,i)=>`<div onclick="pickInd(${i})" class="px-3 py-2 border-b border-slate-50 cursor-pointer flex justify-between items-center ${i===curInd?'bg-brand-100':'hover:bg-slate-50'}"><div><div class="text-sm font-semibold">${e.t}</div><div class="text-[11px] text-slate-400">${e.n}</div></div><div class="text-right"><div class="text-sm num">$${fmt(e.px)}</div><div class="text-[11px] num ${cls(e.chg)}">${ar(e.chg)} ${Math.abs(e.chg)}%</div></div></div>`).join('');}
+function pickInd(i){curInd=i;renderIndList();renderIndDetail();}
+function setPeriodI(p){period=p;renderIndDetail();}
+function indComment(){const t=prompt('새 코멘트 입력');if(t&&t.trim()){ETFS[curInd].cm.unshift(['2026-06-30','신규',t.trim()]);renderIndDetail();}}
+function renderIndDetail(){const e=ETFS[curInd];const cd=genCandles(e.t,period);const pbtns=PERIODS.map(function(p){return '<span onclick="setPeriodI(\''+p+'\')" class="px-2 py-0.5 rounded cursor-pointer '+(p===period?'bg-brand-50 text-brand-600 font-semibold':'hover:bg-slate-50')+'">'+p+'</span>';}).join('');
+  const members=stocks.filter(s=>s.sec===e.sec&&s.cov).slice(0,8).map(s=>`<span class="px-1.5 py-0.5 bg-slate-100 rounded text-[11px] num">${s.t}</span>`).join(' ');
+  const tl=e.cm.length?e.cm.map((c,j)=>`<li class="ml-5"><span class="absolute -left-[7px] w-3 h-3 rounded-full ${j===0?'bg-brand-500':'bg-brand-200'}"></span><div class="text-xs text-slate-400">${c[0]} · ${c[1]}</div><p class="text-sm">${c[2]}</p></li>`).join(''):`<li class="ml-5 text-sm text-slate-500">코멘트 없음. <button onclick="indComment()" class="text-brand-600 underline">첫 코멘트 작성</button>.</li>`;
+  document.getElementById('ind-detail').innerHTML=`<div class="flex items-end justify-between border-b border-slate-100 pb-4 mb-4"><div><div class="text-xs text-slate-400">${e.t} · ETF <span class="tag ml-1">${e.sec}</span></div><h2 class="text-2xl font-bold">${e.n}</h2></div><div class="text-right"><div class="text-2xl font-bold num">$${fmt(e.px)}</div><div class="${cls(e.chg)} text-sm font-semibold num">${ar(e.chg)} ${Math.abs(e.chg)}%</div></div></div><div class="flex items-center justify-between mb-1"><div class="text-sm font-semibold text-slate-500">주가 추이 <span class="text-[10px] text-slate-400 font-normal">· TradingView · ${period}</span></div><div class="flex gap-1 text-[11px] text-slate-400">${pbtns}</div></div><div class="rounded-lg border border-slate-100 p-2 mb-3">${candleChart(cd,[])}</div><div class="text-sm font-semibold text-slate-500 mb-2">매칭 커버리지 종목</div><div class="flex flex-wrap gap-1 mb-5">${members||'<span class="text-slate-300 text-xs">매칭 없음</span>'}</div><div class="flex items-center justify-between mb-3"><div class="text-sm font-semibold text-slate-500">코멘트 타임라인</div><button onclick="indComment()" class="text-xs bg-brand-500 hover:bg-brand-600 text-white px-3 py-1.5 rounded-lg">+ 코멘트 추가</button></div><ol class="relative border-l-2 border-slate-100 ml-2 space-y-5">${tl}</ol>`;}
+function renderIndustry(){renderIndList();renderIndDetail();}
+function renderHeatmap(){const data=SECS.map(k=>{const m=stocks.filter(s=>s.sec===k);const chg=m.length?+(m.reduce((a,s)=>a+s.chg,0)/m.length).toFixed(2):0;return{k,chg};});document.getElementById('sector-heatmap').innerHTML=data.map(d=>{const up=d.chg>=0,mag=Math.min(Math.abs(d.chg)/4,1),bg=up?`rgba(224,57,43,${(0.12+mag*0.55).toFixed(2)})`:`rgba(23,105,214,${(0.12+mag*0.55).toFixed(2)})`,tc=mag>0.5?'#fff':(up?'#e0392b':'#1769d6');return `<div class="rounded-lg p-2.5 text-center" style="background:${bg}"><div class="text-[11px] font-medium" style="color:${mag>0.5?'#fff':'#475569'}">${d.k}</div><div class="text-sm font-bold num" style="color:${tc}">${up?'+':''}${d.chg}%</div></div>`;}).join('');}
+/* ========== 섹터 ========== */
+let tag='전체';
+function renderTags(){const tags=['전체',...Object.keys(sectors)];document.getElementById('tag-chips').innerHTML=tags.map(t=>`<span onclick="pickTag('${t}')" class="cursor-pointer px-3 py-1.5 rounded-full text-sm ${t===tag?'bg-brand-500 text-white':'bg-slate-100 text-slate-600 hover:bg-slate-200'}">${t}</span>`).join('')+`<span class="px-3 py-1.5 rounded-full bg-white border border-dashed border-slate-300 text-slate-400 text-sm">+ 태그</span>`;}
+function pickTag(t){tag=t;renderTags();renderSectors();}
+function renderSectors(){renderHeatmap();const keys=Object.keys(sectors).filter(k=>tag==='전체'||k===tag);document.getElementById('sector-grid').innerHTML=keys.map(k=>{const c=sectors[k].chg,members=stocks.filter(s=>s.sec===k&&s.cov);const avg=members.length?members.map(s=>s.v).reduce((a,b)=>a.map((x,i)=>x+b[i]/members.length),Array(12).fill(0)):Array(12).fill(50);const chips=members.slice(0,8).map(s=>`<span class="px-1.5 py-0.5 bg-slate-100 rounded text-[11px] num">${s.t}</span>`).join(' ');return `<div class="bg-white rounded-xl border border-slate-200 p-5 shadow-sm"><div class="flex justify-between items-start mb-2"><div class="font-semibold">${k}</div><span class="${cls(c)} text-sm font-semibold num">${ar(c)} ${Math.abs(c)}%</span></div>${spark(avg,c>=0?'#e0392b':'#1769d6')}<div class="flex flex-wrap gap-1">${chips||'<span class="text-slate-300 text-[11px]">커버 종목 없음</span>'}</div></div>`;}).join('')+(tag==='전체'?`<div class="bg-white rounded-xl border border-slate-200 p-5 shadow-sm opacity-70"><div class="flex justify-between items-start mb-2"><div class="font-semibold">+ 신규 테마</div><div class="skel h-4 w-10"></div></div><div class="skel h-12 w-full mb-3"></div><div class="skel h-4 w-2/3"></div></div>`:'');}
+
+/* ========== 전환 ========== */
+function topTab(v){document.getElementById('tab-local').style.display=v==='local'?'flex':'none';document.getElementById('tab-global').style.display=v==='global'?'flex':'none';document.querySelectorAll('.tabbtn').forEach(b=>{const on=b.dataset.tab===v;b.classList.toggle('text-brand-600',on);b.classList.toggle('border-brand-500',on);b.classList.toggle('font-semibold',on);b.classList.toggle('text-slate-500',!on);b.classList.toggle('border-transparent',!on);});}
+function activate(sel){document.querySelectorAll('.navbtn').forEach(b=>b.classList.remove('view-active'));const el=document.querySelector(sel);if(el)el.classList.add('view-active');}
+function showSection(id){document.querySelectorAll('.gview').forEach(e=>e.classList.add('hidden'));const el=document.getElementById('g-'+id);el.classList.remove('hidden');el.classList.add('fade');setTimeout(()=>el.classList.remove('fade'),300);}
+function showG(v){showSection(v);activate('[data-g="'+v+'"]');}
+function openDaily(t){dailyType=t;if(t==='earn'){showSection('earn');renderEarn();}else{showSection('daily');renderDaily();}activate('[data-d="'+t+'"]');}
+/* ========== 대시보드 허브 ========== */
+const SOURCES={
+ '01 · 브라우저 자동화 (osascript / chrome_ctl)':[
+   {n:'AlphaSense',sub:'전문가 인터뷰',st:'ok',pol:'새벽 06시 하루 1회 배치(최대 40종목)',next:'15:30',pct:100,acc:428},
+   {n:'네이버 프리미엄',sub:'네프콘',st:'ok',pol:'새벽 05시 하루 1회',next:'05:00',pct:100,acc:376},
+   {n:'Substack Chat',sub:'유료 챗',st:'ok',pol:'전용 모니터 5분 간격',next:'09:48',pct:100,acc:9638,pre:1},
+   {n:'LinkedIn',sub:'16 타깃',st:'ok',pol:'하루 1회',next:'15:30',pct:76.9,acc:1231,warns:[4,8,12]},
+   {n:'Notion',sub:'공유 페이지',st:'ok',pol:'60분 변화감지 폴링',next:'10:27',pct:84.6,acc:35,warns:[4,9],pre:3},
+   {n:'WiseReport',sub:'리서치 리포트',st:'ok',pol:'평일 07-17시 30분 간격',next:'09:52',pct:61.5,acc:1203,warns:[1,4,8,11]},
+   {n:'Discord',sub:'채널',st:'ok',pol:'적응형 30~360분',next:'15:30',pct:100,acc:45308},
+   {n:'TickerTrends',sub:'KPI 스크리너',st:'fail',stl:'수집 실패 (마지막 1회 연속)',pol:'30분~4시간(변경 시 적정)',next:'11:43',pct:91.7,acc:10798,warns:[3],pre:1},
+ ],
+ '02 · API 자동화 (REST / 인증 폴링)':[
+   {n:'Reddit',sub:'Arctic Shift',st:'ok',pol:'15분 간격',next:'09:55',pct:100,acc:33224},
+   {n:'Telegram',sub:'Telethon',st:'ok',pol:'실시간',next:'실시간',pct:100,acc:19545},
+   {n:'Visible Alpha',sub:'매출 컨센',st:'ok',pol:'일 1회',next:'18:00',pct:92,acc:842,warns:[5,10]},
+   {n:'株予報Pro',sub:'JP 데이터',st:'ok',pol:'일 1회',next:'17:00',pct:88,acc:2210,warns:[2,7,12]},
+   {n:'SEC EDGAR',sub:'공시',st:'ok',pol:'실시간 푸시',next:'실시간',pct:100,acc:5120},
+   {n:'FMP',sub:'시세·지수',st:'ok',pol:'장중 1분',next:'장중',pct:100,acc:88421},
+   {n:'X (Twitter)',sub:'키워드',st:'warn',stl:'지연 (레이트리밋)',pol:'5분',next:'09:50',pct:74,acc:15233,warns:[2,5,8,11,13]},
+   {n:'Koyfin',sub:'차트/지표',st:'ok',pol:'일 1회',next:'16:00',pct:100,acc:640},
+ ],
+};
+const SST={ok:['#10b981','정상 수집'],warn:['#f59e0b','지연'],fail:['#ef4444','수집 실패']};
+function heatCells(s){const st=Array(14).fill('g');(s.warns||[]).forEach(w=>{if(w<14)st[w]='y';});for(let i=0;i<(s.pre||0);i++)st[i]='x';if(s.st==='fail')st[13]='y';const col={g:'#10b981',y:'#f59e0b',x:'#e5e7eb'};return st.map(x=>`<div class="flex-1 rounded-sm" style="height:26px;background:${col[x]}"></div>`).join('')+`<div class="flex-1 rounded-sm border border-dashed border-emerald-300" style="height:26px;background:#d1fae5"></div>`;}
+function srcCard(s){const c=SST[s.st];return `<div class="bg-white rounded-xl border border-slate-200 p-4"><div class="flex items-start justify-between mb-1.5"><div><span class="font-bold text-[15px]">${s.n}</span> <span class="text-[11px] text-slate-400">${s.sub}</span></div><div class="text-[11px] font-medium flex items-center gap-1.5 shrink-0" style="color:${c[0]}"><span class="w-1.5 h-1.5 rounded-full ${s.st!=='fail'?'live':''}" style="background:${c[0]}"></span>${s.stl||c[1]}</div></div><div class="text-[11px] text-slate-400 mb-2"><span class="bg-slate-100 rounded px-1.5 py-0.5">정책 ${s.pol}</span> 다음 예정 ${s.next}</div><div class="flex gap-0.5 mb-1.5">${heatCells(s)}</div><div class="flex justify-between text-[10px] text-slate-400"><span>14일 전</span><span class="text-slate-500 num">${s.pct}% 정상수집 · 누적 ${s.acc.toLocaleString()}건</span><span>오늘</span></div></div>`;}
+const DASHBOARDS=[
+ {title:'바이오 임상 이벤트 트래킹',cat:'헬스케어',desc:'임상 데이터 발표 자동 감지 → 이벤트 트래킹 → 후속 모멘텀·이벤트 탐지.',url:'example.pages.dev',by:'리서치팀',date:'2026.06.29'},
+ {title:'주간 판매량 트래커',cat:'리테일',desc:'관심 기업 주간 판매량·재고 추이 인터랙티브 대시보드.',url:'example.pages.dev',by:'리서치팀',date:'2026.06.08'},
+ {title:'반도체 월매출 대시보드',cat:'반도체/공급망',desc:'반도체/공급망 기업 월매출(YoY/MoM) 인터랙티브 대시보드. 기업 선택·기간 필터·알림.',url:'example.github.io',by:'리서치팀',date:'2026.06.07'},
+];
+let hubCat='전체',hubQ='';
+function renderHub(){
+  document.getElementById('g-hub').innerHTML=`<div class="max-w-[1140px]"><div class="flex items-start justify-between mb-4"><div><h2 class="text-lg font-bold">🧩 대시보드 허브</h2><p class="text-sm text-slate-400">팀이 만든 대시보드를 한 곳에서 찾고 바로 들어가기 · <span id="hub-n"></span>개</p></div><button class="text-sm bg-brand-500 hover:bg-brand-600 text-white px-3 py-2 rounded-lg shrink-0">＋ 대시보드 등록</button></div><div class="relative mb-3"><input id="hub-search" oninput="hubSearch(this.value)" placeholder="제목·설명·카테고리·제작자 검색" class="w-full text-sm pl-9 pr-3 py-2.5 rounded-xl bg-white border border-slate-200 focus:ring-2 focus:ring-brand-100 outline-none"/><span class="absolute left-3 top-3 text-slate-400">🔍</span></div><div id="hub-chips" class="flex items-center gap-1.5 mb-5 flex-wrap"></div><div id="hub-cards" class="grid grid-cols-3 gap-4"></div></div>`;
+  renderHubCards();
+}
+function renderHubCards(){
+  const cats={};DASHBOARDS.forEach(d=>cats[d.cat]=(cats[d.cat]||0)+1);
+  document.getElementById('hub-chips').innerHTML=`<span class="text-xs text-slate-400 mr-1">🏷 카테고리</span>`+['전체',...Object.keys(cats)].map(c=>`<span onclick="hubFilter('${c}')" class="cursor-pointer px-2.5 py-1 rounded-full text-xs ${c===hubCat?'bg-brand-500 text-white':'bg-slate-100 text-slate-600 hover:bg-slate-200'}">${c}${c!=='전체'?' '+cats[c]:''}</span>`).join('');
+  document.getElementById('hub-n').textContent=DASHBOARDS.length;
+  const items=DASHBOARDS.filter(d=>(hubCat==='전체'||d.cat===hubCat)&&(!hubQ||(d.title+d.desc+d.cat+d.by).toLowerCase().includes(hubQ)));
+  const cc=c=>c==='미분류'?'bg-slate-100 text-slate-500':'bg-brand-50 text-brand-700 border border-brand-100';
+  document.getElementById('hub-cards').innerHTML=items.map(d=>`<div class="bg-white rounded-xl border border-slate-200 p-4 hover:border-brand-300 hover:shadow-sm transition relative"><button class="absolute top-3 right-3 text-slate-300 hover:text-up text-sm">🗑</button><div class="font-bold text-[15px] leading-snug mb-2 pr-6">${d.title}</div><div class="mb-2"><span class="inline-block text-[11px] px-2 py-0.5 rounded ${cc(d.cat)}">${d.cat}</span></div><p class="text-[12px] text-slate-500 leading-relaxed mb-3">${d.desc}</p><a href="https://${d.url}" target="_blank" class="text-[12px] text-brand-600 hover:underline break-all">↗ ${d.url}</a><div class="flex items-center gap-3 mt-3 pt-3 border-t border-slate-50 text-[11px] text-slate-400"><span>👤 ${d.by}</span><span>📅 ${d.date}</span></div></div>`).join('')||'<div class="col-span-3 text-center text-sm text-slate-400 py-10">검색 결과 없음</div>';
+}
+function hubFilter(c){hubCat=c;renderHubCards();}
+function hubSearch(q){hubQ=q.trim().toLowerCase();renderHubCards();}
+function renderCollect(){
+  const all=Object.values(SOURCES).flat();const counts={ok:0,warn:0,fail:0};all.forEach(s=>counts[s.st]++);
+  const groups=Object.entries(SOURCES).map(([g,arr])=>{const m=g.match(/\((.*)\)/);const title=g.replace(/\s*\(.*\)/,'');return `<div class="mb-5"><div class="flex items-center justify-between mb-2 pb-1 border-b border-slate-200"><span class="text-xs font-semibold text-slate-500">${title}</span><span class="text-[10px] text-slate-400">${m?m[1]:''}</span></div><div class="grid grid-cols-2 gap-3">${arr.map(srcCard).join('')}</div></div>`;}).join('');
+  document.getElementById('g-collect').innerHTML=`<div class="max-w-[1140px]"><div class="bg-[#fbfcfd] rounded-xl border border-slate-200 p-5"><div class="flex items-center justify-between mb-3"><h2 class="text-lg font-bold">데이터 수집 상태</h2><div class="text-[11px] text-slate-400 text-right leading-tight"><div class="text-emerald-600 font-medium">● LIVE · 60초 폴링</div>최근 14일 · 16 sources</div></div><div class="flex items-center gap-4 text-xs mb-4 pb-3 border-b border-slate-100"><span class="text-emerald-600 font-semibold">${counts.ok} 정상</span><span class="text-amber-500 font-semibold">${counts.warn} 지연</span><span class="text-up font-semibold">${counts.fail} 실패</span><div class="ml-auto flex items-center gap-3 text-[10px] text-slate-400"><span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-sm" style="background:#10b981"></span>수집됨</span><span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-sm" style="background:#f59e0b"></span>지연</span><span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-sm" style="background:#ef4444"></span>실패</span><span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-sm" style="background:#e5e7eb"></span>추적이전</span></div></div>${groups}</div></div>`;
+}
+/* init */
+renderLocal();renderStatus();setCov('all');renderDetail();renderIndustry();renderTags();renderSectors();renderHub();renderCollect();openDaily('market');topTab('global');
+</script>
+</body>
+</html>
