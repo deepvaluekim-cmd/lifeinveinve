@@ -167,9 +167,11 @@ h1,h2,h3{letter-spacing:-0.02em}
           <p class="text-sm text-slate-400 mb-4">커버리지 종목에 부여한 <b>테마 태그</b>로 필터 → 묶음 주가추이 조회.</p>
           <div class="text-sm font-semibold text-slate-500 mb-2">섹터 히트맵</div>
           <div id="sector-heatmap" class="grid grid-cols-6 gap-2 mb-6"></div>
-          <div class="text-sm font-semibold text-slate-500 mb-2">테마별 추이</div>
-          <div id="tag-chips" class="flex flex-wrap gap-2 mb-6"></div>
-          <div id="sector-grid" class="grid grid-cols-3 gap-4"></div>
+          <div class="flex items-center justify-between mb-2">
+            <div class="text-sm font-semibold text-slate-500">테마 바스켓 <span id="theme-meta" class="text-[10px] text-slate-400 font-normal"></span></div>
+            <div class="flex gap-2 text-[10px] text-slate-400"><span>1D</span><span>5D</span><span class="text-brand-600 font-semibold">1M</span><span>6M</span><span>YTD</span><span>1Y</span><span>5Y</span><span>MAX</span></div>
+          </div>
+          <div id="theme-grid" class="grid grid-cols-3 gap-3"></div>
         </div>
       </section>
       <section id="g-hub" class="gview p-6 hidden"></section>
@@ -473,7 +475,28 @@ function renderHeatmap(){const data=SECS.map(k=>{const m=stocks.filter(s=>s.sec=
 let tag='전체';
 function renderTags(){const tags=['전체',...Object.keys(sectors)];document.getElementById('tag-chips').innerHTML=tags.map(t=>`<span onclick="pickTag('${t}')" class="cursor-pointer px-3 py-1.5 rounded-full text-sm ${t===tag?'bg-brand-500 text-white':'bg-slate-100 text-slate-600 hover:bg-slate-200'}">${t}</span>`).join('')+`<span class="px-3 py-1.5 rounded-full bg-white border border-dashed border-slate-300 text-slate-400 text-sm">+ 태그</span>`;}
 function pickTag(t){tag=t;renderTags();renderSectors();}
-function renderSectors(){renderHeatmap();const keys=Object.keys(sectors).filter(k=>tag==='전체'||k===tag);document.getElementById('sector-grid').innerHTML=keys.map(k=>{const c=sectors[k].chg,members=stocks.filter(s=>s.sec===k&&s.cov);const avg=members.length?members.map(s=>s.v).reduce((a,b)=>a.map((x,i)=>x+b[i]/members.length),Array(12).fill(0)):Array(12).fill(50);const chips=members.slice(0,8).map(s=>`<span class="px-1.5 py-0.5 bg-slate-100 rounded text-[11px] num">${s.t}</span>`).join(' ');return `<div class="bg-white rounded-xl border border-slate-200 p-5 shadow-sm"><div class="flex justify-between items-start mb-2"><div class="font-semibold">${k}</div><span class="${cls(c)} text-sm font-semibold num">${ar(c)} ${Math.abs(c)}%</span></div>${spark(avg,c>=0?'#e0392b':'#1769d6')}<div class="flex flex-wrap gap-1">${chips||'<span class="text-slate-300 text-[11px]">커버 종목 없음</span>'}</div></div>`;}).join('')+(tag==='전체'?`<div class="bg-white rounded-xl border border-slate-200 p-5 shadow-sm opacity-70"><div class="flex justify-between items-start mb-2"><div class="font-semibold">+ 신규 테마</div><div class="skel h-4 w-10"></div></div><div class="skel h-12 w-full mb-3"></div><div class="skel h-4 w-2/3"></div></div>`:'');}
+const THEMES=[
+ ['TH.01','AI 가속기',['NVDA','AVGO','AMD','MRVL'],'T-12d'],
+ ['TH.02','리소그래피·장비',['ASML','AMAT','LRCX','KLAC'],'T-20d'],
+ ['TH.03','HBM·메모리',['MU','NVDA','AVGO'],'T-8d'],
+ ['TH.04','클라우드·하이퍼스케일러',['MSFT','AMZN','GOOGL','ORCL'],'T-15d'],
+ ['TH.05','소프트웨어·SaaS',['CRM','NOW','ADBE','PANW','SNOW'],''],
+ ['TH.06','전력·데이터센터',['GE','HON','RTX'],'T-30d'],
+ ['TH.07','커스텀 ASIC·네트워킹',['AVGO','MRVL','QCOM'],''],
+ ['TH.08','전기차·자율주행',['TSLA','GM','F','RIVN','LCID'],'T-3d'],
+ ['TH.09','빅테크 플랫폼',['META','GOOGL','AMZN','AAPL','MSFT'],''],
+ ['TH.10','헬스케어·비만치료',['LLY','UNH','JNJ','ABBV'],'T-16d'],
+ ['TH.11','금융·결제',['JPM','V','MA','GS','AXP'],'T-14d'],
+ ['TH.12','소비재·리테일',['COST','WMT','HD','NKE'],''],
+];
+function ewBasket(tk){const ms=tk.map(t=>stocks.find(s=>s.t===t)).filter(Boolean);if(!ms.length)return null;const n=ms[0].v.length,avg=Array(n).fill(0);ms.forEach(s=>{for(let i=0;i<n;i++)avg[i]+=s.v[i]/ms.length;});const base=avg[0]||1,idx=avg.map(x=>100*x/base),ret=(idx[n-1]/idx[0]-1)*100,mn=Math.min(...idx),mx=Math.max(...idx);return {ret,count:ms.length,bn:idx.map(x=>mx>mn?(x-mn)/(mx-mn)*100:50)};}
+function renderSectors(){
+  renderHeatmap();
+  const PER=['1D','5D','1M','6M','YTD','1Y','5Y','MAX'];let names=0;
+  const cards=THEMES.map(([code,name,tk,cat])=>{const b=ewBasket(tk);if(!b)return '';names+=b.count;const pb=PER.map((p,i)=>`<span class="${i===2?'text-brand-600 font-semibold':''}">${p}</span>`).join(' ');return `<div class="bg-white rounded-xl border border-slate-200 p-4 hover:border-brand-300 transition"><div class="flex items-start justify-between"><div><div class="text-[10px] text-slate-400 num">${code}</div><div class="font-semibold text-sm leading-tight">${name}</div></div><span class="${cls(b.ret)} text-sm font-semibold num">${b.ret>=0?'+':''}${b.ret.toFixed(1)}%</span></div><div class="text-[11px] text-slate-400 mt-1 mb-1">${b.count} names · EW basket = 100${cat?` · <span class="text-brand-600">${cat}</span>`:''}</div><div class="flex gap-1.5 text-[10px] text-slate-400 mb-1">${pb}</div>${spark(b.bn,b.ret>=0?'#e0392b':'#1769d6')}</div>`;}).join('');
+  document.getElementById('theme-grid').innerHTML=cards;
+  document.getElementById('theme-meta').textContent=`· ${names} names · ${THEMES.length} themes`;
+}
 
 /* ========== 전환 ========== */
 function topTab(v){document.getElementById('tab-local').style.display=v==='local'?'flex':'none';document.getElementById('tab-global').style.display=v==='global'?'flex':'none';document.querySelectorAll('.tabbtn').forEach(b=>{const on=b.dataset.tab===v;b.classList.toggle('text-brand-600',on);b.classList.toggle('border-brand-500',on);b.classList.toggle('font-semibold',on);b.classList.toggle('text-slate-500',!on);b.classList.toggle('border-transparent',!on);});}
@@ -537,7 +560,7 @@ function renderCollect(){
   document.getElementById('g-collect').innerHTML=`<div class="max-w-[1140px]"><div class="bg-[#fbfcfd] rounded-xl border border-slate-200 p-5"><div class="flex items-center justify-between mb-3"><h2 class="text-lg font-bold">데이터 수집 상태</h2><div class="text-[11px] text-slate-400 text-right leading-tight"><div class="text-emerald-600 font-medium">● LIVE · 60초 폴링</div>최근 14일 · 16 sources</div></div><div class="flex items-center gap-4 text-xs mb-4 pb-3 border-b border-slate-100"><span class="text-emerald-600 font-semibold">${counts.ok} 정상</span><span class="text-amber-500 font-semibold">${counts.warn} 지연</span><span class="text-up font-semibold">${counts.fail} 실패</span><div class="ml-auto flex items-center gap-3 text-[10px] text-slate-400"><span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-sm" style="background:#10b981"></span>수집됨</span><span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-sm" style="background:#f59e0b"></span>지연</span><span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-sm" style="background:#ef4444"></span>실패</span><span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-sm" style="background:#e5e7eb"></span>추적이전</span></div></div>${groups}</div></div>`;
 }
 /* init */
-renderLocal();renderStatus();setCov('all');renderDetail();renderIndustry();renderTags();renderSectors();renderHub();renderCollect();openDaily('market');topTab('global');
+renderLocal();renderStatus();setCov('all');renderDetail();renderIndustry();renderSectors();renderHub();renderCollect();openDaily('market');topTab('global');
 </script>
 <div id="compose" class="fixed inset-0 bg-black/30 z-50 hidden items-center justify-center p-4" onclick="if(event.target===this)closeCompose()">
   <div class="bg-white rounded-xl w-full max-w-lg p-5 shadow-xl">
