@@ -113,7 +113,7 @@ h1,h2,h3{letter-spacing:-0.02em}
         <div onclick="showG('collect')" class="font-semibold text-slate-600 mb-2 text-[13px] flex items-center gap-1.5 cursor-pointer hover:text-brand-600">데이터 수집 상태 <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 live"></span><span class="ml-auto text-[10px] text-brand-600 font-normal">전체 보기 →</span></div>
         <div id="status-panel" onclick="showG('collect')" class="rounded-lg border border-slate-200 p-2.5 space-y-2 bg-slate-50/50 cursor-pointer hover:border-brand-200"></div>
       </div>
-      <div class="mb-5"><div class="font-semibold text-slate-600 mb-2 text-[13px]">Market</div><div class="flex flex-wrap gap-1.5"><span class="chip" style="background:#eefbf5;border-color:#d4f3e6;color:#1f6450">NASDAQ</span><span class="chip">NYSE</span></div></div>
+      <div class="mb-5"><div class="font-semibold text-slate-600 mb-2 text-[13px]">Market</div><div class="flex flex-wrap gap-1.5"><span class="chip" style="background:#eefbf5;border-color:#d4f3e6;color:#1f6450">NASDAQ</span><span class="chip">NYSE</span><span class="chip">TSE · 일본</span><span class="chip">TWSE · 대만</span></div></div>
       <div class="mb-5"><div class="font-semibold text-slate-600 mb-2 text-[13px]">GICS Sector</div><div id="g-gics" class="flex flex-wrap gap-1.5"></div></div>
       <div class="mb-2"><div class="font-semibold text-slate-600 mb-2 text-[13px]">Recent Tags</div><div class="flex flex-wrap gap-1.5"><span class="tag">#AI반도체</span><span class="tag">#클라우드</span><span class="tag">#실적</span></div></div>
       <div class="mt-5 pt-4 border-t border-slate-100 text-[11px] text-slate-400">데이터: FMP·AlphaSense(크롤링)<br/>저장: Supabase · dev 배포</div>
@@ -295,22 +295,22 @@ const reports={
    movers:{up:[['AI 반도체','+3.2'],['전력·유틸','+1.6'],['커뮤니케이션','+0.9']],down:[['소프트웨어','-0.5'],['필수소비재','-0.3']]},
    wl:[['NVDA','+2.9','AI 가속기 수요 지속 + 차주 GTC 신제품 로드맵 기대. DC 채널 체크 긍정적 — 비중 유지.'],['AVGO','+3.1','커스텀 ASIC 수주 파이프라인 확대, AI 수혜 2순위 픽으로 부각.'],['AAPL','+0.4','온디바이스 AI 기대 + 서비스 매출 호조. 아이폰17 발주 소폭 상향 코멘트.'],['MSFT','+0.8','Azure AI 매출 가속, Copilot 좌석 확대 지속.'],['TSLA','-1.4','2분기 인도량 둔화 우려에 차익 실현. 로보택시 일정 주시.']],
    issues:['중국 상무부, 미국 기업 대상 수출 통제 리스트 확대 (희토류·드론 관련)','차주 NVIDIA GTC — 신제품 로드맵·가이던스 주목','목요일 6월 PCE 물가지수 발표 예정 (Fed 경로 변수)','반도체 장비주 수주 코멘트 긍정적, 메모리 가격 반등 조짐'],
-   exp:[{s:'AAPL',src:'공급망 전문가',sum:'아이폰17 부품 발주 소폭 상향. 폴디드 광학 공급사 다변화 진행.'},{s:'NVDA',src:'데이터센터 채널',sum:'하이퍼스케일러 발주 견조, 공급 병목 완화 신호.'},{s:'AVGO',src:'네트워킹 전문가',sum:'커스텀 ASIC 수주 파이프라인 확대.'}],
-   sub:[{a:'SemiAnalysis',title:'HBM 공급 타이트',sum:'HBM4 전환 가속, 후공정 캐파가 병목.',tags:['#반도체','#HBM']},{a:'Stratechery',title:'클라우드 AI 경쟁 구도',sum:'하이퍼스케일러 캡엑스 상향 사이클.',tags:['#클라우드']}]},
+   exp:[{s:'AAPL',src:'공급망 전문가',sum:'아이폰17 부품 발주 소폭 상향, 폴디드 광학 공급사 다변화.',detail:['9월 양산 목표로 부품 발주 전년比 +5% 상향 정황','폴디드 텔레포토 모듈 공급사 2→3곳 다변화 (단가 협상력↑)','인도 생산 비중 확대 지속, 관세 리스크 헤지','리스크: 프로 모델 믹스 둔화 시 ASP 압박 가능']},{s:'NVDA',src:'데이터센터 채널',sum:'하이퍼스케일러 발주 견조, 공급 병목 완화 신호.',detail:['상위 4개 CSP 3분기 발주 전분기比 두 자릿수 증가','HBM·CoWoS 병목 점진 완화, 리드타임 단축','차세대 랙스케일 수요 가시화 — GTC 로드맵 주목','커스텀 ASIC 침투는 추론 중심, 학습은 방어적']},{s:'AVGO',src:'네트워킹 전문가',sum:'커스텀 ASIC 수주 파이프라인 확대.',detail:['신규 CSP 커스텀 칩 디자인윈 추가 정황','이더넷 스위칭(Tomahawk) AI 백엔드 채택 확대','VMware 통합 시너지 가이던스 상회 기대']},{s:'MSFT',src:'엔터프라이즈 IT',sum:'Copilot 좌석 확대 + Azure AI 가동률 상승.',detail:['대형 고객 Copilot 전사 롤아웃 사례 증가','Azure AI 인스턴스 가동률 타이트, 캐파 증설 지속','온프레→클라우드 마이그레이션 파이프라인 견조']}],
+   sub:[{a:'SemiAnalysis',title:'HBM 공급 타이트 — HBM4 전환 가속',sum:'HBM4 전환 가속, 후공정 캐파가 병목.',tags:['#반도체','#HBM'],detail:['HBM4 샘플 출하 빨라지며 26년 하반기 양산 본격화 전망','후공정(어드밴스드 패키징) 캐파가 전체 공급 제약 요인','메모리 3사 캡엑스 상향에도 리드타임 길어 단기 타이트 지속']},{a:'Stratechery',title:'클라우드 AI 경쟁 구도',sum:'하이퍼스케일러 캡엑스 상향 사이클.',tags:['#클라우드'],detail:['빅3 캡엑스 가이던스 동반 상향, AI 인프라 군비경쟁','수익화 시점 논쟁 vs 점유율 우선 전략','수직통합(자체 칩) 가속 — 엔비디아 의존도 완화 시도']},{a:'The Diff',title:'AI 캡엑스 ROI 점검',sum:'투자 회수 논쟁이 본격화.',tags:['#ai','#매크로'],detail:['감가상각 사이클 vs 매출 기여 시차 논쟁','전력·부동산 등 물리 제약이 새 병목으로 부상']}]},
  '06-27':{day:'금',summary:'주말을 앞두고 3대 지수 동반 강세. 반도체·네트워킹 강세가 이어졌고, 전력/데이터센터 테마가 재부각. 변동성(VIX)은 추가 하락하며 위험선호 지속. 다만 거래량은 다소 한산.',
    idx:[['Nasdaq','19,872','+0.45',1],['S&P 500','6,123','+0.30',1],['Dow','43,955','+0.21',1],['VIX','14.7','-1.0',0]],
    movers:{up:[['반도체','+1.9'],['에너지','+1.2']],down:[['전기차','-0.8']]},
    wl:[['AVGO','+3.1','커스텀 ASIC 수주 모멘텀 지속.'],['NVDA','+1.2','DC 채널 견조, 공급 병목 완화.'],['TSLA','-1.4','인도량 둔화 우려에 약세.']],
    issues:['데이터센터 전력 PPA 체결 뉴스 다수','다음 주 빅테크 실적 시즌 진입 (7/17~)'],
-   exp:[{s:'NVDA',src:'DC 채널',sum:'하이퍼스케일러 발주 견조.'},{s:'MSFT',src:'엔터프라이즈',sum:'Copilot 좌석 확대 지속.'}],
-   sub:[{a:'Doomberg',title:'에너지·전력 수요',sum:'데이터센터 전력 병목 심화.',tags:['#에너지','#데이터센터']}]},
+   exp:[{s:'NVDA',src:'DC 채널',sum:'하이퍼스케일러 발주 견조.',detail:['주문 백로그 견조, 취소율 낮음','병목 완화로 인식 시점 앞당겨질 여지']},{s:'MSFT',src:'엔터프라이즈',sum:'Copilot 좌석 확대 지속.',detail:['좌석당 ARPU 방어, 업셀 진행','보안·컴플라이언스 번들 채택 확대']}],
+   sub:[{a:'Doomberg',title:'에너지·전력 수요',sum:'데이터센터 전력 병목 심화.',tags:['#에너지','#데이터센터'],detail:['전력 PPA 체결 경쟁 심화, 단가 상승','원전·가스 재평가 흐름','전력망 증설 리드타임이 AI 확장의 실질 제약']}]},
  '06-26':{day:'목',summary:'지수는 보합권 혼조. 전일 강세에 따른 숨고르기 흐름. 소프트웨어 일부 차익 실현, 방어 섹터로 순환매. VIX 소폭 반등.',
    idx:[['Nasdaq','19,783','-0.20',0],['S&P 500','6,105','-0.10',0],['Dow','43,860','+0.05',1],['VIX','14.9','+0.8',1]],
    movers:{up:[['헬스케어','+0.7']],down:[['소프트웨어','-1.1'],['반도체','-0.4']]},
    wl:[['MSFT','+0.8','Azure AI 가속 지속.'],['LLY','+1.2','비만 치료제 수요 견조.']],
    issues:['주 후반 PCE 대기 관망세','반도체 단기 과열 부담 일부 해소'],
-   exp:[{s:'AAPL',src:'공급망 인터뷰',sum:'생산 차질 제한적.'}],
-   sub:[{a:'The Diff',title:'AI 캡엑스 ROI',sum:'투자 회수 논쟁 본격화.',tags:['#ai']}]},
+   exp:[{s:'AAPL',src:'공급망 인터뷰',sum:'생산 차질 제한적.',detail:['일부 라인 조정 있으나 분기 영향 미미','신모델 양산 준비 정상 진행']}],
+   sub:[{a:'The Diff',title:'AI 캡엑스 ROI',sum:'투자 회수 논쟁 본격화.',tags:['#ai'],detail:['단기 비용 vs 장기 매출 기여 논쟁','일부 추론 워크로드 비용 급감 추세']}]},
 };
 let curDate='06-30';
 function renderDateList(){document.getElementById('date-list').innerHTML=Object.keys(reports).map(d=>{const r=reports[d],on=d===curDate;return `<div onclick="pickDate('${d}')" class="px-3 py-2.5 rounded-lg cursor-pointer ${on?'bg-brand-50 border border-brand-100':'hover:bg-slate-50'}"><div class="text-sm ${on?'font-semibold text-brand-600':'font-medium'}">${d} (${r.day})</div><div class="text-[11px] ${on?'text-slate-500':'text-slate-400'}">미국 시황${on?' · 자동 생성 06:40':''}</div></div>`;}).join('');}
@@ -329,9 +329,17 @@ function renderDaily(){renderDateList();const r=reports[curDate];const meta={mar
     <h3 class="text-sm font-semibold text-slate-500 mb-2">③ 관심종목 코멘트 <span class="text-[10px] text-slate-400">· 자동 생성</span></h3><div class="text-sm leading-relaxed mb-6">${wl}</div>
     <h3 class="text-sm font-semibold text-slate-500 mb-2">④ 주요 이슈 · 일정</h3><ul class="list-disc pl-5 space-y-1 text-sm text-slate-600">${issues}</ul>`;
   }
-  else if(dailyType==='expert'){inner=r.exp.map(e=>`<div class="rounded-lg border border-slate-100 p-4 mb-3"><div class="flex items-center justify-between mb-1"><div class="text-sm font-semibold">${e.s} <span class="tag ml-1">${e.src}</span></div><span class="tag" style="background:#f3eefb;color:#6b46c1;border-color:#e6dcfa">AlphaSense</span></div><p class="text-sm text-slate-600">${e.sum}</p></div>`).join('')+`<div class="rounded-lg bg-slate-50 border border-slate-100 p-4 opacity-70"><div class="text-xs text-slate-400 mb-2">추가 종목 요약 생성중…</div><div class="skel h-3 w-full mb-2"></div><div class="skel h-3 w-2/3"></div></div>`;}
-  else{inner=r.sub.map(s=>`<div class="rounded-lg border border-slate-100 p-4 mb-3"><div class="flex items-center justify-between mb-1"><div class="text-sm font-semibold">${s.title}</div><span class="text-[11px] text-slate-400">${s.a}</span></div><p class="text-sm text-slate-600 mb-2">${s.sum}</p><div class="flex gap-1">${s.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div></div>`).join('');}
+  else if(dailyType==='expert'){
+    const cards=r.exp.map((e,i)=>`<div class="rounded-lg border ${e.open?'border-brand-200 bg-brand-50/40':'border-slate-100'} p-4 mb-3"><div onclick="dToggle(${i})" class="flex items-center justify-between cursor-pointer"><div class="text-sm font-semibold">${e.s} <span class="tag ml-1">${e.src}</span></div><div class="flex items-center gap-2"><span class="tag" style="background:#f3eefb;color:#6b46c1;border-color:#e6dcfa">AlphaSense</span><span class="text-slate-400 text-xs">${e.open?'▲':'▼'}</span></div></div><p class="text-sm text-slate-600 mt-1">${e.sum}</p>${e.open&&e.detail?`<ul class="list-disc pl-5 space-y-1.5 text-sm text-slate-600 mt-3 pt-3 border-t border-slate-100">${e.detail.map(d=>`<li>${d}</li>`).join('')}</ul>`:''}</div>`).join('');
+    inner=`<div class="flex justify-end mb-3"><button onclick="dAdd()" class="text-xs bg-brand-500 hover:bg-brand-600 text-white px-3 py-1.5 rounded-lg">✎ 콜 추가</button></div>${cards}<div class="rounded-lg bg-slate-50 border border-slate-100 p-4 opacity-70"><div class="text-xs text-slate-400 mb-2">추가 종목 요약 생성중…</div><div class="skel h-3 w-full mb-2"></div><div class="skel h-3 w-2/3"></div></div>`;
+  }
+  else{
+    const cards=r.sub.map((s,i)=>`<div class="rounded-lg border ${s.open?'border-brand-200 bg-brand-50/40':'border-slate-100'} p-4 mb-3"><div onclick="dToggle(${i})" class="flex items-center justify-between cursor-pointer"><div class="text-sm font-semibold">${s.title}</div><div class="flex items-center gap-2"><span class="text-[11px] text-slate-400">${s.a}</span><span class="text-slate-400 text-xs">${s.open?'▲':'▼'}</span></div></div><p class="text-sm text-slate-600 mt-1 mb-2">${s.sum}</p><div class="flex gap-1">${s.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>${s.open&&s.detail?`<ul class="list-disc pl-5 space-y-1.5 text-sm text-slate-600 mt-3 pt-3 border-t border-slate-100">${s.detail.map(d=>`<li>${d}</li>`).join('')}</ul>`:''}</div>`).join('');
+    inner=`<div class="flex justify-end mb-3"><button onclick="dAdd()" class="text-xs bg-brand-500 hover:bg-brand-600 text-white px-3 py-1.5 rounded-lg">✎ 글 추가</button></div>${cards}`;
+  }
   document.getElementById('daily-card').innerHTML=`<div class="flex items-center justify-between border-b border-slate-100 pb-4 mb-5"><div><div class="text-xs text-slate-400">${meta[1]} · 자동 생성</div><h2 class="text-xl font-bold mt-0.5">2026-${curDate} ${meta[0]}</h2></div><span class="text-[11px] text-slate-400">HTML · Supabase 누적</span></div>${inner}`;}
+function dToggle(i){const a=dailyType==='expert'?reports[curDate].exp:reports[curDate].sub;a[i].open=!a[i].open;renderDaily();}
+function dAdd(){if(dailyType==='expert'){const s=prompt('종목 · 소스 (예: NVDA · 데이터센터 채널)');if(!s||!s.trim())return;const sum=prompt('요약 한 줄');if(!sum||!sum.trim())return;const p=s.split('·');reports[curDate].exp.unshift({s:(p[0]||s).trim(),src:(p[1]||'직접 작성').trim(),sum:sum.trim(),detail:['직접 작성한 콜 노트.'],open:true});}else{const t=prompt('글 제목');if(!t||!t.trim())return;const sum=prompt('요약');if(!sum||!sum.trim())return;reports[curDate].sub.unshift({a:'나',title:t.trim(),sum:sum.trim(),tags:['#직접작성'],detail:['직접 작성한 노트.'],open:true});}renderDaily();}
 const earnings=[
  {t:'AVGO',n:'Broadcom',d:'07-09',when:'장후',eps:'1.70',st:'발표',surp:'+3.4%'},
  {t:'COST',n:'Costco',d:'07-10',when:'장후',eps:'5.80',st:'발표',surp:'+2.1%'},
@@ -451,7 +459,7 @@ const DASHBOARDS=[
 ];
 let hubCat='전체',hubQ='';
 function renderHub(){
-  document.getElementById('g-hub').innerHTML=`<div class="max-w-[1140px]"><div class="flex items-start justify-between mb-4"><div><h2 class="text-lg font-bold">🧩 대시보드 허브</h2><p class="text-sm text-slate-400">팀이 만든 대시보드를 한 곳에서 찾고 바로 들어가기 · <span id="hub-n"></span>개</p></div><button class="text-sm bg-brand-500 hover:bg-brand-600 text-white px-3 py-2 rounded-lg shrink-0">＋ 대시보드 등록</button></div><div class="relative mb-3"><input id="hub-search" oninput="hubSearch(this.value)" placeholder="제목·설명·카테고리·제작자 검색" class="w-full text-sm pl-9 pr-3 py-2.5 rounded-xl bg-white border border-slate-200 focus:ring-2 focus:ring-brand-100 outline-none"/><span class="absolute left-3 top-3 text-slate-400">🔍</span></div><div id="hub-chips" class="flex items-center gap-1.5 mb-5 flex-wrap"></div><div id="hub-cards" class="grid grid-cols-3 gap-4"></div></div>`;
+  document.getElementById('g-hub').innerHTML=`<div class="max-w-[1140px]"><div class="flex items-start justify-between mb-4"><div><h2 class="text-lg font-bold">🧩 대시보드 허브</h2><p class="text-sm text-slate-400">팀이 만든 대시보드를 한 곳에서 찾고 바로 들어가기 · <span id="hub-n"></span>개</p></div><button onclick="hubAdd()" class="text-sm bg-brand-500 hover:bg-brand-600 text-white px-3 py-2 rounded-lg shrink-0">＋ 대시보드 등록</button></div><div class="relative mb-3"><input id="hub-search" oninput="hubSearch(this.value)" placeholder="제목·설명·카테고리·제작자 검색" class="w-full text-sm pl-9 pr-3 py-2.5 rounded-xl bg-white border border-slate-200 focus:ring-2 focus:ring-brand-100 outline-none"/><span class="absolute left-3 top-3 text-slate-400">🔍</span></div><div id="hub-chips" class="flex items-center gap-1.5 mb-5 flex-wrap"></div><div id="hub-cards" class="grid grid-cols-3 gap-4"></div></div>`;
   renderHubCards();
 }
 function renderHubCards(){
@@ -464,6 +472,7 @@ function renderHubCards(){
 }
 function hubFilter(c){hubCat=c;renderHubCards();}
 function hubSearch(q){hubQ=q.trim().toLowerCase();renderHubCards();}
+function hubAdd(){const title=prompt('대시보드 제목');if(!title||!title.trim())return;const cat=(prompt('카테고리 (예: 반도체/공급망, 미분류)')||'미분류').trim();const desc=(prompt('설명')||'').trim();const url=(prompt('URL (예: example.pages.dev)')||'example.pages.dev').replace(/^https?:\/\//,'').trim();DASHBOARDS.unshift({title:title.trim(),cat:cat||'미분류',desc,url,by:'나',date:'2026.06.30'});hubCat='전체';renderHubCards();}
 function renderCollect(){
   const all=Object.values(SOURCES).flat();const counts={ok:0,warn:0,fail:0};all.forEach(s=>counts[s.st]++);
   const groups=Object.entries(SOURCES).map(([g,arr])=>{const m=g.match(/\((.*)\)/);const title=g.replace(/\s*\(.*\)/,'');return `<div class="mb-5"><div class="flex items-center justify-between mb-2 pb-1 border-b border-slate-200"><span class="text-xs font-semibold text-slate-500">${title}</span><span class="text-[10px] text-slate-400">${m?m[1]:''}</span></div><div class="grid grid-cols-2 gap-3">${arr.map(srcCard).join('')}</div></div>`;}).join('');
