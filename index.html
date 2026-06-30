@@ -153,10 +153,12 @@ h1,h2,h3{letter-spacing:-0.02em}
         </div>
       </section>
       <section id="g-industry" class="gview p-6 hidden">
-        <div class="max-w-[1180px]">
-          <div class="flex items-center gap-2 mb-1"><h2 class="text-lg font-bold">산업 · 자산 ETF</h2><span class="text-[11px] text-slate-400">매력도 스코어 (1~10, 높을수록 매력적) · 행 클릭 시 상세</span></div>
-          <div class="bg-white rounded-xl border border-slate-200 overflow-x-auto mb-4"><div id="etf-table"></div></div>
-          <div id="ind-detail" class="bg-white rounded-xl border border-slate-200 p-6 shadow-sm"></div>
+        <div class="flex gap-6 max-w-[1140px]">
+          <div class="w-64 shrink-0 bg-white rounded-xl border border-slate-200 overflow-hidden self-start">
+            <div class="px-4 py-2.5 border-b border-slate-100 text-xs flex justify-between"><span class="font-semibold text-slate-500">ETF 유니버스</span><span id="etf-count" class="text-slate-400 num"></span></div>
+            <div id="ind-list" class="overflow-y-auto" style="max-height:72vh"></div>
+          </div>
+          <div id="ind-detail" class="flex-1 bg-white rounded-xl border border-slate-200 p-6 shadow-sm"></div>
         </div>
       </section>
       <section id="g-sector" class="gview p-6 hidden">
@@ -440,40 +442,18 @@ function renderDetail(){const s=stocks[curStk];
 }
 
 /* ========== 산업 (ETF) ========== */
-/* ETF 매력도 스코어 — sc:[종합현재,1M전,3M전, 성과,펀더멘털,밸류,기술,심리,리스크,비용] (1~10, null=N/A) */
 const ETFS=[
- {t:'XLK',n:'IT',g:'섹터',hold:['NVDA','MSFT','AAPL','AVGO','ORCL'],sc:[8,9,6,8,10,1,10,4,6,10]},
- {t:'XLE',n:'에너지',g:'섹터',hold:['XOM','CVX','COP','WMB','EOG'],sc:[8,10,9,8,2,10,6,5,6,10]},
- {t:'XLF',n:'금융',g:'섹터',hold:['JPM','V','MA','BAC','GS'],sc:[6,6,6,2,1,8,5,3,8,10]},
- {t:'XLI',n:'산업재',g:'섹터',hold:['GE','CAT','RTX','HON','UBER'],sc:[6,6,8,7,7,2,5,3,7,10]},
- {t:'XLB',n:'소재',g:'섹터',hold:['LIN','SHW','FCX','NEM'],sc:[6,6,7,1,2,7,4,5,8,10]},
- {t:'XLU',n:'유틸리티',g:'섹터',hold:['NEE'],sc:[5,6,6,3,1,7,4,3,6,10]},
- {t:'XLC',n:'커뮤니케이션',g:'섹터',hold:['META','GOOGL','NFLX','DIS','TMUS'],sc:[5,5,6,4,2,4,4,2,9,10]},
- {t:'XLP',n:'필수소비재',g:'섹터',hold:['COST','WMT','PG','KO','PEP'],sc:[5,6,6,2,3,6,5,1,8,10]},
- {t:'XLY',n:'경기소비재',g:'섹터',hold:['AMZN','TSLA','HD','MCD','LOW'],sc:[5,5,6,2,1,4,4,3,8,10]},
- {t:'VNQ',n:'부동산',g:'섹터',hold:[],sc:[4,3,4,1,1,3,6,4,8,10]},
- {t:'XLV',n:'헬스케어',g:'섹터',hold:['LLY','UNH','JNJ','ABBV','MRK'],sc:[3,3,4,2,1,3,4,2,8,10]},
- {t:'DBA',n:'농산물',g:'원자재',hold:[],sc:[7,9,5,4,null,null,5,8,10,6]},
- {t:'CORN',n:'옥수수',g:'원자재',hold:[],sc:[6,5,2,2,null,null,4,9,10,4]},
- {t:'SOYB',n:'대두',g:'원자재',hold:[],sc:[6,6,4,3,null,null,5,6,8,9]},
- {t:'CPER',n:'구리',g:'원자재',hold:[],sc:[6,6,5,3,null,null,6,2,8,9]},
- {t:'SLV',n:'은',g:'원자재',hold:[],sc:[6,6,6,3,null,null,6,2,8,9]},
- {t:'GLD',n:'금',g:'원자재',hold:[],sc:[6,7,9,7,null,null,2,2,8,9]},
- {t:'USO',n:'원유',g:'원자재',hold:[],sc:[6,6,6,7,null,null,8,2,6,6]},
- {t:'SLX',n:'철강',g:'원자재',hold:[],sc:[5,5,6,5,1,8,8,2,4,7]},
- {t:'BITO',n:'비트코인',g:'원자재',hold:[],sc:[5,5,5,4,null,null,4,1,6,4]},
- {t:'UNG',n:'가스',g:'원자재',hold:[],sc:[2,1,2,1,null,null,3,4,4,4]},
+ {t:'XLK',n:'IT 섹터',g:'미국 섹터'},{t:'XLE',n:'에너지',g:'미국 섹터'},{t:'XLF',n:'금융',g:'미국 섹터'},{t:'XLI',n:'산업재',g:'미국 섹터'},{t:'XLB',n:'소재',g:'미국 섹터'},{t:'XLU',n:'유틸리티',g:'미국 섹터'},{t:'XLC',n:'커뮤니케이션',g:'미국 섹터'},{t:'XLP',n:'필수소비재',g:'미국 섹터'},{t:'XLY',n:'경기소비재',g:'미국 섹터'},{t:'XLV',n:'헬스케어',g:'미국 섹터'},{t:'XLRE',n:'부동산',g:'미국 섹터'},
+ {t:'SPY',n:'S&P 500',g:'광범위 지수'},{t:'QQQ',n:'나스닥100',g:'광범위 지수'},{t:'DIA',n:'다우30',g:'광범위 지수'},{t:'IWM',n:'러셀2000',g:'광범위 지수'},{t:'VTI',n:'미국 전체',g:'광범위 지수'},
+ {t:'SMH',n:'반도체(VanEck)',g:'테크·테마'},{t:'SOXX',n:'반도체(iShares)',g:'테크·테마'},{t:'IGV',n:'소프트웨어',g:'테크·테마'},{t:'ARKK',n:'혁신성장',g:'테크·테마'},{t:'BOTZ',n:'로봇·AI',g:'테크·테마'},{t:'IBB',n:'바이오텍',g:'테크·테마'},{t:'XBI',n:'바이오(동일가중)',g:'테크·테마'},{t:'KRE',n:'지역은행',g:'테크·테마'},{t:'ITB',n:'주택건설',g:'테크·테마'},{t:'JETS',n:'항공',g:'테크·테마'},{t:'LIT',n:'리튬·배터리',g:'테크·테마'},{t:'TAN',n:'태양광',g:'테크·테마'},{t:'ICLN',n:'클린에너지',g:'테크·테마'},
+ {t:'DBA',n:'농산물',g:'원자재·자산'},{t:'CORN',n:'옥수수',g:'원자재·자산'},{t:'SOYB',n:'대두',g:'원자재·자산'},{t:'CPER',n:'구리',g:'원자재·자산'},{t:'SLV',n:'은',g:'원자재·자산'},{t:'GLD',n:'금',g:'원자재·자산'},{t:'USO',n:'원유',g:'원자재·자산'},{t:'UNG',n:'천연가스',g:'원자재·자산'},{t:'SLX',n:'철강',g:'원자재·자산'},{t:'DBC',n:'원자재 종합',g:'원자재·자산'},{t:'BITO',n:'비트코인',g:'원자재·자산'},
+ {t:'TLT',n:'미국 장기국채',g:'채권'},{t:'IEF',n:'미국 중기국채',g:'채권'},{t:'AGG',n:'종합채권',g:'채권'},{t:'LQD',n:'투자등급 회사채',g:'채권'},{t:'HYG',n:'하이일드',g:'채권'},{t:'TIP',n:'물가연동채',g:'채권'},
+ {t:'EWJ',n:'일본',g:'국가·지역'},{t:'EWT',n:'대만',g:'국가·지역'},{t:'EWY',n:'한국',g:'국가·지역'},{t:'MCHI',n:'중국',g:'국가·지역'},{t:'INDA',n:'인도',g:'국가·지역'},{t:'EWG',n:'독일',g:'국가·지역'},{t:'EWU',n:'영국',g:'국가·지역'},{t:'EEM',n:'신흥국',g:'국가·지역'},{t:'EFA',n:'선진국(미국外)',g:'국가·지역'},
 ];
-ETFS.forEach(e=>{Object.assign(e,genSeries(e.t,40+hash(e.t)%260));e.sec=e.g;e.cm=[];});
+ETFS.forEach(e=>{Object.assign(e,genSeries(e.t,40+hash(e.t)%260));e.sec=e.g;e.cm=[];e.hold=e.hold||[];});
 let curInd=0;
-function sCell(v){if(v==null)return '<td class="px-1 py-1 text-center text-[10px] text-slate-300">N/A</td>';const a=(0.06+v/10*0.5).toFixed(2);return `<td class="px-1 py-1 text-center text-[12px] num" style="background:rgba(34,125,99,${a});color:${v>=7?'#fff':'#163a30'}">${v}</td>`;}
-function renderEtfTable(){
-  let rows='',lastG='';
-  ETFS.forEach((e,i)=>{if(e.g!==lastG){lastG=e.g;rows+=`<tr><td colspan="12" class="px-3 py-1 bg-slate-100 text-[11px] font-semibold text-slate-500">${e.g}</td></tr>`;}
-    const c=e.sc;rows+=`<tr onclick="pickInd(${i})" class="cursor-pointer border-t border-slate-50 ${i===curInd?'bg-brand-50':'hover:bg-brand-50/50'}"><td class="px-3 py-1.5 whitespace-nowrap"><span class="text-sm font-semibold">${e.n}</span> <span class="text-[11px] text-slate-400 num">(${e.t})</span></td>${c.map(sCell).join('')}<td class="px-2 py-1" style="width:120px">${spark(e.v,e.chg>=0?'#e0392b':'#1769d6')}</td></tr>`;});
-  document.getElementById('etf-table').innerHTML=`<table class="w-full text-sm border-collapse"><thead><tr class="text-[10px] text-slate-500 bg-slate-50"><th class="px-3 py-2 text-left">구분(티커)</th><th>현재</th><th>1M전</th><th>3M전</th><th>성과</th><th>펀더</th><th>밸류</th><th>기술</th><th>심리</th><th>리스크</th><th>비용</th><th class="px-2">주가(12M)</th></tr></thead><tbody>${rows}</tbody></table>`;
-}
-function pickInd(i){curInd=i;renderEtfTable();renderIndDetail();}
+function renderIndList(){let lastG='',out='';ETFS.forEach((e,i)=>{if(e.g!==lastG){lastG=e.g;out+=`<div class="px-3 py-1 bg-slate-50 text-[10px] font-semibold text-slate-500">${e.g}</div>`;}out+=`<div onclick="pickInd(${i})" class="px-3 py-2 border-b border-slate-50 cursor-pointer flex justify-between items-center ${i===curInd?'bg-brand-100':'hover:bg-slate-50'}"><div><div class="text-sm font-semibold">${e.t}</div><div class="text-[11px] text-slate-400">${e.n}</div></div><div class="text-right"><div class="text-sm num">$${fmt(e.px)}</div><div class="text-[11px] num ${cls(e.chg)}">${ar(e.chg)} ${Math.abs(e.chg)}%</div></div></div>`;});document.getElementById('ind-list').innerHTML=out;const ec=document.getElementById('etf-count');if(ec)ec.textContent=ETFS.length;}
+function pickInd(i){curInd=i;renderIndList();renderIndDetail();}
 function setPeriodI(p){period=p;renderIndDetail();}
 function indComment(){const t=prompt('새 코멘트 입력');if(t&&t.trim()){ETFS[curInd].cm.unshift(['2026-06-30','신규',t.trim()]);renderIndDetail();}}
 function renderIndDetail(){const e=ETFS[curInd];const cd=genCandles(e.t,period);const pbtns=PERIODS.map(function(p){return '<span onclick="setPeriodI(\''+p+'\')" class="px-2 py-0.5 rounded cursor-pointer '+(p===period?'bg-brand-50 text-brand-600 font-semibold':'hover:bg-slate-50')+'">'+p+'</span>';}).join('');
@@ -482,7 +462,7 @@ function renderIndDetail(){const e=ETFS[curInd];const cd=genCandles(e.t,period);
   const covInU=hold.filter(t=>stocks.some(s=>s.t===t&&s.cov)).length;
   const tl=e.cm.length?e.cm.map((c,j)=>`<li class="ml-5"><span class="absolute -left-[7px] w-3 h-3 rounded-full ${j===0?'bg-brand-500':'bg-brand-200'}"></span><div class="text-xs text-slate-400">${c[0]} · ${c[1]}</div><p class="text-sm">${c[2]}</p></li>`).join(''):`<li class="ml-5 text-sm text-slate-500">코멘트 없음. <button onclick="indComment()" class="text-brand-600 underline">첫 코멘트 작성</button>.</li>`;
   document.getElementById('ind-detail').innerHTML=`<div class="flex items-end justify-between border-b border-slate-100 pb-4 mb-4"><div><div class="text-xs text-slate-400">${e.t} · ETF <span class="tag ml-1">${e.sec}</span></div><h2 class="text-2xl font-bold">${e.n}</h2></div><div class="text-right"><div class="text-2xl font-bold num">$${fmt(e.px)}</div><div class="${cls(e.chg)} text-sm font-semibold num">${ar(e.chg)} ${Math.abs(e.chg)}%</div></div></div><div class="flex items-center justify-between mb-1"><div class="text-sm font-semibold text-slate-500">주가 추이 <span class="text-[10px] text-slate-400 font-normal">· TradingView · ${period}</span></div><div class="flex gap-1 text-[11px] text-slate-400">${pbtns}</div></div><div class="rounded-lg border border-slate-100 p-2 mb-3">${candleChart(cd,[])}</div><div class="flex items-center justify-between mb-2"><div class="text-sm font-semibold text-slate-500">주요 구성종목 <span class="text-[10px] text-slate-400 font-normal">· 비중 상위</span></div><span class="text-[11px] text-slate-400">커버리지 ${covInU}/${hold.length}</span></div><div class="flex flex-wrap gap-1.5 mb-5">${holds||'<span class="text-slate-300 text-xs">데이터 없음</span>'}</div><div class="flex items-center justify-between mb-3"><div class="text-sm font-semibold text-slate-500">코멘트 타임라인</div><button onclick="indComment()" class="text-xs bg-brand-500 hover:bg-brand-600 text-white px-3 py-1.5 rounded-lg">+ 코멘트 추가</button></div><ol class="relative border-l-2 border-slate-100 ml-2 space-y-5">${tl}</ol>`;}
-function renderIndustry(){renderEtfTable();renderIndDetail();}
+function renderIndustry(){renderIndList();renderIndDetail();}
 function renderHeatmap(){const data=SECS.map(k=>{const m=stocks.filter(s=>s.sec===k);const chg=m.length?+(m.reduce((a,s)=>a+s.chg,0)/m.length).toFixed(2):0;return{k,chg};});document.getElementById('sector-heatmap').innerHTML=data.map(d=>{const up=d.chg>=0,mag=Math.min(Math.abs(d.chg)/4,1),bg=up?`rgba(224,57,43,${(0.12+mag*0.55).toFixed(2)})`:`rgba(23,105,214,${(0.12+mag*0.55).toFixed(2)})`,tc=mag>0.5?'#fff':(up?'#e0392b':'#1769d6');return `<div class="rounded-lg p-2.5 text-center" style="background:${bg}"><div class="text-[11px] font-medium" style="color:${mag>0.5?'#fff':'#475569'}">${d.k}</div><div class="text-sm font-bold num" style="color:${tc}">${up?'+':''}${d.chg}%</div></div>`;}).join('');}
 /* ========== 섹터 ========== */
 let tag='전체';
