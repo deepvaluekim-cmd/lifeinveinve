@@ -200,14 +200,20 @@ const recent=[
   {a:'김철수',t:'4일 전',x:'샘플 코멘트.',tags:['#ai']},
 ];
 const pill=t=>`<span class="tag">${t}</span>`,chip=t=>`<span class="chip">${t}</span>`;
+let feedFilter='';
+function feedTag(t){feedFilter=feedFilter===t?'':t;renderLocal();}
+function likePost(i){if(!feed[i])return;feed[i].like=feed[i].liked?feed[i].like-1:feed[i].like+1;feed[i].liked=!feed[i].liked;renderLocal();}
 function renderLocal(){
-  document.getElementById('f-tags').innerHTML=recentTags.map(pill).join(' ');
+  const ptag=t=>`<span onclick="feedTag('${t}')" class="tag cursor-pointer ${t===feedFilter?'ring-1 ring-brand-400':''}">${t}</span>`;
+  document.getElementById('f-tags').innerHTML=recentTags.map(ptag).join(' ');
   document.getElementById('f-market').innerHTML=markets.map(chip).join(' ');
   document.getElementById('f-country').innerHTML=countries.map(chip).join(' ');
   document.getElementById('f-gics').innerHTML=gics.map(chip).join(' ');
   document.getElementById('g-gics').innerHTML=['Information Technology','Communication Services','Consumer Discretionary'].map(chip).join(' ');
-  document.getElementById('feed').innerHTML=feed.map(p=>`<article class="bg-white rounded-xl border border-slate-200 p-5 shadow-sm"><div class="text-xs text-slate-400 mb-1">${p.a} · ${p.t}</div><h3 class="text-[17px] font-bold mb-2">${p.title}</h3><div class="flex flex-wrap gap-1.5 mb-3">${p.tags.map(pill).join(' ')}</div><div class="flex items-center gap-4 text-xs text-slate-400 border-b border-slate-100 pb-3 mb-3"><span class="cursor-pointer hover:text-slate-600">⤢ 더보기</span><span>${p.like?'❤️':'🤍'} ${p.like}</span><span>💬 ${p.cm}</span>${p.at?`<span>📎 ${p.at}</span>`:''}<span class="ml-auto">↗</span><span>🔖</span></div><div class="text-sm leading-relaxed">${p.body}</div></article>`).join('');
-  document.getElementById('recent').innerHTML=recent.map(c=>`<div class="border-b border-slate-50 pb-3"><div class="flex justify-between text-[11px] text-slate-400 mb-1"><span class="font-medium text-slate-600">${c.a}</span><span>${c.t}</span></div><p class="text-[13px] text-slate-600 mb-2 leading-snug">${c.x}</p><div class="flex flex-wrap gap-1">${c.tags.map(pill).join(' ')}</div></div>`).join('');
+  const _items=feed.map((p,i)=>({p,i})).filter(({p})=>!feedFilter||(p.tags||[]).includes(feedFilter));
+  const _fl=feedFilter?`<div class="flex items-center gap-2 mb-3 text-xs"><span class="text-slate-400">필터</span>${ptag(feedFilter)}<span onclick="feedTag('${feedFilter}')" class="cursor-pointer text-slate-400 hover:text-up">✕ 해제</span></div>`:'';
+  document.getElementById('feed').innerHTML=_fl+(_items.map(({p,i})=>`<article class="bg-white rounded-xl border border-slate-200 p-5 shadow-sm"><div class="text-xs text-slate-400 mb-1">${p.a} · ${p.t}</div><h3 class="text-[17px] font-bold mb-2">${p.title}</h3><div class="flex flex-wrap gap-1.5 mb-3">${p.tags.map(ptag).join(' ')}</div><div class="flex items-center gap-4 text-xs text-slate-400 border-b border-slate-100 pb-3 mb-3"><span class="cursor-pointer hover:text-slate-600">⤢ 더보기</span><span onclick="likePost(${i})" class="cursor-pointer ${p.liked?'text-up':'hover:text-up'}">${p.liked?'❤️':'🤍'} ${p.like}</span><span>💬 ${p.cm}</span>${p.at?`<span>📎 ${p.at}</span>`:''}<span class="ml-auto cursor-pointer">↗</span><span class="cursor-pointer">🔖</span></div><div class="text-sm leading-relaxed">${p.body}</div></article>`).join('')||'<div class="text-center text-sm text-slate-400 py-10">해당 태그 글 없음</div>');
+  document.getElementById('recent').innerHTML=recent.map(c=>`<div class="border-b border-slate-50 pb-3"><div class="flex justify-between text-[11px] text-slate-400 mb-1"><span class="font-medium text-slate-600">${c.a}</span><span>${c.t}</span></div><p class="text-[13px] text-slate-600 mb-2 leading-snug">${c.x}</p><div class="flex flex-wrap gap-1">${c.tags.map(ptag).join(' ')}</div></div>`).join('');
 }
 
 /* ========== 차트/시뮬레이션 헬퍼 ========== */
