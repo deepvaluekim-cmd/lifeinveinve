@@ -61,7 +61,7 @@ h1,h2,h3{letter-spacing:-0.02em}
       <input placeholder="종목 또는 태그 검색..." oninput="filterStocks(this.value)" class="w-72 text-sm pl-9 pr-3 py-1.5 rounded-lg bg-slate-100 focus:bg-white focus:ring-2 focus:ring-brand-100 outline-none border border-transparent focus:border-brand-200"/>
       <span class="absolute left-3 top-2 text-slate-400">🔍</span>
     </div>
-    <button class="text-sm bg-brand-500 hover:bg-brand-600 text-white px-3 py-1.5 rounded-lg">✎ 작성</button>
+    <button onclick="openCompose()" class="text-sm bg-brand-500 hover:bg-brand-600 text-white px-3 py-1.5 rounded-lg">✎ 작성</button>
     <div class="flex items-center gap-2"><div class="w-7 h-7 rounded-full bg-brand-100 text-brand-600 grid place-items-center text-xs font-semibold">D</div><div class="leading-tight"><div class="text-[13px] font-medium">데모 사용자</div><div class="text-[10px] text-slate-400">리서치팀</div></div></div>
   </div>
 
@@ -394,6 +394,13 @@ function renderStockList(){
 function filterStocks(q){filter=q.trim().toLowerCase();renderStockList();}
 function pickStock(i){curStk=i;renderStockList();renderDetail();}
 function gotoStock(t){const i=stocks.findIndex(s=>s.t===t);if(i<0)return;curStk=i;covMode='all';filter='';renderStockList();renderDetail();showG('stock');}
+function openCompose(){const sel=document.getElementById('c-stock');sel.innerHTML='<option value="">종목 연결 안 함</option>'+stocks.slice(0,80).map(s=>`<option value="${s.t}">${s.t} · ${s.n}</option>`).join('');document.getElementById('c-title').value='';document.getElementById('c-body').value='';document.getElementById('c-tags').value='';const m=document.getElementById('compose');m.classList.remove('hidden');m.classList.add('flex');}
+function closeCompose(){const m=document.getElementById('compose');m.classList.add('hidden');m.classList.remove('flex');}
+function submitCompose(){const ti=document.getElementById('c-title').value.trim(),bo=document.getElementById('c-body').value.trim();if(!ti&&!bo){alert('제목 또는 내용을 입력하세요');return;}const cat=document.getElementById('c-cat').value,stk=document.getElementById('c-stock').value;const tIn=document.getElementById('c-tags').value.split(',').map(x=>x.trim()).filter(Boolean).map(x=>x.startsWith('#')?x:'#'+x);const tags=stk?['#'+stk,...tIn]:(tIn.length?tIn:['#메모']);const safe=bo.replace(/</g,'&lt;');
+  feed.unshift({a:'나',t:'방금',title:ti||(stk+' 코멘트'),tags,like:0,cm:0,at:0,body:`<p class="text-slate-600">${safe||''}</p>`});
+  recent.unshift({a:'나',t:'방금',x:(bo||ti).slice(0,60),tags:tags.slice(0,3)});
+  if(stk){const i=stocks.findIndex(s=>s.t===stk);if(i>=0){const s=stocks[i];s.cm.unshift(['2026-06-30',cat==='일반'?'코멘트':cat,bo||ti,'나']);if(!s.cov){s.cov=true;s.marks=[{i:27,l:'첫 콜',c:'#e0392b'}];}}}
+  renderLocal();renderStockList();closeCompose();topTab('local');}
 function addComment(){const t=prompt('새 코멘트 입력 (오늘 날짜로 추가됩니다)');if(!t||!t.trim())return;const s=stocks[curStk];const txt=t.trim();s.cm.unshift(['2026-06-30','신규',txt,'나']);if(!s.cov){s.cov=true;s.marks=[{i:27,l:'첫 콜',c:'#e0392b'}];}
   feed.unshift({a:'나',t:'방금',title:s.t+' · '+s.n+' 코멘트',tags:['#'+s.t,'#'+s.sec.replace(/\s/g,'')],like:0,cm:0,at:0,body:`<p class="text-slate-600">${txt}</p>`});
   recent.unshift({a:'나',t:'방금',x:txt,tags:['#'+s.t]});
@@ -510,5 +517,15 @@ function renderCollect(){
 /* init */
 renderLocal();renderStatus();setCov('all');renderDetail();renderIndustry();renderTags();renderSectors();renderHub();renderCollect();openDaily('market');topTab('global');
 </script>
+<div id="compose" class="fixed inset-0 bg-black/30 z-50 hidden items-center justify-center p-4" onclick="if(event.target===this)closeCompose()">
+  <div class="bg-white rounded-xl w-full max-w-lg p-5 shadow-xl">
+    <div class="flex items-center justify-between mb-3"><h3 class="font-bold">새 글 작성</h3><button onclick="closeCompose()" class="text-slate-400 hover:text-slate-600">✕</button></div>
+    <input id="c-title" placeholder="제목" class="w-full mb-2 px-3 py-2 rounded-lg border border-slate-200 text-sm outline-none focus:ring-2 focus:ring-brand-100"/>
+    <textarea id="c-body" placeholder="내용을 입력하세요…" rows="5" class="w-full mb-2 px-3 py-2 rounded-lg border border-slate-200 text-sm outline-none focus:ring-2 focus:ring-brand-100"></textarea>
+    <div class="flex gap-2 mb-2"><select id="c-stock" class="flex-1 px-2 py-2 rounded-lg border border-slate-200 text-sm bg-white"><option value="">종목 연결 안 함</option></select><select id="c-cat" class="px-2 py-2 rounded-lg border border-slate-200 text-sm bg-white"><option>일반</option><option>첫 콜</option><option>비중확대</option><option>비중축소</option><option>실적</option></select></div>
+    <input id="c-tags" placeholder="태그 (쉼표 구분, 예: 반도체, AI)" class="w-full mb-3 px-3 py-2 rounded-lg border border-slate-200 text-sm outline-none focus:ring-2 focus:ring-brand-100"/>
+    <div class="flex justify-end gap-2"><button onclick="closeCompose()" class="px-3 py-2 text-sm rounded-lg border border-slate-200">취소</button><button onclick="submitCompose()" class="px-3 py-2 text-sm rounded-lg bg-brand-500 hover:bg-brand-600 text-white">게시</button></div>
+  </div>
+</div>
 </body>
 </html>
