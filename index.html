@@ -388,7 +388,10 @@ function renderStockList(){
 function filterStocks(q){filter=q.trim().toLowerCase();renderStockList();}
 function pickStock(i){curStk=i;renderStockList();renderDetail();}
 function gotoStock(t){const i=stocks.findIndex(s=>s.t===t);if(i<0)return;curStk=i;covMode='all';filter='';renderStockList();renderDetail();showG('stock');}
-function addComment(){const t=prompt('새 코멘트 입력 (오늘 날짜로 추가됩니다)');if(t&&t.trim()){const s=stocks[curStk];s.cm.unshift(['2026-06-30','신규',t.trim()]);if(!s.cov){s.cov=true;s.marks=[{i:27,l:'첫 콜',c:'#e0392b'}];}renderStockList();renderDetail();}}
+function addComment(){const t=prompt('새 코멘트 입력 (오늘 날짜로 추가됩니다)');if(!t||!t.trim())return;const s=stocks[curStk];const txt=t.trim();s.cm.unshift(['2026-06-30','신규',txt,'나']);if(!s.cov){s.cov=true;s.marks=[{i:27,l:'첫 콜',c:'#e0392b'}];}
+  feed.unshift({a:'나',t:'방금',title:s.t+' · '+s.n+' 코멘트',tags:['#'+s.t,'#'+s.sec.replace(/\s/g,'')],like:0,cm:0,at:0,body:`<p class="text-slate-600">${txt}</p>`});
+  recent.unshift({a:'나',t:'방금',x:txt,tags:['#'+s.t]});
+  renderLocal();renderStockList();renderDetail();}
 function renderDetail(){const s=stocks[curStk];
   const cd=genCandles(s.t,period);
   const hi52=Math.max(...s.candles.map(c=>c.h)),lo52=Math.min(...s.candles.map(c=>c.l));const r2=mulberry32(hash(s.t+'m'));const mcap=(s.px*(2+r2()*18)).toFixed(0),per=(12+r2()*30).toFixed(1),vol=(5+r2()*60).toFixed(1),ed=(earnings.find(e=>e.t===s.t)||{}).d||'-';
