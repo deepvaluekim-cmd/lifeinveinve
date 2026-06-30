@@ -302,8 +302,8 @@ function renderStatus(){
 
 /* ========== 데일리 ========== */
 const reports={
- '06-30':{day:'월',summary:'나스닥이 +1.2%로 사상 최고가 부근 마감. <b>AI 반도체</b>가 지수를 견인했고 차주 NVIDIA GTC를 앞둔 기대가 매수세를 자극. 반면 일부 소프트웨어·필수소비재는 차익 실현 출회. 금리는 보합, 달러 약세로 위험선호 심리 유지. 거래대금은 평균을 소폭 상회.',
-   idx:[['Nasdaq','20,118','+1.24',1],['S&P 500','6,173','+0.81',1],['Dow','43,902','-0.12',0],['VIX','14.2','-3.1',0]],
+ '06-30':{day:'월',summary:'나스닥이 +2.1%로 사상 최고가 부근 마감. <b>AI 반도체</b>가 지수를 견인했고 차주 NVIDIA GTC를 앞둔 기대가 매수세를 자극. 반면 일부 소프트웨어·필수소비재는 차익 실현 출회. 금리는 보합, 달러 약세로 위험선호 심리 유지. 거래대금은 평균을 소폭 상회.',
+   idx:[['Nasdaq','25,820','+2.07',1],['S&P 500','7,440','+1.18',1],['Dow','52,183','+0.59',1],['VIX','17.65','-4.13',0]],
    movers:{up:[['AI 반도체','+3.2'],['전력·유틸','+1.6'],['커뮤니케이션','+0.9']],down:[['소프트웨어','-0.5'],['필수소비재','-0.3']]},
    wl:[['NVDA','+2.9','AI 가속기 수요 지속 + 차주 GTC 신제품 로드맵 기대. DC 채널 체크 긍정적 — 비중 유지.'],['AVGO','+3.1','커스텀 ASIC 수주 파이프라인 확대, AI 수혜 2순위 픽으로 부각.'],['AAPL','+0.4','온디바이스 AI 기대 + 서비스 매출 호조. 아이폰17 발주 소폭 상향 코멘트.'],['MSFT','+0.8','Azure AI 매출 가속, Copilot 좌석 확대 지속.'],['TSLA','-1.4','2분기 인도량 둔화 우려에 차익 실현. 로보택시 일정 주시.']],
    issues:['중국 상무부, 미국 기업 대상 수출 통제 리스트 확대 (희토류·드론 관련)','차주 NVIDIA GTC — 신제품 로드맵·가이던스 주목','목요일 6월 PCE 물가지수 발표 예정 (Fed 경로 변수)','반도체 장비주 수주 코멘트 긍정적, 메모리 가격 반등 조짐'],
@@ -336,7 +336,7 @@ function renderDaily(){renderDateList();const r=reports[curDate];const meta={mar
     const wl=r.wl.map(x=>`<div class="flex gap-3 py-2 border-b border-slate-50 last:border-0"><div class="w-16 shrink-0"><b onclick="gotoStock('${x[0]}')" class="cursor-pointer text-brand-700 hover:underline">${x[0]}</b><div class="${cls(+x[1])} num text-xs">${ar(+x[1])} ${Math.abs(x[1])}%</div></div><p class="text-slate-600 flex-1">${x[2]}</p></div>`).join('');
     const issues=r.issues.map(i=>`<li>${i}</li>`).join('');
     inner=`<div class="rounded-lg bg-slate-50 border border-slate-100 p-4 mb-6 text-sm leading-relaxed text-slate-700">${r.summary}</div>
-    <h3 class="text-sm font-semibold text-slate-500 mb-2">① 주요 지수</h3><div class="grid grid-cols-4 gap-3 mb-6">${idx}</div>
+    <h3 class="text-sm font-semibold text-slate-500 mb-2">① 주요 지수 <span class="text-[10px] text-emerald-600 font-normal">· FMP 실시간 ${FMP_AS_OF}</span></h3><div class="grid grid-cols-4 gap-3 mb-6">${idx}</div>
     <h3 class="text-sm font-semibold text-slate-500 mb-2">② 섹터 동향</h3><div class="mb-6">${movers}</div>
     <h3 class="text-sm font-semibold text-slate-500 mb-2">③ 관심종목 코멘트 <span class="text-[10px] text-slate-400">· 자동 생성</span></h3><div class="text-sm leading-relaxed mb-6">${wl}</div>
     <h3 class="text-sm font-semibold text-slate-500 mb-2">④ 주요 이슈 · 일정</h3><ul class="list-disc pl-5 space-y-1 text-sm text-slate-600">${issues}</ul>`;
