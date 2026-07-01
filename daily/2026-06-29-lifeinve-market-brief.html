@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>라이프 인베 — 데일리 시황 · 2026-06-29</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--green:#3F5C21;--green-mid:#608C34;--green-light:#8FB85D;--ink:#070203;
+--bg:#FFFFFF;--line:#E7E6E6;--muted:#6b7280;--up:#e0392b;--down:#1769d6;}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{-webkit-text-size-adjust:100%;}
+body{background:var(--bg);color:var(--ink);
+font-family:"Noto Sans KR","Open Sans",-apple-system,"Segoe UI","Malgun Gothic",sans-serif;
+line-height:1.7;font-size:15px;}
+.wrap{max-width:1020px;margin:0 auto;padding:0 18px 64px;}
+b,strong{font-weight:700;}
+.num{font-family:"Open Sans","Noto Sans KR",sans-serif;font-variant-numeric:tabular-nums;}
+.up{color:var(--up);font-weight:700;}
+.down{color:var(--down);font-weight:700;}
+
+/* Header */
+.hdr{background:var(--green);color:#fff;padding:26px 18px 30px;margin-bottom:0;}
+.hdr-in{max-width:1020px;margin:0 auto;}
+.logo{display:flex;align-items:center;gap:10px;margin-bottom:16px;}
+.logo .mark{width:34px;height:34px;border-radius:9px;background:#fff;color:var(--green);
+font-weight:900;font-size:18px;display:flex;align-items:center;justify-content:center;
+font-family:"Open Sans",sans-serif;letter-spacing:-.5px;}
+.logo .word{font-weight:700;font-size:16px;letter-spacing:.3px;}
+.kicker{font-family:"Open Sans",sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;
+color:var(--green-light);text-transform:uppercase;margin-bottom:8px;}
+.hdr h1{font-size:29px;font-weight:900;line-height:1.25;letter-spacing:-.5px;}
+.tagline{font-size:14px;color:#e7efdd;margin-top:9px;font-weight:400;}
+.meta{margin-top:14px;font-size:12.5px;color:#cfe0bd;display:flex;flex-wrap:wrap;gap:8px 18px;
+font-family:"Open Sans",sans-serif;}
+.meta span::before{content:"●";color:var(--green-light);font-size:8px;vertical-align:middle;margin-right:6px;}
+
+/* Demo banner */
+.demo{background:#fff4e5;border:1px solid #f3c98b;border-left:4px solid #e08a1e;
+color:#7a4a06;font-size:13px;padding:11px 16px;border-radius:9px;margin:20px 0 8px;
+display:flex;gap:10px;align-items:flex-start;}
+.demo .tag{background:#e08a1e;color:#fff;font-weight:700;font-size:11px;padding:2px 8px;
+border-radius:5px;letter-spacing:.5px;flex-shrink:0;margin-top:1px;}
+
+/* Sections */
+h2{color:var(--green);font-size:22px;font-weight:900;margin:38px 0 4px;
+padding-bottom:9px;border-bottom:2px solid var(--green);letter-spacing:-.3px;
+display:flex;align-items:center;gap:9px;}
+h3{color:var(--ink);font-size:16.5px;font-weight:700;margin:26px 0 12px;
+padding-left:11px;border-left:4px solid var(--green-mid);}
+h3 .en{color:var(--muted);font-weight:600;font-size:13px;font-family:"Open Sans",sans-serif;}
+p.lead{color:#333;margin:12px 0;font-size:14.5px;}
+
+/* Index cards */
+.cards{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:16px 0;}
+.card{border:1px solid var(--line);border-radius:12px;padding:13px 12px;background:#fff;
+transition:.15s;text-align:left;}
+.card:hover{border-color:var(--green-light);transform:translateY(-2px);
+box-shadow:0 4px 14px rgba(63,92,33,.08);}
+.card .nm{font-size:12.5px;color:var(--muted);font-weight:700;margin-bottom:5px;
+font-family:"Open Sans",sans-serif;letter-spacing:.3px;}
+.card .val{font-size:19px;font-weight:700;font-family:"Open Sans",sans-serif;
+font-variant-numeric:tabular-nums;letter-spacing:-.5px;}
+.card .chg{font-size:13.5px;font-weight:700;margin-top:2px;font-family:"Open Sans",sans-serif;}
+
+/* Chart box */
+.chartbox{border:1px solid var(--line);border-radius:12px;padding:16px 14px 10px;margin:16px 0;
+background:#fff;overflow-x:auto;}
+.chartbox svg{display:block;max-width:100%;height:auto;}
+.cap{font-size:11.5px;color:var(--muted);margin-top:8px;font-family:"Open Sans",sans-serif;
+line-height:1.5;}
+.cap b{color:#555;}
+
+/* Tables */
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13.5px;
+font-family:"Open Sans","Noto Sans KR",sans-serif;}
+th,td{padding:9px 11px;text-align:left;border-bottom:1px solid var(--line);
+font-variant-numeric:tabular-nums;}
+thead th{background:#eef3e6;color:var(--green);font-weight:700;font-size:12.5px;
+letter-spacing:.3px;border-bottom:2px solid var(--green-light);}
+tbody tr:nth-child(even){background:#fafbf8;}
+td.r,th.r{text-align:right;}
+.tk{font-weight:700;color:var(--ink);font-family:"Open Sans",sans-serif;}
+
+/* Trending list */
+.trend{list-style:none;margin:12px 0;display:grid;grid-template-columns:1fr 1fr;gap:8px 16px;}
+.trend li{border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:13px;
+background:#fff;transition:.15s;}
+.trend li:hover{border-color:var(--green-light);}
+.trend .t{font-weight:700;font-family:"Open Sans",sans-serif;font-size:14px;}
+.trend .why{color:#444;font-size:12.5px;margin-top:2px;}
+
+/* News */
+.news{list-style:none;margin:12px 0;}
+.news li{border:1px solid var(--line);border-left:4px solid var(--green);border-radius:10px;
+padding:13px 15px;margin-bottom:11px;background:#fdfdfb;}
+.news .h{font-weight:700;font-size:15px;margin-bottom:4px;color:var(--ink);}
+.news .b{font-size:13.5px;color:#3a3a3a;}
+.news .no{color:var(--green);font-weight:900;margin-right:6px;font-family:"Open Sans",sans-serif;}
+
+/* Snapshot grid */
+.snap{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin:14px 0;}
+.snapcard{border:1px solid var(--line);border-radius:12px;padding:14px 16px;background:#fff;}
+.snapcard h4{font-size:13px;color:var(--green);font-weight:700;margin-bottom:9px;
+letter-spacing:.3px;text-transform:uppercase;font-family:"Open Sans",sans-serif;}
+.kv{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px dashed #eee;
+font-size:13.5px;font-family:"Open Sans",sans-serif;font-variant-numeric:tabular-nums;}
+.kv:last-child{border-bottom:none;}
+.kv .k{color:#444;font-weight:600;}
+
+.badge{display:inline-block;background:#eaf3df;color:var(--green);font-size:11px;font-weight:700;
+padding:2px 9px;border-radius:20px;letter-spacing:.3px;vertical-align:middle;margin-left:6px;}
+
+/* Footer */
+footer{margin-top:44px;padding-top:20px;border-top:1px solid var(--line);
+font-size:12px;color:var(--muted);line-height:1.7;font-family:"Open Sans","Noto Sans KR",sans-serif;}
+footer .cav{background:#f7f7f4;border:1px solid var(--line);border-radius:9px;padding:11px 14px;margin-top:10px;}
+
+@media(max-width:640px){
+.cards{grid-template-columns:repeat(2,1fr);}
+.trend{grid-template-columns:1fr;}
+.snap{grid-template-columns:1fr;}
+.hdr h1{font-size:23px;}
+h2{font-size:19px;}
+}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="hdr-in">
+    <div class="logo"><span class="mark">Li</span><span class="word">life inve · 라이프 인베</span></div>
+    <div class="kicker">LIFE ASSET · MARKET OF THE DAY</div>
+    <h1>라이프 인베 — 데일리 시황 · 2026-06-29</h1>
+    <div class="tagline">미-이란 휴전·Alphabet 다우 편입·마이크론 서프라이즈로 리스크온 재점화, 기술·반도체 주도 랠리</div>
+    <div class="meta">
+      <span>2026년 6월 29일 (월) · ET 기준</span>
+      <span>세션: 정규장 마감 + 6/29 프리마켓 스냅샷</span>
+      <span>구성: 지수·트렌딩·ETF·뉴스·신고가·스냅샷</span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="demo">
+    <span class="tag">데모</span>
+    <div><b>예시 데이터 기반 시연용 브리핑입니다.</b> 실제 체결·확정 수치와 다를 수 있으며, 투자자문·매매권유가 아닙니다. 각 항목의 수치·해석은 예시이며 최종 판단·검증 책임은 이용자에게 있습니다.</div>
+  </div>
+
+  <!-- ================= MARKET OF THE DAY ================= -->
+  <h2>⭐️ Market of the Day</h2>
+
+  <h3>1. 주요 지수 마감 및 장중 흐름 <span class="en">Index Close &amp; Intraday</span></h3>
+
+  <div class="cards">
+    <div class="card">
+      <div class="nm">DOW</div>
+      <div class="val">52,200.60</div>
+      <div class="chg up">▲ +0.76%</div>
+    </div>
+    <div class="card">
+      <div class="nm">S&amp;P 500</div>
+      <div class="val">7,442.81</div>
+      <div class="chg up">▲ +1.60%</div>
+    </div>
+    <div class="card">
+      <div class="nm">NASDAQ</div>
+      <div class="val">25,825.92</div>
+      <div class="chg up">▲ +2.49%</div>
+    </div>
+    <div class="card">
+      <div class="nm">RUSSELL 2000</div>
+      <div class="val">—</div>
+      <div class="chg down">▼ -0.29%</div>
+    </div>
+    <div class="card">
+      <div class="nm">VIX</div>
+      <div class="val">17.54</div>
+      <div class="chg down">▼ -4.73%</div>
+    </div>
+  </div>
+
+  <div class="chartbox">
+    <svg viewBox="0 0 640 280" role="img" aria-label="주요 지수 등락률 막대 차트">
+      <!-- gridlines & y labels -->
+      <line x1="44" y1="48" x2="620" y2="48" stroke="#eee"/>
+      <line x1="44" y1="102" x2="620" y2="102" stroke="#c9c9c9" stroke-width="1.4"/>
+      <line x1="44" y1="158" x2="620" y2="158" stroke="#eee"/>
+      <line x1="44" y1="213" x2="620" y2="213" stroke="#eee"/>
+      <text x="38" y="52" text-anchor="end" font-size="11" fill="#888" font-family="Open Sans">+2</text>
+      <text x="38" y="106" text-anchor="end" font-size="11" fill="#666" font-family="Open Sans">0</text>
+      <text x="38" y="162" text-anchor="end" font-size="11" fill="#888" font-family="Open Sans">-2</text>
+      <text x="38" y="217" text-anchor="end" font-size="11" fill="#888" font-family="Open Sans">-4</text>
+      <!-- bars -->
+      <rect x="74" y="82" width="56" height="20" fill="#e0392b" rx="2"/>
+      <rect x="190" y="59" width="56" height="43" fill="#e0392b" rx="2"/>
+      <rect x="306" y="34" width="56" height="68" fill="#e0392b" rx="2"/>
+      <rect x="422" y="102" width="56" height="9" fill="#1769d6" rx="2"/>
+      <rect x="538" y="102" width="56" height="131" fill="#1769d6" rx="2"/>
+      <!-- value labels -->
+      <text x="102" y="76" text-anchor="middle" font-size="12" font-weight="700" fill="#e0392b" font-family="Open Sans">+0.76</text>
+      <text x="218" y="53" text-anchor="middle" font-size="12" font-weight="700" fill="#e0392b" font-family="Open Sans">+1.60</text>
+      <text x="334" y="28" text-anchor="middle" font-size="12" font-weight="700" fill="#e0392b" font-family="Open Sans">+2.49</text>
+      <text x="450" y="126" text-anchor="middle" font-size="12" font-weight="700" fill="#1769d6" font-family="Open Sans">-0.29</text>
+      <text x="566" y="248" text-anchor="middle" font-size="12" font-weight="700" fill="#1769d6" font-family="Open Sans">-4.73</text>
+      <!-- x labels -->
+      <text x="102" y="266" text-anchor="middle" font-size="11.5" fill="#333" font-family="Open Sans">Dow</text>
+      <text x="218" y="266" text-anchor="middle" font-size="11.5" fill="#333" font-family="Open Sans">S&amp;P 500</text>
+      <text x="334" y="266" text-anchor="middle" font-size="11.5" fill="#333" font-family="Open Sans">Nasdaq</text>
+      <text x="450" y="266" text-anchor="middle" font-size="11.5" fill="#333" font-family="Open Sans">Russell 2K</text>
+      <text x="566" y="266" text-anchor="middle" font-size="11.5" fill="#333" font-family="Open Sans">VIX</text>
+    </svg>
+    <div class="cap">지수·변동성지수 일간 등락률(%) — <b>상승=빨강 / 하락=파랑</b>, Y축 0 기준. 출처: 예시 마감 데이터 · [데모/partial] · as of 2026-06-29 종가(ET)</div>
+  </div>
+
+  <p class="lead">미국-이란 <b>일시 휴전 합의</b>와 트럼프 대통령의 <b>도하 협상 재개</b> 발표로 지정학 리스크가 완화되며 기술주가 강하게 반등했다. Alphabet(GOOGL)은 6/29 <b>Verizon을 대체해 다우 지수에 편입</b>되며 <span class="up">GOOGL +4.8%</span>·<span class="up">GOOG +5.0%</span>를 기록했고, 다우 지수는 사상 처음으로 <b>52,000선을 돌파</b>했다. 테슬라(TSLA)는 HW3 약 <b>400만 대</b>에 <b>FSD V14 Lite</b>를 배포하며 <span class="up">+8.46%</span> 급등했다. 마이크론(MU) 어닝 서프라이즈 이후 반도체장비 목표가 상향이 이어지며 <span class="up">AMAT +10.8%</span>·<span class="up">KLAC +12.0%</span>·<span class="up">LRCX +8.4%</span>로 반도체장비 업종이 <b>+8.0%</b> 최상위 수익률을 기록했다. 반면 Comcast의 NBCUniversal 분사와 SpaceX Starlink 모바일 출시로 통신주는 <span class="down">TMUS -4.8%</span>·<span class="down">VZ -5.2%</span>·<span class="down">T -4.0%</span> 급락했다. 리스크온 국면에서 안전자산인 금(<span class="down">-1.35%</span>)·은(<span class="down">-1.13%</span>)은 약세를 보였다.</p>
+
+  <h3>2. Trending Stocks <span class="en">화제 종목</span></h3>
+  <ul class="trend">
+    <li><span class="t">IRDM <span class="up">+25.44%</span></span><div class="why">Rocket Lab, 주당 $54 · 총 $80억 인수 제안 · Oppenheimer 목표가 $60</div></li>
+    <li><span class="t">OUST <span class="up">+28.68%</span></span><div class="why">Benchmark 연 10만 대·Rev8 라이다 10년 계약 + 파트너십 + 뉴저지 배포</div></li>
+    <li><span class="t">RKLB <span class="up">+15.93%</span></span><div class="why">Iridium $80억 인수 · KeyBanc Overweight 목표가 $135</div></li>
+    <li><span class="t">TSLA <span class="up">+8.46%</span></span><div class="why">HW3 약 400만 대에 FSD V14 Lite 배포</div></li>
+    <li><span class="t">AVAV <span class="up">+0.76%</span></span><div class="why">FY26 Q4 실적 장 마감 후 발표 예정</div></li>
+    <li><span class="t">ABVX <span class="down">-1.38%</span></span><div class="why">원인 미확인 · 카탈리스트 공백</div></li>
+    <li><span class="t">SHAZ <span class="down">-1.28%</span></span><div class="why">$16억 증자로 희석 우려 · 장후 +10.5% 반등</div></li>
+    <li><span class="t">SMCI <span class="down">-8.10%</span></span><div class="why">대만 검찰 NVIDIA칩 대중 수출 수사 확대 · 12개소 압수수색</div></li>
+    <li><span class="t">VZ <span class="down">-5.24%</span></span><div class="why">다우 퇴출 + BT 50:50 JV $40억 · 일회성 비용</div></li>
+  </ul>
+
+  <h3>3. 주요 ETF Top &amp; Bottom <span class="en">ETF Leaders &amp; Laggards</span></h3>
+
+  <div class="chartbox">
+    <svg viewBox="0 0 640 286" role="img" aria-label="상승 ETF Top10 수평 막대">
+      <text x="0" y="12" font-size="12" font-weight="700" fill="#3F5C21" font-family="Open Sans">상승 Top 10 (%)</text>
+      <!-- rows -->
+      <g font-family="Open Sans" font-size="11.5">
+        <text x="82" y="46" text-anchor="end" font-weight="700">SOXX</text><rect x="90" y="32" width="423" height="18" fill="#e0392b" rx="2"/><text x="519" y="46" font-size="11" font-weight="700" fill="#e0392b">+4.14</text>
+        <text x="82" y="72" text-anchor="end" font-weight="700">SMH</text><rect x="90" y="58" width="340" height="18" fill="#e0392b" rx="2"/><text x="436" y="72" font-size="11" font-weight="700" fill="#e0392b">+3.33</text>
+        <text x="82" y="98" text-anchor="end" font-weight="700">ARKK</text><rect x="90" y="84" width="327" height="18" fill="#e0392b" rx="2"/><text x="423" y="98" font-size="11" font-weight="700" fill="#e0392b">+3.20</text>
+        <text x="82" y="124" text-anchor="end" font-weight="700">EWT</text><rect x="90" y="110" width="296" height="18" fill="#e0392b" rx="2"/><text x="392" y="124" font-size="11" font-weight="700" fill="#e0392b">+2.90</text>
+        <text x="82" y="150" text-anchor="end" font-weight="700">QQQ</text><rect x="90" y="136" width="255" height="18" fill="#e0392b" rx="2"/><text x="351" y="150" font-size="11" font-weight="700" fill="#e0392b">+2.49</text>
+        <text x="82" y="176" text-anchor="end" font-weight="700">IWF</text><rect x="90" y="162" width="252" height="18" fill="#e0392b" rx="2"/><text x="348" y="176" font-size="11" font-weight="700" fill="#e0392b">+2.47</text>
+        <text x="82" y="202" text-anchor="end" font-weight="700">XLY</text><rect x="90" y="188" width="245" height="18" fill="#e0392b" rx="2"/><text x="341" y="202" font-size="11" font-weight="700" fill="#e0392b">+2.40</text>
+        <text x="82" y="228" text-anchor="end" font-weight="700">XLK</text><rect x="90" y="214" width="242" height="18" fill="#e0392b" rx="2"/><text x="338" y="228" font-size="11" font-weight="700" fill="#e0392b">+2.37</text>
+        <text x="82" y="254" text-anchor="end" font-weight="700">IVW</text><rect x="90" y="240" width="233" height="18" fill="#e0392b" rx="2"/><text x="329" y="254" font-size="11" font-weight="700" fill="#e0392b">+2.28</text>
+        <text x="82" y="280" text-anchor="end" font-weight="700">ICLN</text><rect x="90" y="266" width="199" height="18" fill="#e0392b" rx="2"/><text x="295" y="280" font-size="11" font-weight="700" fill="#e0392b">+1.95</text>
+      </g>
+      <line x1="90" y1="26" x2="90" y2="284" stroke="#c9c9c9"/>
+    </svg>
+    <div class="cap">리스크온 ETF 상승률 Top 10 — Y축(막대 기준선) 0 시작. 출처: 예시 ETF 데이터 · [데모/partial] · as of 2026-06-29(ET)</div>
+  </div>
+
+  <div class="chartbox">
+    <svg viewBox="0 0 640 286" role="img" aria-label="하락 ETF Bottom10 수평 막대">
+      <text x="0" y="12" font-size="12" font-weight="700" fill="#1769d6" font-family="Open Sans">하락 Bottom 10 (%)</text>
+      <g font-family="Open Sans" font-size="11.5">
+        <text x="82" y="46" text-anchor="end" font-weight="700">UNG</text><rect x="90" y="32" width="427" height="18" fill="#1769d6" rx="2"/><text x="523" y="46" font-size="11" font-weight="700" fill="#1769d6">-3.71</text>
+        <text x="82" y="72" text-anchor="end" font-weight="700">XLB</text><rect x="90" y="58" width="209" height="18" fill="#1769d6" rx="2"/><text x="305" y="72" font-size="11" font-weight="700" fill="#1769d6">-1.82</text>
+        <text x="82" y="98" text-anchor="end" font-weight="700">GDX</text><rect x="90" y="84" width="197" height="18" fill="#1769d6" rx="2"/><text x="293" y="98" font-size="11" font-weight="700" fill="#1769d6">-1.71</text>
+        <text x="82" y="124" text-anchor="end" font-weight="700">GLD</text><rect x="90" y="110" width="155" height="18" fill="#1769d6" rx="2"/><text x="251" y="124" font-size="11" font-weight="700" fill="#1769d6">-1.35</text>
+        <text x="82" y="150" text-anchor="end" font-weight="700">SLV</text><rect x="90" y="136" width="130" height="18" fill="#1769d6" rx="2"/><text x="226" y="150" font-size="11" font-weight="700" fill="#1769d6">-1.13</text>
+        <text x="82" y="176" text-anchor="end" font-weight="700">ITB</text><rect x="90" y="162" width="102" height="18" fill="#1769d6" rx="2"/><text x="198" y="176" font-size="11" font-weight="700" fill="#1769d6">-0.89</text>
+        <text x="82" y="202" text-anchor="end" font-weight="700">XRT</text><rect x="90" y="188" width="101" height="18" fill="#1769d6" rx="2"/><text x="197" y="202" font-size="11" font-weight="700" fill="#1769d6">-0.88</text>
+        <text x="82" y="228" text-anchor="end" font-weight="700">INDA</text><rect x="90" y="214" width="89" height="18" fill="#1769d6" rx="2"/><text x="185" y="228" font-size="11" font-weight="700" fill="#1769d6">-0.77</text>
+        <text x="82" y="254" text-anchor="end" font-weight="700">KRE</text><rect x="90" y="240" width="64" height="18" fill="#1769d6" rx="2"/><text x="160" y="254" font-size="11" font-weight="700" fill="#1769d6">-0.56</text>
+        <text x="82" y="280" text-anchor="end" font-weight="700">EWC</text><rect x="90" y="266" width="62" height="18" fill="#1769d6" rx="2"/><text x="158" y="280" font-size="11" font-weight="700" fill="#1769d6">-0.54</text>
+      </g>
+      <line x1="90" y1="26" x2="90" y2="284" stroke="#c9c9c9"/>
+    </svg>
+    <div class="cap">에너지·소재·안전자산 ETF 하락률 Bottom 10 — Y축(막대 기준선) 0 시작. 출처: 예시 ETF 데이터 · [데모/partial] · as of 2026-06-29(ET)</div>
+  </div>
+
+  <p class="lead">마이크론 서프라이즈 이후 반도체장비 목표가 상향으로 <b>SOXX·SMH</b>가 상승을 주도했다. Alphabet 다우 편입과 테슬라 FSD 배포로 <b>QQQ·XLK·XLY</b>가 강세를 보였고, SpaceX의 나스닥100 편입 효과는 <b>ARKK</b>에 반영됐다. 미-이란 휴전으로 천연가스 ETF <b>UNG</b>이 급락하고 금·은·금광주 등 안전자산(<b>GDX·GLD·SLV</b>)이 약세를 나타냈다.</p>
+
+  <!-- ================= NEWS OF THE DAY ================= -->
+  <h2>⭐️ News of the Day</h2>
+  <ul class="news">
+    <li>
+      <div class="h"><span class="no">①</span>미국-이란 일시 휴전 합의 → 기술주 강세·안전자산 약세</div>
+      <div class="b">호르무즈 해협 통항 재개 기대로 위험선호가 회복되며 천연가스 <span class="down">UNG -3.71%</span>, 금·은이 동반 하락했다. 다만 협상 초기 단계로 <b>불확실성은 잔존</b>한다.</div>
+    </li>
+    <li>
+      <div class="h"><span class="no">②</span>Alphabet 다우 편입 + Comcast 분사 → 빅테크 강세 vs 통신주 급락</div>
+      <div class="b">6/29 Verizon 퇴출·Alphabet 편입으로 다우가 사상 처음 <b>52,000</b>을 돌파했고 <span class="up">GOOGL +4.8%</span>. Comcast는 NBCUniversal 분사 발표로 <span class="up">CMCSA +4.5%</span>. 반면 MVNO 확대와 Starlink 모바일 출시로 통신주 <span class="down">TMUS·VZ·T</span>가 4~5%대 급락했다.</div>
+    </li>
+  </ul>
+
+  <!-- ================= 신고가 ================= -->
+  <h2>📈 신고가 달성 주식 <span class="badge">2026.06.26</span></h2>
+
+  <div class="chartbox">
+    <svg viewBox="0 0 640 262" role="img" aria-label="섹터별 신고가 종목 집계 막대">
+      <text x="0" y="10" font-size="12" font-weight="700" fill="#3F5C21" font-family="Open Sans">섹터별 신고가 종목 수 (개)</text>
+      <g font-family="Open Sans" font-size="11.5" fill="#222">
+        <text x="147" y="32" text-anchor="end">Healthcare</text><rect x="155" y="18" width="411" height="16" fill="#3F5C21" rx="2"/><text x="571" y="31" font-size="11" font-weight="700" fill="#3F5C21">42</text>
+        <text x="147" y="56" text-anchor="end">Financial</text><rect x="155" y="42" width="205" height="16" fill="#4c6e28" rx="2"/><text x="366" y="55" font-size="11" font-weight="700" fill="#3F5C21">21</text>
+        <text x="147" y="80" text-anchor="end">Consumer Cyclical</text><rect x="155" y="66" width="127" height="16" fill="#557a2d" rx="2"/><text x="288" y="79" font-size="11" font-weight="700" fill="#3F5C21">13</text>
+        <text x="147" y="104" text-anchor="end">Industrials</text><rect x="155" y="90" width="98" height="16" fill="#608C34" rx="2"/><text x="259" y="103" font-size="11" font-weight="700" fill="#3F5C21">10</text>
+        <text x="147" y="128" text-anchor="end">Communication Svc</text><rect x="155" y="114" width="88" height="16" fill="#608C34" rx="2"/><text x="249" y="127" font-size="11" font-weight="700" fill="#3F5C21">9</text>
+        <text x="147" y="152" text-anchor="end">Real Estate</text><rect x="155" y="138" width="68" height="16" fill="#6f9c3f" rx="2"/><text x="229" y="151" font-size="11" font-weight="700" fill="#3F5C21">7</text>
+        <text x="147" y="176" text-anchor="end">Technology</text><rect x="155" y="162" width="39" height="16" fill="#8FB85D" rx="2"/><text x="200" y="175" font-size="11" font-weight="700" fill="#3F5C21">4</text>
+        <text x="147" y="200" text-anchor="end">Consumer Defensive</text><rect x="155" y="186" width="29" height="16" fill="#8FB85D" rx="2"/><text x="190" y="199" font-size="11" font-weight="700" fill="#3F5C21">3</text>
+        <text x="147" y="224" text-anchor="end">Energy</text><rect x="155" y="210" width="29" height="16" fill="#8FB85D" rx="2"/><text x="190" y="223" font-size="11" font-weight="700" fill="#3F5C21">3</text>
+        <text x="147" y="248" text-anchor="end">Utilities</text><rect x="155" y="234" width="29" height="16" fill="#8FB85D" rx="2"/><text x="190" y="247" font-size="11" font-weight="700" fill="#3F5C21">3</text>
+      </g>
+      <line x1="155" y1="14" x2="155" y2="250" stroke="#c9c9c9"/>
+    </svg>
+    <div class="cap">신고가 종목의 섹터 분포 — Healthcare가 <b>42종목</b>으로 압도적. Y축(막대 기준선) 0 시작. 출처: 예시 신고가 스크리너 · [데모/partial] · as of 2026-06-26(ET)</div>
+  </div>
+
+  <table>
+    <thead>
+      <tr><th>#</th><th>티커</th><th>섹터</th><th class="r">종가($)</th><th class="r">상승%</th><th class="r">시총</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td class="tk">SLS 🟢</td><td>Healthcare</td><td class="r">12.39</td><td class="r up">+17.66%</td><td class="r">2.30B</td></tr>
+      <tr><td>2</td><td class="tk">APOG 🟢</td><td>Industrials</td><td class="r">48.92</td><td class="r up">+15.16%</td><td class="r">1.04B</td></tr>
+      <tr><td>3</td><td class="tk">MRNA 🟢</td><td>Healthcare</td><td class="r">67.27</td><td class="r up">+12.59%</td><td class="r">26.69B</td></tr>
+      <tr><td>4</td><td class="tk">GHRS 🟢</td><td>Healthcare</td><td class="r">28.22</td><td class="r up">+11.37%</td><td class="r">—</td></tr>
+      <tr><td>5</td><td class="tk">ABCL 🟢</td><td>Healthcare</td><td class="r">7.38</td><td class="r up">+10.81%</td><td class="r">—</td></tr>
+      <tr><td>6</td><td class="tk">ATEX 🟢</td><td>Communication Svc</td><td class="r">89.67</td><td class="r up">+10.70%</td><td class="r">—</td></tr>
+      <tr><td>7</td><td class="tk">BB 🟢</td><td>Technology</td><td class="r">11.40</td><td class="r up">+10.25%</td><td class="r">—</td></tr>
+      <tr><td>8</td><td class="tk">APPS 🟢</td><td>Technology</td><td class="r">—</td><td class="r up">+8.96%</td><td class="r">—</td></tr>
+      <tr><td>9</td><td class="tk">EPC 🟢</td><td>Consumer Defensive</td><td class="r">—</td><td class="r up">+8.75%</td><td class="r">—</td></tr>
+      <tr><td>10</td><td class="tk">OPLN 🟢</td><td>Healthcare</td><td class="r">—</td><td class="r up">+8.22%</td><td class="r">—</td></tr>
+      <tr><td>11</td><td class="tk">DAVE 🟢</td><td>Financial</td><td class="r">348.71</td><td class="r up">+8.04%</td><td class="r">—</td></tr>
+      <tr><td>12</td><td class="tk">VCEL 🟢</td><td>Healthcare</td><td class="r">—</td><td class="r up">+7.76%</td><td class="r">—</td></tr>
+      <tr><td>13</td><td class="tk">LLY 🟢</td><td>Healthcare</td><td class="r">1,208.12</td><td class="r up">+7.13%</td><td class="r">1,137.74B</td></tr>
+      <tr><td>14</td><td class="tk">BIIB 🟢</td><td>Healthcare</td><td class="r">216.03</td><td class="r up">+6.97%</td><td class="r">—</td></tr>
+      <tr><td>15</td><td class="tk">SKWD 🟢</td><td>Financial</td><td class="r">—</td><td class="r up">+6.84%</td><td class="r">—</td></tr>
+    </tbody>
+  </table>
+  <p class="lead" style="font-size:13px;color:var(--muted);">섹터 집계: Healthcare 42 · Financial 21 · Consumer Cyclical 13 · Industrials 10 · Communication Services 9 · Real Estate 7 · Technology 4 · Consumer Defensive 3 · Energy 3 · Utilities 3. Healthcare(비만·백신·항체 테마)와 Financial이 신고가 종목의 과반을 차지했다.</p>
+
+  <!-- ================= 스냅샷 ================= -->
+  <h2>🛢️ 시장 스냅샷 <span class="badge">2026.06.29 ET</span></h2>
+  <div class="snap">
+    <div class="snapcard">
+      <h4>지수 선물 Futures</h4>
+      <div class="kv"><span class="k">Dow</span><span><span class="num">52,576</span> <span class="up">+0.70%</span></span></div>
+      <div class="kv"><span class="k">S&amp;P 500</span><span><span class="num">7,497</span> <span class="up">+1.29%</span></span></div>
+      <div class="kv"><span class="k">Nasdaq</span><span><span class="num">30,023</span> <span class="up">+2.23%</span></span></div>
+      <div class="kv"><span class="k">Russell 2000</span><span><span class="num">3,027</span> <span class="up">+0.17%</span></span></div>
+    </div>
+    <div class="snapcard">
+      <h4>시장 동향 Breadth</h4>
+      <div class="kv"><span class="k">상승</span><span><span class="up">50.3%</span> <span class="num">(2,816)</span></span></div>
+      <div class="kv"><span class="k">하락</span><span><span class="down">47.3%</span> <span class="num">(2,647)</span></span></div>
+      <div class="kv"><span class="k">신고가</span><span><span class="up">66.2%</span> <span class="num">(294)</span></span></div>
+      <div class="kv"><span class="k">신저가</span><span><span class="down">33.8%</span> <span class="num">(150)</span></span></div>
+    </div>
+    <div class="snapcard">
+      <h4>원자재 Commodities</h4>
+      <div class="kv"><span class="k">Gold</span><span><span class="num">4,030.85</span> <span class="down">-1.60%</span></span></div>
+      <div class="kv"><span class="k">Silver</span><span><span class="num">58.72</span> <span class="down">-1.60%</span></span></div>
+      <div class="kv"><span class="k">WTI 원유</span><span><span class="num">70.53</span> <span class="up">+1.88%</span></span></div>
+      <div class="kv"><span class="k">Nat Gas</span><span><span class="num">3.174</span> <span class="down">-3.20%</span></span></div>
+      <div class="kv"><span class="k">Copper</span><span><span class="num">6.17</span> <span class="down">-0.52%</span></span></div>
+    </div>
+    <div class="snapcard">
+      <h4>변동성 Volatility</h4>
+      <div class="kv"><span class="k">VIX</span><span><span class="num">17.54</span> <span class="down">-4.73%</span></span></div>
+      <div class="kv" style="border-top:1px dashed #eee;color:var(--muted);font-size:12px;">공포지수 하락 → 위험선호 회복 시사. 휴전 협상 진전 여부가 방향성 관건.</div>
+    </div>
+  </div>
+
+  <footer>
+    <div><b>life inve · 데일리 시황 (Market of the Day) · 자동 생성</b></div>
+    <div class="cav">
+      본 브리핑은 <b>[데모]</b> 예시 데이터로 작성된 시연용 자료입니다. 수치·해석·티커 정보는 예시이며 실제 시장 데이터와 다를 수 있습니다. 지수·ETF·원자재 값은 as-of 시점(2026-06-29 ET, 신고가는 2026-06-26)의 예시치이며 검증되지 않았습니다.<br>
+      <b>Internal research note. Not investment advice.</b> 특정 종목의 매수·매도·보유를 권유하지 않으며, 투자 판단과 그 결과에 대한 책임은 이용자 본인에게 있습니다.
+    </div>
+    <div style="margin-top:10px;color:#9a9a9a;">© 2026 라이프자산운용 (life inve) · 상승=빨강 / 하락=파랑 (한국식 표기) · 인라인 SVG 차트, 외부 스크립트 없음</div>
+  </footer>
+
+</div>
+</body>
+</html>
