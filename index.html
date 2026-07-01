@@ -92,6 +92,7 @@ h1,h2,h3{letter-spacing:-0.02em}
           <button onclick="openDaily('expert')" data-d="expert" class="navbtn w-full text-left px-3 py-1.5 rounded-lg border border-slate-200 flex items-center gap-2 text-[13px] hover:bg-slate-50"><span>🎧</span> 데일리 익스퍼트 콜</button>
           <button onclick="openDaily('substack')" data-d="substack" class="navbtn w-full text-left px-3 py-1.5 rounded-lg border border-slate-200 flex items-center gap-2 text-[13px] hover:bg-slate-50"><span>✉️</span> 데일리 서브스택</button>
           <button onclick="openDaily('earn')" data-d="earn" class="navbtn w-full text-left px-3 py-1.5 rounded-lg border border-slate-200 flex items-center gap-2 text-[13px] hover:bg-slate-50"><span>📅</span> 실적/컨콜 요약</button>
+          <button onclick="openYoutube()" data-d="youtube" class="navbtn w-full text-left px-3 py-1.5 rounded-lg border border-slate-200 flex items-center gap-2 text-[13px] hover:bg-slate-50"><span>🎥</span> 데일리 유튜브 <span class="ml-auto text-[10px] bg-brand-500 text-white px-1.5 py-0.5 rounded">NEW</span></button>
         </div>
         <div class="text-[10px] text-slate-400 px-1 mb-1">리서치</div>
         <div class="space-y-1 mb-2.5">
@@ -132,6 +133,21 @@ h1,h2,h3{letter-spacing:-0.02em}
           <div id="earn-cal" class="bg-white rounded-xl border border-slate-200 p-4 mb-5 shadow-sm"></div>
           <div class="flex items-center justify-between mb-2"><div class="text-sm font-semibold text-slate-500">실적 리스트 <span class="text-[10px] text-emerald-600 font-normal">· FMP 실데이터</span></div><button onclick="earnSumAll()" class="text-xs bg-brand-500 hover:bg-brand-600 text-white px-3 py-1.5 rounded-lg">⚡ 전체 자동 요약</button></div>
           <div id="earn-list" class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm"></div>
+        </div>
+      </section>
+      <section id="g-youtube" class="gview p-6 hidden">
+        <div class="max-w-[1100px]">
+          <div class="flex items-center justify-between mb-3">
+            <div class="flex items-center gap-2"><h2 class="text-lg font-bold">🎥 데일리 유튜브 요약</h2><span class="tag">데일리</span><span class="text-xs text-slate-400">트래킹 채널 신규 영상 자동 요약</span></div>
+            <div class="flex gap-2">
+              <button onclick="ytAdd()" class="text-xs bg-brand-500 hover:bg-brand-600 text-white px-3 py-1.5 rounded-lg">＋ 유튜브 링크 추가</button>
+              <button onclick="ytSummarize()" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-600 border border-slate-200 px-3 py-1.5 rounded-lg">⚡ 오늘 요약 생성</button>
+            </div>
+          </div>
+          <div class="text-sm font-semibold text-slate-500 mb-2">트래킹 채널 / 영상 링크</div>
+          <div id="yt-list" class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm"></div>
+          <div class="text-sm font-semibold text-slate-500 mt-6 mb-2">오늘의 요약</div>
+          <div id="yt-daily" class="bg-white rounded-xl border border-slate-200 p-5 shadow-sm text-sm text-slate-500"></div>
         </div>
       </section>
       <section id="g-stock" class="gview p-6 hidden">
@@ -400,6 +416,42 @@ function renderEarn(){
 }
 function earnSum(i){earnings[i].sum='가이던스 컨센 상회 · 마진 개선 코멘트 · AI/클라우드 수요 견조. (자동 생성 요약)';renderEarn();}
 function earnSumAll(){earnings.forEach(e=>{if(!e.sum)e.sum='가이던스 컨센 부합~상회, 주요 세그먼트 코멘트 요약. (자동 생성)';});renderEarn();}
+
+/* ========== 데일리 유튜브 ========== */
+let ytItems=JSON.parse(localStorage.getItem('yt_items')||'null')||[
+  {name:'삼프로TV',url:'https://www.youtube.com/@3protv',topic:'국내증시/매크로',tier:1},
+  {name:'오건영 브리핑',url:'https://www.youtube.com/results?search_query=오건영',topic:'매크로',tier:1}
+];
+function ytSave(){localStorage.setItem('yt_items',JSON.stringify(ytItems));}
+function ytHost(u){try{return new URL(u).hostname.replace('www.','');}catch(e){return u;}}
+function openYoutube(){showSection('youtube');renderYoutube();activate('[data-d="youtube"]');}
+function renderYoutube(){
+  const rows=ytItems.map((v,i)=>`<div class="px-4 py-2.5 border-b border-slate-50 hover:bg-slate-50 flex items-center gap-3">
+    <span class="text-lg">🎥</span>
+    <div class="flex-1 min-w-0">
+      <a href="${v.url}" target="_blank" class="text-sm font-semibold text-brand-700 hover:underline truncate block">${v.name}</a>
+      <div class="text-[11px] text-slate-400 truncate">${ytHost(v.url)} · ${v.topic||'미분류'}</div>
+    </div>
+    <span class="text-[10px] px-2 py-0.5 rounded-full shrink-0 ${v.tier===1?'bg-brand-50 text-brand-600':'bg-slate-100 text-slate-500'}">tier ${v.tier||2}</span>
+    <button onclick="ytDel(${i})" class="text-[11px] text-slate-400 hover:text-red-500 shrink-0">✕</button>
+  </div>`).join('');
+  document.getElementById('yt-list').innerHTML=rows||'<div class="p-4 text-sm text-slate-400">아직 트래킹 채널이 없습니다. <b>＋ 유튜브 링크 추가</b>로 시작하세요.</div>';
+  const d=document.getElementById('yt-daily');
+  if(d&&!d.dataset.filled) d.innerHTML='트래킹 채널의 신규 영상이 올라오면 여기 데일리 요약이 채워집니다. <b class="text-brand-600">⚡ 오늘 요약 생성</b>을 눌러 확인하세요. <span class="text-slate-400">(요약 로직: PROMPT_lifeinve_youtube.md · RSS 신규감지→트랜스크립트 요약)</span>';
+}
+function ytAdd(){
+  const url=(prompt('유튜브 채널 또는 영상 링크 (URL)')||'').trim();
+  if(!url)return;
+  const name=(prompt('표시 이름 (채널/영상명)')||ytHost(url)).trim();
+  const topic=(prompt('주제 태그 (예: 매크로, 반도체, 미국증시)')||'미분류').trim();
+  ytItems.unshift({name,url,topic,tier:2});ytSave();renderYoutube();
+}
+function ytDel(i){ytItems.splice(i,1);ytSave();renderYoutube();}
+function ytSummarize(){
+  const d=document.getElementById('yt-daily');d.dataset.filled='1';
+  d.innerHTML='<div class="text-slate-400 text-xs mb-2">오늘의 한 방 (데모 · 실제 요약은 생성기 실행 시)</div>'+
+    ytItems.slice(0,5).map((v,i)=>`<div class="py-1.5 border-b border-slate-50 last:border-0"><b class="text-brand-600">${i+1}. ${v.name}</b> <span class="text-slate-500">— 신규 영상 요약 대기 (${v.topic})</span> · <a href="${v.url}" target="_blank" class="text-brand-600 hover:underline">영상 →</a></div>`).join('');
+}
 
 /* ========== 종목 ========== */
 const PERIODS=['1D','1W','1M','1Y'],PCOUNT={'1D':32,'1W':28,'1M':30,'1Y':52},PVOL={'1D':0.018,'1W':0.03,'1M':0.05,'1Y':0.075};
