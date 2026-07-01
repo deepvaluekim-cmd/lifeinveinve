@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>대만 반도체 월매출 트래커 · Taiwan Semis Monthly Revenue [데모]</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --life-green:#608C34;
+    --life-green-light:#8FB85D;
+    --life-ink:#070203;
+    --life-bg:#FFFFFF;
+    --life-line:#E7E6E6;
+    --up:#e0392b;   /* 상승=빨강 (한국식) */
+    --down:#1769d6; /* 하락=파랑 (한국식) */
+    --muted:#6b6b6b;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:var(--life-bg);color:var(--life-ink);}
+  body{font-family:"Noto Sans KR",system-ui,sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased;}
+  .num,td.n,th.n,.ticker{font-family:"Open Sans","Noto Sans KR",sans-serif;font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1;}
+
+  /* Demo banner */
+  .demo-banner{
+    background:repeating-linear-gradient(45deg,#fff4e5,#fff4e5 12px,#ffe9cc 12px,#ffe9cc 24px);
+    color:#8a4b00;border-bottom:1px solid #f0d9b5;
+    font-size:13px;font-weight:700;text-align:center;padding:8px 14px;letter-spacing:.2px;
+  }
+
+  /* Header */
+  header.hero{background:var(--life-green);color:#fff;padding:26px 22px 22px;}
+  .hero-inner{max-width:1120px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:flex-end;gap:12px 18px;justify-content:space-between;}
+  .hero h1{margin:0;font-size:28px;font-weight:900;letter-spacing:-.5px;}
+  .hero .sub{margin:6px 0 0;font-size:14px;font-weight:500;color:#eaf3df;font-family:"Open Sans","Noto Sans KR",sans-serif;}
+  .hero .meta{text-align:right;font-size:13px;color:#eaf3df;}
+  .badge{display:inline-block;background:#fff;color:var(--life-green);font-weight:900;font-size:12px;
+    padding:3px 10px;border-radius:999px;letter-spacing:.5px;vertical-align:middle;margin-left:8px;border:2px solid #fff;}
+  .brandmark{font-weight:900;font-size:13px;letter-spacing:2px;color:#fff;opacity:.9;}
+
+  main{max-width:1120px;margin:0 auto;padding:26px 22px 60px;}
+  section{margin:0 0 40px;}
+  h2{font-size:19px;font-weight:900;margin:0 0 4px;padding:0 0 8px;border-bottom:3px solid var(--life-green);display:inline-block;}
+  .sec-note{font-size:12.5px;color:var(--muted);margin:8px 0 16px;}
+
+  /* Table */
+  .table-wrap{overflow-x:auto;border:1px solid var(--life-line);border-radius:10px;}
+  table{border-collapse:collapse;width:100%;min-width:660px;font-size:14px;}
+  thead th{background:#f4f7ef;color:var(--life-ink);text-align:right;padding:11px 14px;font-weight:700;font-size:12.5px;border-bottom:2px solid var(--life-green-light);white-space:nowrap;}
+  thead th.l{text-align:left;}
+  tbody td{padding:10px 14px;border-bottom:1px solid var(--life-line);text-align:right;white-space:nowrap;}
+  tbody td.l{text-align:left;}
+  tbody tr:last-child td{border-bottom:none;}
+  tbody tr:hover{background:#fafcf7;}
+  .co{font-weight:700;}
+  .ticker{color:var(--muted);font-size:12.5px;}
+  .up{color:var(--up);font-weight:700;}
+  .down{color:var(--down);font-weight:700;}
+  .tag{display:inline-block;font-size:9px;font-weight:700;color:#8a4b00;background:#fff0da;border:1px solid #f0d9b5;border-radius:4px;padding:0 4px;margin-left:5px;vertical-align:middle;letter-spacing:.3px;}
+
+  /* Charts grid */
+  .chart-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+  .card{border:1px solid var(--life-line);border-radius:12px;padding:16px 14px 12px;background:#fff;}
+  .card h3{margin:0 0 2px;font-size:15px;font-weight:900;}
+  .card .csub{margin:0 0 8px;font-size:12px;color:var(--muted);font-family:"Open Sans","Noto Sans KR",sans-serif;}
+  .card svg{width:100%;height:auto;display:block;}
+  .csrc{font-size:11px;color:var(--muted);margin-top:6px;text-align:right;}
+
+  /* YoY comparison bars */
+  .yoy-list{border:1px solid var(--life-line);border-radius:12px;padding:14px 16px;}
+  .yoy-row{display:grid;grid-template-columns:150px 1fr 62px;align-items:center;gap:10px;padding:7px 0;border-bottom:1px dashed var(--life-line);}
+  .yoy-row:last-child{border-bottom:none;}
+  .yoy-name{font-size:13px;font-weight:700;}
+  .yoy-name .ticker{display:block;font-weight:400;}
+  .yoy-track{position:relative;height:20px;background:#f4f4f4;border-radius:4px;overflow:hidden;}
+  .yoy-zero{position:absolute;top:0;bottom:0;width:1px;background:#bbb;}
+  .yoy-fill{position:absolute;top:0;bottom:0;border-radius:3px;}
+  .yoy-val{text-align:right;font-size:13px;font-weight:700;font-variant-numeric:tabular-nums;}
+
+  footer{max-width:1120px;margin:0 auto;padding:20px 22px 50px;font-size:12px;color:var(--muted);border-top:1px solid var(--life-line);}
+  footer b{color:#8a4b00;}
+  .legend{font-size:12px;color:var(--muted);margin:0 0 14px;}
+  .legend .up{margin-right:12px;}
+
+  @media(max-width:820px){
+    .chart-grid{grid-template-columns:1fr;}
+    .hero .meta{text-align:left;}
+    .hero-inner{align-items:flex-start;}
+    .yoy-row{grid-template-columns:120px 1fr 54px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="demo-banner">⚠ [데모 · 예시 데이터] 이 대시보드의 모든 수치는 가상의 시연용 값입니다 — 실제 투자 판단에 사용하지 마세요 · DEMO DATA ONLY</div>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="brandmark">LIFE 자산운용</div>
+      <h1>대만 반도체 월매출 트래커 <span class="badge">데모</span></h1>
+      <p class="sub">Taiwan Semis · Monthly Revenue (NT$) · YoY / MoM</p>
+    </div>
+    <div class="meta">
+      기준일 <span class="num">2026-07-01</span><br>
+      최근 데이터월 <span class="num">2026-06 (6월)</span><br>
+      단위: NT$ bn (신대만달러 십억)
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <section>
+    <h2>월매출 요약</h2>
+    <p class="sec-note">대만 상장 반도체 기업은 매월 개별 월매출을 공시합니다(TWSE/MOPS). 아래는 <b>예시(데모) 수치</b>이며 상승=<span class="up">빨강</span>, 하락=<span class="down">파랑</span> (한국식 색).</p>
+    <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th class="l">기업</th>
+          <th class="l">티커</th>
+          <th class="n">최근월 매출 (NT$bn)</th>
+          <th class="n">MoM %</th>
+          <th class="n">YoY %</th>
+          <th class="n">YTD YoY %</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="l co">TSMC <span class="tag">데모</span></td><td class="l ticker">2330.TW</td>
+          <td class="n">350.4</td><td class="n up">+4.2</td><td class="n up">+28.6</td><td class="n up">+31.1</td>
+        </tr>
+        <tr>
+          <td class="l co">MediaTek <span class="tag">데모</span></td><td class="l ticker">2454.TW</td>
+          <td class="n">55.1</td><td class="n up">+6.8</td><td class="n up">+14.3</td><td class="n up">+11.9</td>
+        </tr>
+        <tr>
+          <td class="l co">UMC <span class="tag">데모</span></td><td class="l ticker">2303.TW</td>
+          <td class="n">20.3</td><td class="n down">-1.9</td><td class="n up">+3.5</td><td class="n up">+2.1</td>
+        </tr>
+        <tr>
+          <td class="l co">ASE Technology <span class="tag">데모</span></td><td class="l ticker">3711.TW</td>
+          <td class="n">52.7</td><td class="n up">+3.1</td><td class="n up">+9.4</td><td class="n up">+8.2</td>
+        </tr>
+        <tr>
+          <td class="l co">Novatek <span class="tag">데모</span></td><td class="l ticker">3034.TW</td>
+          <td class="n">11.8</td><td class="n up">+2.4</td><td class="n up">+7.7</td><td class="n up">+6.0</td>
+        </tr>
+        <tr>
+          <td class="l co">Realtek <span class="tag">데모</span></td><td class="l ticker">2379.TW</td>
+          <td class="n">12.6</td><td class="n up">+1.5</td><td class="n up">+18.9</td><td class="n up">+16.4</td>
+        </tr>
+        <tr>
+          <td class="l co">Global Unichip <span class="tag">데모</span></td><td class="l ticker">3443.TW</td>
+          <td class="n">3.9</td><td class="n up">+9.7</td><td class="n up">+42.1</td><td class="n up">+38.5</td>
+        </tr>
+        <tr>
+          <td class="l co">Silergy <span class="tag">데모</span></td><td class="l ticker">6415.TW</td>
+          <td class="n">1.7</td><td class="n down">-3.4</td><td class="n down">-6.2</td><td class="n down">-4.8</td>
+        </tr>
+        <tr>
+          <td class="l co">Macronix <span class="tag">데모</span></td><td class="l ticker">2337.TW</td>
+          <td class="n">3.4</td><td class="n up">+0.8</td><td class="n down">-11.5</td><td class="n down">-9.3</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="csrc">출처: 데모 (예시 데이터)</p>
+  </section>
+
+  <section>
+    <h2>최근 12개월 매출 추이 · Top 3</h2>
+    <p class="sec-note">막대 차트는 <b>Y축 0에서 시작</b>하여 왜곡을 방지합니다. 값 라벨 = NT$bn. 월 라벨 = 2025-07 ~ 2026-06. <b>[데모 수치]</b></p>
+    <div class="chart-grid">
+
+      <!-- TSMC -->
+      <div class="card">
+        <h3>TSMC <span class="tag">데모</span></h3>
+        <p class="csub">2330.TW · NT$bn · 12M</p>
+        <svg viewBox="0 0 360 220" role="img" aria-label="TSMC 12개월 월매출 막대차트 (데모)">
+          <!-- baseline y=0 at py=180; scale: max 360 -> height 150 -->
+          <line x1="34" y1="180" x2="356" y2="180" stroke="#ccc" stroke-width="1"/>
+          <text x="6" y="184" font-size="8" fill="#999" font-family="Open Sans">0</text>
+          <text x="2" y="60" font-size="8" fill="#999" font-family="Open Sans">360</text>
+          <!-- bars: values 272,285,278,296,310,305,322,318,331,340,336,350.4 max360 -->
+          <g font-family="Open Sans" font-size="7.5" fill="#333" text-anchor="middle">
+            <rect x="36"  y="66.7"  width="20" height="113.3" fill="#608C34"/><text x="46"  y="62">272</text><text x="46"  y="192" fill="#888">7</text>
+            <rect x="62"  y="61.3"  width="20" height="118.8" fill="#608C34"/><text x="72"  y="56">285</text><text x="72"  y="192" fill="#888">8</text>
+            <rect x="88"  y="64.2"  width="20" height="115.8" fill="#608C34"/><text x="98"  y="59">278</text><text x="98"  y="192" fill="#888">9</text>
+            <rect x="114" y="56.7"  width="20" height="123.3" fill="#608C34"/><text x="124" y="52">296</text><text x="124" y="192" fill="#888">10</text>
+            <rect x="140" y="50.8"  width="20" height="129.2" fill="#608C34"/><text x="150" y="46">310</text><text x="150" y="192" fill="#888">11</text>
+            <rect x="166" y="52.9"  width="20" height="127.1" fill="#608C34"/><text x="176" y="48">305</text><text x="176" y="192" fill="#888">12</text>
+            <rect x="192" y="45.8"  width="20" height="134.2" fill="#7BA544"/><text x="202" y="41">322</text><text x="202" y="192" fill="#888">1</text>
+            <rect x="218" y="47.5"  width="20" height="132.5" fill="#7BA544"/><text x="228" y="43">318</text><text x="228" y="192" fill="#888">2</text>
+            <rect x="244" y="42.1"  width="20" height="137.9" fill="#7BA544"/><text x="254" y="37">331</text><text x="254" y="192" fill="#888">3</text>
+            <rect x="270" y="38.3"  width="20" height="141.7" fill="#7BA544"/><text x="280" y="34">340</text><text x="280" y="192" fill="#888">4</text>
+            <rect x="296" y="40.0"  width="20" height="140.0" fill="#7BA544"/><text x="306" y="36">336</text><text x="306" y="192" fill="#888">5</text>
+            <rect x="322" y="34.0"  width="20" height="146.0" fill="#8FB85D"/><text x="332" y="30">350</text><text x="332" y="192" fill="#888">6</text>
+          </g>
+        </svg>
+        <p class="csrc">출처: 데모</p>
+      </div>
+
+      <!-- MediaTek -->
+      <div class="card">
+        <h3>MediaTek <span class="tag">데모</span></h3>
+        <p class="csub">2454.TW · NT$bn · 12M</p>
+        <svg viewBox="0 0 360 220" role="img" aria-label="MediaTek 12개월 월매출 막대차트 (데모)">
+          <line x1="34" y1="180" x2="356" y2="180" stroke="#ccc" stroke-width="1"/>
+          <text x="6" y="184" font-size="8" fill="#999" font-family="Open Sans">0</text>
+          <text x="6" y="60" font-size="8" fill="#999" font-family="Open Sans">60</text>
+          <!-- values 46,44,48,50,49,47,51,50,52,53,51.6,55.1 max60 -> h=v/60*150 -->
+          <g font-family="Open Sans" font-size="7.5" fill="#333" text-anchor="middle">
+            <rect x="36"  y="65.0"  width="20" height="115.0" fill="#608C34"/><text x="46"  y="60">46</text><text x="46"  y="192" fill="#888">7</text>
+            <rect x="62"  y="70.0"  width="20" height="110.0" fill="#608C34"/><text x="72"  y="65">44</text><text x="72"  y="192" fill="#888">8</text>
+            <rect x="88"  y="60.0"  width="20" height="120.0" fill="#608C34"/><text x="98"  y="55">48</text><text x="98"  y="192" fill="#888">9</text>
+            <rect x="114" y="55.0"  width="20" height="125.0" fill="#608C34"/><text x="124" y="50">50</text><text x="124" y="192" fill="#888">10</text>
+            <rect x="140" y="57.5"  width="20" height="122.5" fill="#608C34"/><text x="150" y="52">49</text><text x="150" y="192" fill="#888">11</text>
+            <rect x="166" y="62.5"  width="20" height="117.5" fill="#608C34"/><text x="176" y="57">47</text><text x="176" y="192" fill="#888">12</text>
+            <rect x="192" y="52.5"  width="20" height="127.5" fill="#7BA544"/><text x="202" y="47">51</text><text x="202" y="192" fill="#888">1</text>
+            <rect x="218" y="55.0"  width="20" height="125.0" fill="#7BA544"/><text x="228" y="50">50</text><text x="228" y="192" fill="#888">2</text>
+            <rect x="244" y="50.0"  width="20" height="130.0" fill="#7BA544"/><text x="254" y="45">52</text><text x="254" y="192" fill="#888">3</text>
+            <rect x="270" y="47.5"  width="20" height="132.5" fill="#7BA544"/><text x="280" y="42">53</text><text x="280" y="192" fill="#888">4</text>
+            <rect x="296" y="51.0"  width="20" height="129.0" fill="#7BA544"/><text x="306" y="46">52</text><text x="306" y="192" fill="#888">5</text>
+            <rect x="322" y="42.3"  width="20" height="137.8" fill="#8FB85D"/><text x="332" y="37">55</text><text x="332" y="192" fill="#888">6</text>
+          </g>
+        </svg>
+        <p class="csrc">출처: 데모</p>
+      </div>
+
+      <!-- UMC -->
+      <div class="card">
+        <h3>UMC <span class="tag">데모</span></h3>
+        <p class="csub">2303.TW · NT$bn · 12M</p>
+        <svg viewBox="0 0 360 220" role="img" aria-label="UMC 12개월 월매출 막대차트 (데모)">
+          <line x1="34" y1="180" x2="356" y2="180" stroke="#ccc" stroke-width="1"/>
+          <text x="6" y="184" font-size="8" fill="#999" font-family="Open Sans">0</text>
+          <text x="6" y="60" font-size="8" fill="#999" font-family="Open Sans">24</text>
+          <!-- values 19.6,19.2,20.1,20.5,20.8,20.4,21.0,20.7,20.9,20.6,20.7,20.3 max24 -> h=v/24*150 -->
+          <g font-family="Open Sans" font-size="7.5" fill="#333" text-anchor="middle">
+            <rect x="36"  y="57.5"  width="20" height="122.5" fill="#608C34"/><text x="46"  y="52">19.6</text><text x="46"  y="192" fill="#888">7</text>
+            <rect x="62"  y="60.0"  width="20" height="120.0" fill="#608C34"/><text x="72"  y="55">19.2</text><text x="72"  y="192" fill="#888">8</text>
+            <rect x="88"  y="54.4"  width="20" height="125.6" fill="#608C34"/><text x="98"  y="49">20.1</text><text x="98"  y="192" fill="#888">9</text>
+            <rect x="114" y="51.9"  width="20" height="128.1" fill="#608C34"/><text x="124" y="47">20.5</text><text x="124" y="192" fill="#888">10</text>
+            <rect x="140" y="50.0"  width="20" height="130.0" fill="#608C34"/><text x="150" y="45">20.8</text><text x="150" y="192" fill="#888">11</text>
+            <rect x="166" y="52.5"  width="20" height="127.5" fill="#608C34"/><text x="176" y="47">20.4</text><text x="176" y="192" fill="#888">12</text>
+            <rect x="192" y="48.8"  width="20" height="131.2" fill="#7BA544"/><text x="202" y="44">21.0</text><text x="202" y="192" fill="#888">1</text>
+            <rect x="218" y="50.6"  width="20" height="129.4" fill="#7BA544"/><text x="228" y="46">20.7</text><text x="228" y="192" fill="#888">2</text>
+            <rect x="244" y="49.4"  width="20" height="130.6" fill="#7BA544"/><text x="254" y="45">20.9</text><text x="254" y="192" fill="#888">3</text>
+            <rect x="270" y="51.3"  width="20" height="128.7" fill="#7BA544"/><text x="280" y="46">20.6</text><text x="280" y="192" fill="#888">4</text>
+            <rect x="296" y="50.6"  width="20" height="129.4" fill="#7BA544"/><text x="306" y="46">20.7</text><text x="306" y="192" fill="#888">5</text>
+            <rect x="322" y="53.1"  width="20" height="126.9" fill="#8FB85D"/><text x="332" y="48">20.3</text><text x="332" y="192" fill="#888">6</text>
+          </g>
+        </svg>
+        <p class="csrc">출처: 데모</p>
+      </div>
+
+    </div>
+  </section>
+
+  <section>
+    <h2>9개 기업 최근 YoY% 비교</h2>
+    <p class="sec-note">최근월(2026-06) 전년동월대비 매출 증감률. 중앙선 = 0%. 상승=<span class="up">빨강</span>, 하락=<span class="down">파랑</span>. <b>[데모]</b></p>
+    <p class="legend"><span class="up">■ 양수(YoY+)</span><span class="down">■ 음수(YoY−)</span></p>
+    <div class="yoy-list">
+      <!-- track center = 50%. scale: |max| ~ 42 -> use 1% = 1.05% of half-width; half width available ~48%. factor = 48/42 = 1.14 -->
+      <!-- fill left:50% for positive width=yoy*1.14% ; for negative left=50% - w -->
+      <div class="yoy-row">
+        <div class="yoy-name">Global Unichip<span class="ticker">3443.TW</span></div>
+        <div class="yoy-track"><div class="yoy-zero" style="left:50%"></div><div class="yoy-fill" style="left:50%;width:47.9%;background:var(--up)"></div></div>
+        <div class="yoy-val up">+42.1</div>
+      </div>
+      <div class="yoy-row">
+        <div class="yoy-name">TSMC<span class="ticker">2330.TW</span></div>
+        <div class="yoy-track"><div class="yoy-zero" style="left:50%"></div><div class="yoy-fill" style="left:50%;width:32.6%;background:var(--up)"></div></div>
+        <div class="yoy-val up">+28.6</div>
+      </div>
+      <div class="yoy-row">
+        <div class="yoy-name">Realtek<span class="ticker">2379.TW</span></div>
+        <div class="yoy-track"><div class="yoy-zero" style="left:50%"></div><div class="yoy-fill" style="left:50%;width:21.5%;background:var(--up)"></div></div>
+        <div class="yoy-val up">+18.9</div>
+      </div>
+      <div class="yoy-row">
+        <div class="yoy-name">MediaTek<span class="ticker">2454.TW</span></div>
+        <div class="yoy-track"><div class="yoy-zero" style="left:50%"></div><div class="yoy-fill" style="left:50%;width:16.3%;background:var(--up)"></div></div>
+        <div class="yoy-val up">+14.3</div>
+      </div>
+      <div class="yoy-row">
+        <div class="yoy-name">ASE Technology<span class="ticker">3711.TW</span></div>
+        <div class="yoy-track"><div class="yoy-zero" style="left:50%"></div><div class="yoy-fill" style="left:50%;width:10.7%;background:var(--up)"></div></div>
+        <div class="yoy-val up">+9.4</div>
+      </div>
+      <div class="yoy-row">
+        <div class="yoy-name">Novatek<span class="ticker">3034.TW</span></div>
+        <div class="yoy-track"><div class="yoy-zero" style="left:50%"></div><div class="yoy-fill" style="left:50%;width:8.8%;background:var(--up)"></div></div>
+        <div class="yoy-val up">+7.7</div>
+      </div>
+      <div class="yoy-row">
+        <div class="yoy-name">UMC<span class="ticker">2303.TW</span></div>
+        <div class="yoy-track"><div class="yoy-zero" style="left:50%"></div><div class="yoy-fill" style="left:50%;width:4.0%;background:var(--up)"></div></div>
+        <div class="yoy-val up">+3.5</div>
+      </div>
+      <div class="yoy-row">
+        <div class="yoy-name">Silergy<span class="ticker">6415.TW</span></div>
+        <div class="yoy-track"><div class="yoy-zero" style="left:50%"></div><div class="yoy-fill" style="left:42.9%;width:7.1%;background:var(--down)"></div></div>
+        <div class="yoy-val down">−6.2</div>
+      </div>
+      <div class="yoy-row">
+        <div class="yoy-name">Macronix<span class="ticker">2337.TW</span></div>
+        <div class="yoy-track"><div class="yoy-zero" style="left:50%"></div><div class="yoy-fill" style="left:36.9%;width:13.1%;background:var(--down)"></div></div>
+        <div class="yoy-val down">−11.5</div>
+      </div>
+    </div>
+    <p class="csrc">출처: 데모</p>
+  </section>
+
+</main>
+
+<footer>
+  <p><b>[데모 · 예시 데이터]</b> 본 대시보드의 모든 수치는 명백히 가상의 시연용(demo) 값이며 실제 공시·시장 데이터가 아닙니다.
+  실데이터는 <b>TWSE 월매출 공시(MOPS, 대만 증권거래소 공개관측정보시스템)</b> 기반으로 대체되어야 합니다.
+  각 기업은 통상 매월 10일경 전월 월매출을 개별 공시합니다.</p>
+  <p>차트 규칙: 모든 막대 차트는 Y축 0에서 시작하여 시각적 왜곡을 방지합니다. 색상: 상승=빨강, 하락=파랑 (한국식 표기).
+  단위 NT$bn = 신대만달러 십억. · LIFE 자산운용 · 기준일 2026-07-01.</p>
+</footer>
+
+</body>
+</html>
