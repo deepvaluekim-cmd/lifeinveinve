@@ -67,14 +67,17 @@ capsule 한 줄 요약 → 주가 반응 → 기업 개요 → 핵심 실적 vs 
 <tr><td>선물</td><td>YM, ES, NQ, RTY price/change_pct/timestamp</td><td>CME / FMP quote fallback</td><td>Yahoo futures</td></tr>
 <tr><td>원자재</td><td>Gold, Silver, WTI, NatGas, Copper</td><td>FMP batch-commodity-quotes</td><td>CME/COMEX/NYMEX</td></tr>
 <tr><td>ETF</td><td>symbol, theme, change_pct, volume</td><td>FMP batch-etf-quotes</td><td>ETF issuer</td></tr>
+<tr><td>섹터 퍼포먼스</td><td>sector_name, korean_name, change_pct, rank</td><td>FMP sector performance</td><td>S&P sector ETF proxy(XLK/XLC/XLF 등)</td></tr>
+<tr><td>시장 히트맵</td><td>symbol, company, sector, industry, market_cap, change_pct, tile_weight</td><td>FMP batch quote + profile/market cap</td><td>Finviz/Koyfin/TradingView capture fallback</td></tr>
 <tr><td>상승/하락 종목</td><td>symbol, change_pct, dollar_volume, reason_label</td><td>FMP gainers/losers + news</td><td>exchange quote bulk</td></tr>
 <tr><td>신고가/신저가</td><td>is_52w_high/low, sector, dollar_volume</td><td>FMP EOD bulk + 252D rolling</td><td>내부 계산</td></tr>
 </tbody></table>
 <h3>그래프 / 표</h3>
 <table><thead><tr><th>위치</th><th>구성</th></tr></thead><tbody>
 <tr><td>주요 지수 표</td><td>지수 / 등락률 / 톤 / 핵심 한 줄</td></tr>
-<tr><td>SVG 1</td><td>ETF Top 5 bar chart</td></tr>
-<tr><td>SVG 2</td><td>ETF Bottom 5 bar chart</td></tr>
+<tr><td>SVG 1</td><td>섹터 퍼포먼스 일간 발산형 horizontal bar chart. x축 -3~+3%, 0선 표시, 양수 green, 음수 dark red, 한글 섹터명 병기</td></tr>
+<tr><td>HTML 2</td><td>시총 가중 시장 히트맵. tile 크기=market_cap 또는 normalized tile_weight, 색상=change_pct, 섹터/산업 라벨 포함</td></tr>
+<tr><td>캡처 fallback</td><td>외부 캡처가 꼭 필요할 때만 Finviz Map, Koyfin heatmap, TradingView stock heatmap 사용. 기본은 데이터 기반 HTML 재생성</td></tr>
 <tr><td>선물/원자재 표</td><td>구분 / 티커 / 가격 / 등락률 / 메모</td></tr>
 <tr><td>상승/하락 종목 표</td><td>티커 / 등락률 / 분류 / 원인 라벨</td></tr>
 </tbody></table>
@@ -84,13 +87,16 @@ capsule 한 줄 요약 → 주가 반응 → 기업 개요 → 핵심 실적 vs 
 
 [절대 규칙]
 - 지수, ETF, 섹터, 종목 수치는 입력값만 사용.
+- 데일리 그래프는 ETF Top/Bottom이 아니라 섹터 퍼포먼스 발산형 차트 + 시장 히트맵을 기본 사용.
+- 섹터 차트는 sector_name, korean_name, change_pct가 모두 있어야 출력.
+- 히트맵은 market_cap 또는 tile_weight가 없으면 동일 크기 tile로 만들고 "동일 가중"이라고 표기.
 - 뉴스 원인은 source_url 또는 source_title이 없으면 "원인 미확인"으로 표기.
 - 상승/하락 종목은 change_pct만 쓰지 말고 dollar_volume 또는 market_cap 확인.
 - 신고가/신저가는 252거래일 rolling high/low 계산값이 없으면 작성 금지.
 - 시장 한 줄은 최소 2개 이상 데이터 driver가 있을 때만 작성.
 
 [출력 섹션]
-시장 한 줄 → 3줄 요약 → 주요 지수 마감 → ETF Top/Bottom SVG → 지수 선물/원자재 → 상승/하락 종목 → 내일 체크포인트 → 데이터 투명성 표.</pre>
+시장 한 줄 → 3줄 요약 → 주요 지수 마감 → 섹터 퍼포먼스 SVG → 시장 히트맵 → 지수 선물/원자재 → 상승/하락 종목 → 내일 체크포인트 → 데이터 투명성 표.</pre>
 
 <h2>3. 주간 시황 랩</h2>
 <p>샘플: <a href="../../daily/2026-06-22-26-lifeinve-weekly-market-wrap.html">2026-06-22-26-lifeinve-weekly-market-wrap.html</a></p>
@@ -126,34 +132,36 @@ capsule 한 줄 요약 → 주가 반응 → 기업 개요 → 핵심 실적 vs 
 <p>샘플: <a href="../../daily/alphasense_expert_call_daily_template.html">alphasense_expert_call_daily_template.html</a></p>
 <h3>필요 데이터</h3>
 <table><thead><tr><th>블록</th><th>필드</th><th>1순위 소스</th><th>보조</th></tr></thead><tbody>
+<tr><td>Must Charts visible page</td><td>date, rank, ticker, headline, call_count, section_summary</td><td>must-charts daily_expert page</td><td>local raw_html_path</td></tr>
 <tr><td>콜 원문</td><td>title, date, source, speaker_role, transcript_text</td><td>AlphaSense local archive</td><td>research_memory.sqlite</td></tr>
-<tr><td>Ticker Coverage</td><td>direct_ticker, read_through_ticker, doc_count</td><td>ticker parser + analyst override</td><td>manual map</td></tr>
-<tr><td>반복 주장</td><td>claim_id, first_seen, last_seen, doc_count</td><td>claim clustering</td><td>LLM extraction</td></tr>
+<tr><td>Ticker Coverage</td><td>direct_ticker, read_through_ticker, doc_count, theme</td><td>Must Charts visible ticker + parser + analyst override</td><td>manual map</td></tr>
+<tr><td>반복 주장</td><td>claim_id, first_seen, last_seen, doc_count, confidence</td><td>claim clustering</td><td>LLM extraction</td></tr>
 <tr><td>수치 근거</td><td>metric, value, unit, source_span</td><td>numeric extraction</td><td>manual check</td></tr>
 <tr><td>반대 증거</td><td>risk_claim, conflicting_source, confidence</td><td>archive search</td><td>news/IR</td></tr>
 </tbody></table>
 <h3>그래프 / 표</h3>
 <table><thead><tr><th>위치</th><th>구성</th></tr></thead><tbody>
-<tr><td>오늘의 핵심 3개</td><td>theme 중심 번호형</td></tr>
+<tr><td>오늘의 한 방</td><td>Must Charts처럼 rank + ticker + 한 줄 thesis. 5개까지 허용</td></tr>
 <tr><td>Ticker Coverage 표</td><td>티커 / 노출 유형 / 콜 수 / 핵심 KPI / 판정</td></tr>
-<tr><td>콜 카드</td><td>role badge / 제목 / 근거 / 투자 연결 / 확인 필요</td></tr>
+<tr><td>콜 카드</td><td>rank badge / ticker / 제목 / 전문가 역할 / 핵심 / 투자 연결 / 체크포인트</td></tr>
 <tr><td>데이터 매핑 표</td><td>블록 / 필드 / 소스 / HTML 위치</td></tr>
 <tr><td>데이터 투명성 표</td><td>private / partial / interpretation 구분</td></tr>
 </tbody></table>
 <h3>프롬프트</h3>
-<pre>너는 life inve AlphaSense 익스퍼트 콜 요약 담당자임.
-아래 INPUT_JSON만 사용해 음슴체로 작성.
+<pre>너는 life inve AlphaSense 익스퍼트 콜 데일리 작성자임.
+아래 INPUT_JSON과 지정 Must Charts daily_expert 링크만 사용해 음슴체로 작성.
 
 [절대 규칙]
+- Must Charts visible page에서 rank, ticker, headline, call_count를 먼저 추출.
 - private transcript 원문은 장문 인용하지 않음.
 - direct ticker와 read-through ticker를 분리.
 - 반복 주장은 doc_count 2 이상일 때만 반복으로 표기.
 - claim에는 first_seen, last_seen, confidence를 붙임.
 - 숫자 근거 없는 qualitative claim은 confidence medium 이하.
-- 투자 연결과 반대 증거를 반드시 같이 작성.
+- 모든 콜 카드에는 투자 연결과 체크포인트/반대 증거를 반드시 같이 작성.
 
 [출력 섹션]
-오늘의 한 줄 → 오늘의 핵심 3개 → Ticker Coverage → 반복 주장 → 콜 카드 2~5개 → 데이터 매핑 → 작성 프롬프트 → 데이터 투명성 표.</pre>
+오늘의 한 줄 → 오늘의 한 방 3~5개 → Ticker Coverage → 콜 카드 3~5개 → 반복 주장/반대 증거 → 데이터 매핑 → 작성 프롬프트 → 데이터 투명성 표.</pre>
 
 <h2>5. 최종 샘플 링크</h2>
 <table><thead><tr><th>문서</th><th>URL</th><th>상태</th></tr></thead><tbody>
