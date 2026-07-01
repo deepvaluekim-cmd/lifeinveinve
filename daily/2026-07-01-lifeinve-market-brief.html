@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>라이프 인베 — 데일리 시황 · 2026-07-01</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --life-green:#608C34;
+    --life-green-light:#8FB85D;
+    --life-ink:#070203;
+    --life-bg:#FFFFFF;
+    --life-line:#E7E6E6;
+    --life-muted:#EDEFEA;
+    --up:#e0392b;      /* 상승=빨강 (한국식) */
+    --down:#1769d6;    /* 하락=파랑 */
+    --urgent:#C0392B;
+    --gray:#6b6f68;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    font-family:"Noto Sans KR","Open Sans",-apple-system,"Segoe UI","Malgun Gothic",sans-serif;
+    color:var(--life-ink);
+    background:var(--life-bg);
+    line-height:1.65;
+    font-size:16px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .num,.pct,.ticker,.mono{
+    font-family:"Open Sans","Noto Sans KR",sans-serif;
+    font-variant-numeric:tabular-nums;
+  }
+  .up{color:var(--up)}
+  .down{color:var(--down)}
+  .flat{color:var(--gray)}
+
+  /* ── Demo banner ── */
+  .demo-banner{
+    background:repeating-linear-gradient(45deg,#fff7e6,#fff7e6 12px,#fff0d1 12px,#fff0d1 24px);
+    border-bottom:1px solid #e8c766;
+    color:#8a5b00;
+    text-align:center;
+    font-size:13px;
+    font-weight:700;
+    padding:8px 16px;
+    letter-spacing:.02em;
+  }
+
+  /* ── Header ── */
+  .life-bar{height:6px;background:var(--life-green)}
+  header.masthead{
+    max-width:860px;margin:0 auto;padding:28px 22px 20px;
+  }
+  .media-name{
+    display:inline-block;
+    font-family:"Open Sans","Noto Sans KR",sans-serif;
+    font-weight:700;font-size:12px;letter-spacing:.14em;text-transform:uppercase;
+    color:#fff;background:var(--life-green);
+    padding:5px 12px;border-radius:3px;
+  }
+  .kicker{
+    margin-top:14px;
+    font-family:"Open Sans","Noto Sans KR",sans-serif;
+    font-size:12.5px;font-weight:700;letter-spacing:.12em;
+    color:var(--life-green);text-transform:uppercase;
+  }
+  h1.title{
+    margin-top:6px;
+    font-size:30px;font-weight:900;line-height:1.25;letter-spacing:-.01em;
+  }
+  .tagline{margin-top:10px;font-size:15px;color:#333;font-weight:500}
+  .meta-line{
+    margin-top:12px;padding-top:12px;border-top:1px solid var(--life-line);
+    font-size:13px;color:var(--gray);
+    font-variant-numeric:tabular-nums;
+  }
+
+  /* ── Sections ── */
+  main{max-width:860px;margin:0 auto;padding:8px 22px 40px}
+  section{margin-top:34px}
+  h2.sec{
+    position:relative;
+    font-size:20px;font-weight:900;letter-spacing:-.01em;
+    padding-bottom:8px;margin-bottom:16px;
+  }
+  h2.sec::after{
+    content:"";position:absolute;left:0;bottom:0;
+    width:52px;height:3px;background:var(--life-green);border-radius:2px;
+  }
+  .demo-tag{
+    display:inline-block;vertical-align:middle;
+    font-family:"Open Sans",sans-serif;font-size:10.5px;font-weight:700;
+    letter-spacing:.06em;color:var(--life-green);
+    border:1px solid var(--life-green-light);border-radius:3px;
+    padding:1px 6px;margin-left:8px;
+    background:#f4f8ee;
+  }
+
+  /* ── 오늘의 한 방 ── */
+  .takeaways{
+    background:#f7faf2;
+    border:1px solid var(--life-muted);
+    border-left:4px solid var(--life-green);
+    border-radius:6px;padding:18px 20px 16px;
+  }
+  .takeaways ol{list-style:none;counter-reset:t}
+  .takeaways li{
+    counter-increment:t;position:relative;
+    padding:9px 0 9px 40px;
+    border-top:1px dashed var(--life-line);
+    font-size:15px;font-weight:500;
+  }
+  .takeaways li:first-child{border-top:none}
+  .takeaways li::before{
+    content:counter(t);
+    position:absolute;left:0;top:9px;
+    width:26px;height:26px;line-height:26px;text-align:center;
+    background:var(--life-green);color:#fff;border-radius:50%;
+    font-family:"Open Sans",sans-serif;font-size:13px;font-weight:700;
+  }
+
+  /* ── 지수 카드 ── */
+  .idx-grid{
+    display:grid;grid-template-columns:repeat(5,1fr);gap:10px;
+  }
+  .idx-card{
+    border:1px solid var(--life-line);border-radius:8px;
+    padding:14px 12px;text-align:center;background:#fff;
+  }
+  .idx-card .label{font-size:12px;color:var(--gray);font-weight:600}
+  .idx-card .val{
+    margin-top:6px;font-size:20px;font-weight:700;
+    font-family:"Open Sans","Noto Sans KR",sans-serif;font-variant-numeric:tabular-nums;
+  }
+  .idx-card .chg{
+    margin-top:3px;font-size:13px;font-weight:700;
+    font-family:"Open Sans",sans-serif;font-variant-numeric:tabular-nums;
+  }
+
+  /* ── 섹터 칩 ── */
+  .chip-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+  .chip-row .lead{
+    font-size:12.5px;font-weight:700;color:var(--gray);
+    align-self:center;margin-right:2px;min-width:56px;
+  }
+  .chip{
+    display:inline-flex;align-items:center;gap:6px;
+    font-size:13px;font-weight:600;
+    padding:5px 11px;border-radius:20px;border:1px solid var(--life-line);
+    font-variant-numeric:tabular-nums;
+  }
+  .chip.up{background:#fdeceb;border-color:#f4c3bd}
+  .chip.down{background:#eaf1fc;border-color:#c3d6f2}
+  .chip .p{font-family:"Open Sans",sans-serif;font-weight:700}
+
+  /* ── 관심종목 ── */
+  .watch li{
+    list-style:none;padding:13px 0;border-top:1px solid var(--life-line);
+    display:flex;gap:14px;align-items:baseline;flex-wrap:wrap;
+  }
+  .watch li:first-child{border-top:none}
+  .watch .tk{
+    font-family:"Open Sans",sans-serif;font-weight:700;font-size:14px;
+    background:var(--life-green);color:#fff;padding:2px 8px;border-radius:4px;
+    white-space:nowrap;
+  }
+  .watch .wp{
+    font-family:"Open Sans",sans-serif;font-weight:700;font-size:14px;
+    font-variant-numeric:tabular-nums;white-space:nowrap;min-width:62px;
+  }
+  .watch .wc{flex:1 1 260px;font-size:14.5px;color:#222;min-width:220px}
+
+  /* ── 이슈·일정 ── */
+  .issues{list-style:none}
+  .issues li{
+    position:relative;padding:8px 0 8px 22px;font-size:14.5px;
+    border-top:1px solid var(--life-line);
+  }
+  .issues li:first-child{border-top:none}
+  .issues li::before{
+    content:"";position:absolute;left:2px;top:15px;
+    width:8px;height:8px;background:var(--life-green-light);border-radius:2px;
+  }
+  .issues .t{
+    font-family:"Open Sans",sans-serif;font-weight:700;color:var(--life-green);
+    font-size:12.5px;margin-right:6px;font-variant-numeric:tabular-nums;
+  }
+
+  /* ── Footer / caveat ── */
+  footer{
+    max-width:860px;margin:0 auto;padding:26px 22px 48px;
+    border-top:2px solid var(--life-green);margin-top:40px;
+  }
+  .foot-brand{font-size:13.5px;font-weight:700;color:var(--life-ink)}
+  .caveat{
+    margin-top:12px;font-size:12px;color:var(--gray);line-height:1.7;
+    background:var(--life-muted);border-radius:6px;padding:12px 14px;
+  }
+
+  @media (max-width:640px){
+    h1.title{font-size:24px}
+    main{padding:8px 16px 32px}
+    header.masthead{padding:24px 16px 18px}
+    .idx-grid{grid-template-columns:repeat(2,1fr)}
+    .idx-card .val{font-size:18px}
+    footer{padding:24px 16px 40px}
+  }
+</style>
+</head>
+<body>
+
+<div class="demo-banner">[데모] 이 페이지는 가상 데이터로 만든 예시 시황입니다 · 실제 시세 아님</div>
+<div class="life-bar"></div>
+
+<header class="masthead">
+  <span class="media-name">라이프 인베 — 데일리 시황</span>
+  <div class="kicker">LIFE ASSET · MARKET BRIEF 2026-07-01</div>
+  <h1 class="title">라이프 인베 — 데일리 시황 · 2026-07-01</h1>
+  <p class="tagline">오늘 시장 한 면 요약</p>
+  <div class="meta-line">수요일 · 2026년 7월 1일 &nbsp;|&nbsp; 미국 마감 시황</div>
+</header>
+
+<main>
+
+  <!-- ② 오늘의 한 방 -->
+  <section>
+    <h2 class="sec">오늘의 한 방 <span class="demo-tag">데모</span></h2>
+    <div class="takeaways">
+      <ol>
+        <li>나스닥 <span class="up num">+2.1%</span> 급등 마감 — 반기 첫날부터 AI 반도체가 지수 끌어올림</li>
+        <li>S&amp;P500 <span class="up num">+1.2%</span> 사상 최고 경신 — 기술주 쏠림 속 폭은 좁음</li>
+        <li>VIX <span class="down num">-8.4%</span> 급락, <span class="num">13.6</span>선 — 위험선호 완전 복귀 신호</li>
+        <li>美 10년물 <span class="num">4.18%</span>로 하락 — 금리 부담 완화가 밸류 랠리에 연료</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ① 주요 지수 -->
+  <section>
+    <h2 class="sec">① 주요 지수 <span class="demo-tag">데모</span></h2>
+    <div class="idx-grid">
+      <div class="idx-card">
+        <div class="label">나스닥</div>
+        <div class="val">20,842</div>
+        <div class="chg up">+2.1% ▲</div>
+      </div>
+      <div class="idx-card">
+        <div class="label">S&amp;P 500</div>
+        <div class="val">6,318</div>
+        <div class="chg up">+1.2% ▲</div>
+      </div>
+      <div class="idx-card">
+        <div class="label">다우</div>
+        <div class="val">43,905</div>
+        <div class="chg up">+0.6% ▲</div>
+      </div>
+      <div class="idx-card">
+        <div class="label">VIX</div>
+        <div class="val">13.6</div>
+        <div class="chg down">-8.4% ▼</div>
+      </div>
+      <div class="idx-card">
+        <div class="label">美 10Y</div>
+        <div class="val">4.18%</div>
+        <div class="chg down">-5bp ▼</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ③ 섹터 동향 -->
+  <section>
+    <h2 class="sec">② 섹터 동향 <span class="demo-tag">데모</span></h2>
+    <div class="chip-row">
+      <span class="lead">상승 ▲</span>
+      <span class="chip up">반도체 <span class="p num">+3.4%</span></span>
+      <span class="chip up">기술 <span class="p num">+2.2%</span></span>
+      <span class="chip up">경기소비 <span class="p num">+1.5%</span></span>
+      <span class="chip up">커뮤니케이션 <span class="p num">+1.1%</span></span>
+    </div>
+    <div class="chip-row">
+      <span class="lead">하락 ▼</span>
+      <span class="chip down">유틸리티 <span class="p num">-1.2%</span></span>
+      <span class="chip down">필수소비 <span class="p num">-0.7%</span></span>
+      <span class="chip down">에너지 <span class="p num">-0.5%</span></span>
+    </div>
+  </section>
+
+  <!-- ④ 관심종목 코멘트 -->
+  <section>
+    <h2 class="sec">③ 관심종목 코멘트 <span class="demo-tag">예시</span></h2>
+    <ul class="watch">
+      <li>
+        <span class="tk">$NVDA</span>
+        <span class="wp up">+4.2%</span>
+        <span class="wc">차세대 가속기 수요 코멘트가 재부각되며 반도체 랠리를 주도했습니다. 시가총액은 다시 사상 최고 구간에 진입했습니다.</span>
+      </li>
+      <li>
+        <span class="tk">$AAPL</span>
+        <span class="wp up">+1.3%</span>
+        <span class="wc">신형 온디바이스 AI 기능 출시 기대가 반영되며 완만하게 상승했습니다. 서비스 매출 성장 스토리가 밸류를 지지하고 있습니다.</span>
+      </li>
+      <li>
+        <span class="tk">$MSFT</span>
+        <span class="wp up">+1.9%</span>
+        <span class="wc">클라우드 가동률 개선 신호에 매수세가 유입됐습니다. 자본지출 부담 우려는 여전히 논쟁거리로 남아 있습니다.</span>
+      </li>
+      <li>
+        <span class="tk">$TSLA</span>
+        <span class="wp down">-2.6%</span>
+        <span class="wc">인도량 우려가 재점화되며 홀로 조정을 받았습니다. 로보택시 상용화 일정이 다음 촉매로 지목되고 있습니다.</span>
+      </li>
+      <li>
+        <span class="tk">$AMZN</span>
+        <span class="wp up">+1.1%</span>
+        <span class="wc">리테일 마진 개선 기대와 물류 효율화 코멘트에 상승했습니다. 광고 부문 성장세가 이익 레버리지의 핵심입니다.</span>
+      </li>
+      <li>
+        <span class="tk">$XOM</span>
+        <span class="wp down">-0.8%</span>
+        <span class="wc">국제 유가 약세에 에너지 섹터와 함께 밀렸습니다. 배당 매력은 유지되지만 단기 모멘텀은 약합니다.</span>
+      </li>
+    </ul>
+  </section>
+
+  <!-- ⑤ 주요 이슈·일정 -->
+  <section>
+    <h2 class="sec">④ 주요 이슈·일정 <span class="demo-tag">데모</span></h2>
+    <ul class="issues">
+      <li><span class="t">매크로</span>6월 ISM 제조업 PMI가 예상을 소폭 상회하며 경기 연착륙 서사를 강화했습니다.</li>
+      <li><span class="t">고용</span>이번 주 후반 6월 고용보고서(비농업 신규고용) 발표를 앞두고 관망세가 일부 남아 있습니다.</li>
+      <li><span class="t">연준</span>다수 위원의 완화적 발언이 이어지며 하반기 금리 인하 기대가 재차 부각됐습니다.</li>
+      <li><span class="t">실적</span>다음 주 대형 은행주를 시작으로 2분기 어닝 시즌 개막이 예정돼 있습니다.</li>
+      <li><span class="t">원자재</span>WTI 유가가 배럴당 60달러대 중반으로 후퇴하며 에너지주에 부담으로 작용했습니다.</li>
+    </ul>
+  </section>
+
+</main>
+
+<footer>
+  <div class="foot-brand">라이프 인베 · 데일리 시황 · 자동 생성</div>
+  <div class="caveat">
+    본 페이지는 <b>자동 생성물</b>이며, 여기 담긴 모든 수치·종목·코멘트는 <b>데모용 가상 데이터</b>입니다.
+    특정 종목의 매수·매도를 권유하는 <b>투자자문이 아닙니다</b>. 모든 수치는 발행 시점 기준이며 실제 시세와 다를 수 있습니다.
+    투자 판단과 그 결과에 대한 책임은 투자자 본인에게 있습니다.
+    <br>브랜드킷 근사색 주의: Muted 그레이·기능 레드는 근사값이며, 라이프 그린 계열(#608C34·#8FB85D·#070203)은 공식 로고 추출값입니다.
+  </div>
+</footer>
+
+</body>
+</html>
