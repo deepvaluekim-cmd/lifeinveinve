@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>life inve — 개발자 전달 패키지</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--green:#3F5C21;--green2:#608C34;--green3:#8FB85D;--ink:#070203;--line:#E7E6E6;--muted:#6b7280;--bg2:#f6f8f2;}
+*{box-sizing:border-box}
+body{margin:0;background:#fff;color:var(--ink);line-height:1.6;
+font-family:"Noto Sans KR","Open Sans",-apple-system,"Segoe UI","Malgun Gothic",sans-serif;}
+.mono{font-family:"Open Sans",ui-monospace,Menlo,monospace;}
+.bar{background:var(--green);color:#fff;padding:28px 22px;}
+.wrap{max-width:1060px;margin:0 auto;padding:0 22px;}
+.logo{display:inline-flex;align-items:center;gap:8px;margin-bottom:8px;}
+.logo .m{width:30px;height:30px;border-radius:7px;background:#fff;color:var(--green);display:grid;place-items:center;font-weight:800;}
+.bar .kick{font-size:12px;letter-spacing:1px;opacity:.85;font-weight:700;}
+.bar h1{margin:6px 0 4px;font-size:25px;font-weight:900;}
+.bar p{margin:0;opacity:.92;font-size:14px;}
+.note{background:var(--bg2);border-left:4px solid var(--green);border-radius:8px;padding:13px 16px;margin:22px 0;font-size:13.5px;color:#33491a;}
+h2{font-size:17px;color:var(--green);border-bottom:2px solid var(--green3);padding-bottom:6px;margin:34px 0 8px;}
+.sub{color:var(--muted);font-size:13px;margin:0 0 14px;}
+table{border-collapse:collapse;width:100%;margin:12px 0;font-size:13px;}
+th,td{border:1px solid var(--line);padding:9px 11px;text-align:left;vertical-align:top;}
+th{background:var(--bg2);color:var(--green);font-weight:700;}
+td a{color:var(--green);font-weight:600;text-decoration:none;}
+td a:hover{text-decoration:underline;}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin:8px 0;}
+@media(max-width:680px){.grid{grid-template-columns:1fr;}}
+.card{border:1px solid var(--line);border-radius:12px;padding:16px;background:#fff;}
+.card h3{margin:0 0 4px;font-size:15px;}
+.card .d{font-size:12.5px;color:var(--muted);margin-bottom:10px;}
+.links a{display:inline-block;font-size:12px;font-weight:600;color:var(--green);text-decoration:none;border:1px solid var(--green3);border-radius:20px;padding:3px 11px;margin:3px 4px 0 0;}
+.links a:hover{background:var(--bg2);}
+.badge{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;background:#eaf3df;color:var(--green);margin-left:6px;vertical-align:middle;}
+.foot{color:var(--muted);font-size:12px;border-top:1px solid var(--line);margin-top:40px;padding:16px 0 60px;}
+code{background:var(--bg2);padding:1px 6px;border-radius:4px;font-size:12px;}
+ul{padding-left:20px;} li{margin:5px 0;font-size:13.5px;}
+</style>
+</head>
+<body>
+<div class="bar"><div class="wrap">
+<div class="logo"><span class="m">Li</span><span style="font-weight:800;letter-spacing:.5px">life inve</span></div>
+<div class="kick">LIFE ASSET · DEVELOPER HANDOFF</div>
+<h1>개발자 전달 패키지 — 데일리 자동 요약</h1>
+<p>소스(섭스택·유튜브·전문가콜·공시·시황) → 매일 자동 요약 → 라이프 인베 HTML → 정적 배포. 이 페이지 하나로 전체 파악.</p>
+</div></div>
+
+<div class="wrap">
+<div class="note">⚠️ 데모 페이지 콘텐츠는 <b>[데모]/예시 데이터</b>입니다(포맷·디자인 레퍼런스). 실데이터는 백엔드 구축 후 자동 발행. 라이브 데모: <a href="index.html">허브</a> · <a href="samples.html">샘플 모음</a>.</div>
+
+<h2>1. 데일리 모드 5종 <span class="badge">완전 별도 페이지</span></h2>
+<p class="sub">각 모드 = 라이브 샘플(포맷 레퍼런스) + 생성 프롬프트/스펙 + 데이터 소스.</p>
+<div class="grid">
+<div class="card"><h3>📰 데일리 시황</h3><div class="d">Market of the Day(지수·Trending·ETF Top&Bottom) + News + 신고가 달성주 + SVG 차트.</div>
+<div class="links"><a href="daily/2026-06-29-lifeinve-market-brief.html" target="_blank">라이브 샘플</a><a href="docs/HTML_STYLE_GUIDE.md" target="_blank">스타일 가이드</a></div></div>
+
+<div class="card"><h3>🎧 데일리 익스퍼트 콜</h3><div class="d">전문가 인터뷰(AlphaSense) 요약 — 종목/주제·역할·핵심요약·시사점·신뢰도(T3).</div>
+<div class="links"><a href="daily/2026-07-01-lifeinve-expert-calls.html" target="_blank">라이브 샘플</a><a href="docs/prompts/PROMPT_lifeinve_expert.md" target="_blank">생성 프롬프트</a></div></div>
+
+<div class="card"><h3>✉️ 데일리 서브스택</h3><div class="d">유료 뉴스레터 한 면 요약 — 오늘의 한 방 + 번호형 메인아이템(티커·배지·출처·본문·인용).</div>
+<div class="links"><a href="substack/2026-07-01-lifeinve-substack-demo.html" target="_blank">라이브 샘플</a><a href="docs/prompts/PROMPT_lifeinve_charts.md" target="_blank">생성 프롬프트</a></div></div>
+
+<div class="card"><h3>🎥 데일리 유튜브</h3><div class="d">트래킹 채널 RSS 신규감지 → 자막 요약(16영상 샘플). +유튜브 링크추가 버튼.</div>
+<div class="links"><a href="youtube/2026-07-01-lifeinve-youtube-daily.html" target="_blank">라이브 샘플</a><a href="docs/prompts/PROMPT_lifeinve_youtube.md" target="_blank">생성 프롬프트</a></div></div>
+
+<div class="card"><h3>📅 실적/컨콜 요약</h3><div class="d">고정 골격(타임라인캡슐→실적vs컨센→서프라이즈→가이던스→Q&A) + SVG 차트 + 데이터 투명성 표.</div>
+<div class="links"><a href="earnings/SMTC_FQ1FY27.html" target="_blank">라이브 샘플(SMTC)</a><a href="docs/HTML_STYLE_GUIDE.md" target="_blank">골격 §6</a></div></div>
+
+<div class="card"><h3>📋 복붙 타임라인 (텍스트)</h3><div class="d">시황 요약을 메신저에 그대로 붙여넣는 텍스트(md). 5섹션 프로페셔널 톤.</div>
+<div class="links"><a href="daily/timeline/2026-06-30-life-timeline.md" target="_blank">예시</a><a href="daily/timeline/TEMPLATE_life-timeline.md" target="_blank">템플릿</a></div></div>
+</div>
+
+<h2>2. 핵심 문서 (읽는 순서)</h2>
+<table>
+<thead><tr><th>#</th><th>문서</th><th>내용</th></tr></thead>
+<tbody>
+<tr><td>1</td><td><a href="docs/DEV_PACKAGE.md" target="_blank">DEV_PACKAGE.md</a></td><td>본 패키지 개요(시작점)</td></tr>
+<tr><td>2</td><td><a href="docs/BACKEND_SPEC.md" target="_blank">BACKEND_SPEC.md</a></td><td>★DB 스키마 + REST API + 수집 잡(cron) + 생성기 3종</td></tr>
+<tr><td>3</td><td><a href="docs/HTML_STYLE_GUIDE.md" target="_blank">HTML_STYLE_GUIDE.md</a></td><td>색·폰트·문체·구성요소·기술규칙·실적 골격</td></tr>
+<tr><td>4</td><td><a href="docs/DEV_HANDOFF_요약생성.md" target="_blank">DEV_HANDOFF_요약생성.md</a></td><td>요약 포맷 상세 + Tier 검증</td></tr>
+<tr><td>5</td><td><a href="docs/prompts/PROMPT_lifeinve_charts.md" target="_blank">PROMPT_lifeinve_charts</a> · <a href="docs/prompts/PROMPT_lifeinve_expert.md" target="_blank">expert</a> · <a href="docs/prompts/PROMPT_lifeinve_youtube.md" target="_blank">youtube</a></td><td>모드별 생성 프롬프트</td></tr>
+</tbody>
+</table>
+
+<h2>3. 공통 규격</h2>
+<ul>
+<li><b>브랜드</b>: 짙은 그린 <code>#3F5C21</code> / <code>#608C34</code> / <code>#8FB85D</code>, ink <code>#070203</code>, 화이트 배경. 폰트 <code>Noto Sans KR</code>+<code>Open Sans</code>. 등락 상승=빨강 <code>#e0392b</code>/하락=파랑 <code>#1769d6</code>(한국식).</li>
+<li><b>문체</b>: 프로페셔널 압축 서술체(헤드=음슴체, 본문=완전문), fact 위주, 무출처 수치 금지.</li>
+<li><b>산출물</b>: 자기완결 단일 HTML(inline style+인라인 SVG, 외부 JS 없음, 웹폰트 CDN만), 반응형. 슬러그 <code>YYMMDD-lifeinve-{mode}-{hash6}.html</code>.</li>
+<li><b>숫자 검증(Tier)</b>: T1 SEC(100%) &gt; T2 IR(80%) &gt; T4 웹컨센(80%) &gt; T3 트랜스크립트·자막·전문가콜(70%) &gt; E 산정(≤75%). 각 값에 출처·상태 태깅.</li>
+<li><b>보안</b>: AlphaSense/Substack 자격증명은 secret manager에만 — 코드·레포·DB 평문 금지.</li>
+</ul>
+
+<h2>4. 프론트 연동 (목업 → API)</h2>
+<p class="sub">현 <code>index.html</code>은 목업 데이터. 아래를 API 호출로 교체.</p>
+<ul>
+<li><code>stocks[]</code> → <code>/stocks</code>, <code>/stocks/{t}</code> · 신고가 트래커 <code>_hi</code> → <code>/highs?country=&period=</code></li>
+<li><code>earnings[]</code> → <code>/earnings</code> · <code>reports</code> → <code>/daily?kind=market|expert|substack|youtube</code></li>
+<li><code>ytItems</code> → <code>/yt/*</code>(채널 CRUD·+링크추가) · <code>DASHBOARDS[]</code> → <code>/dashboards</code> · 전역검색 → <code>/search</code></li>
+<li>코멘트 컴포즈(제목·본문·종목/ETF연결·카테고리·태그·<b>이미지첨부</b>) → <code>POST /comment</code></li>
+</ul>
+
+<div class="foot">
+<b style="color:var(--green)">life inve</b> · 개발자 전달 패키지 · Internal. Not investment advice.<br>
+공유 링크: https://deepvaluekim-cmd.github.io/lifeinveinve/dev.html
+</div>
+</div>
+</body>
+</html>
