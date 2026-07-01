@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>life inve - 시황 멘트 생성 스펙 / 참조 소스 / 프롬프트</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--green:#3F5C21;--green-mid:#608C34;--green-light:#8FB85D;--ink:#070203;--bg:#FFFFFF;--line:#E7E6E6;--muted:#6b7280;--tint:#eaf3df;--warn:#fff4e5;}
+*{box-sizing:border-box}body{margin:0;background:#fff;color:var(--ink);line-height:1.65;font-family:"Noto Sans KR","Open Sans",-apple-system,"Segoe UI","Malgun Gothic",sans-serif;font-variant-numeric:tabular-nums}.hdr{background:var(--green);color:#fff;padding:26px 0 24px}.in,.wrap{max-width:1080px;margin:0 auto;padding:0 22px}.brandrow{display:flex;gap:10px;align-items:center;margin-bottom:14px}.logo{width:34px;height:34px;border-radius:8px;background:#fff;color:var(--green);font-weight:900;display:grid;place-items:center}.brandname{font-weight:900;letter-spacing:.5px}.kicker{font-size:.76em;font-weight:700;letter-spacing:1.5px;color:#d7e6c4;text-transform:uppercase}.hdr h1{font-size:1.75em;margin:.15em 0 .1em;color:#fff;font-weight:900}.meta{color:#d7e6c4;font-size:.9em}.wrap{padding-bottom:80px}.capsule{background:var(--tint);border:1px solid var(--line);border-left:4px solid var(--green);border-radius:8px;padding:14px 18px;margin:18px 0}.warn{background:var(--warn);border-left-color:#d8982b}h2{color:var(--green);margin-top:38px;border-bottom:2px solid var(--green);padding-bottom:6px;font-size:1.2em;font-weight:900}h3{color:var(--green);font-size:1.03em;margin:22px 0 8px}table{border-collapse:collapse;width:100%;margin:12px 0;background:#fff;border-radius:8px;overflow:hidden;font-size:.9em;border:1px solid var(--line)}th,td{padding:9px 11px;text-align:left;border:1px solid var(--line);vertical-align:top}th{background:var(--tint);color:var(--green);font-weight:700;white-space:nowrap}tr:nth-child(even) td{background:#fafbf7}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#f7faf2;border:1px solid var(--line);border-left:4px solid var(--green);border-radius:8px;padding:14px 16px;font-family:"Open Sans","Noto Sans KR",monospace;font-size:.88em;line-height:1.55}.tag{display:inline-block;font-size:.72em;font-weight:700;padding:1px 7px;border-radius:10px;margin-right:6px;background:var(--tint);color:var(--green)}a{color:var(--green-mid);overflow-wrap:anywhere}.foot{color:var(--muted);font-size:.82em;margin-top:42px;border-top:1px solid var(--line);padding-top:14px}@media(max-width:640px){.hdr h1{font-size:1.4em}table{display:block;overflow-x:auto;white-space:nowrap}}
+</style>
+</head>
+<body>
+<header class="hdr"><div class="in"><div class="brandrow"><div class="logo">Li</div><div class="brandname">life inve</div></div><div class="kicker">LIFE ASSET · MARKET COMMENTARY PROMPT</div><h1>시황 멘트 생성 스펙 / 참조 소스 / 프롬프트</h1><div class="meta">시장 한 줄 · 3줄 요약 · 섹터/종목 원인 라벨 · 내일 체크포인트 생성 규칙</div></div></header>
+<main class="wrap">
+<div class="capsule"><b>핵심 계약</b> 시황 멘트는 외부 코멘트를 그대로 요약하는 글이 아님. 먼저 가격/섹터/히트맵/금리/원자재 데이터로 driver를 뽑고, S&P/Nasdaq/Reuters/Must Charts 등 코멘트 소스로 원인 후보를 검증한 뒤 음슴체 문장으로 압축함.</div>
+<div class="capsule warn"><b>복붙용 MD</b> 실제 생성기에 넣을 프롬프트는 <a href="PROMPT_lifeinve_market_commentary.md">PROMPT_lifeinve_market_commentary.md</a>를 사용. 이 HTML은 배포용 스펙과 시각적 확인용 문서임.</div>
+
+<h2>1. 산출 멘트 위치</h2>
+<table><thead><tr><th>HTML 위치</th><th>문장 수</th><th>역할</th><th>근거</th></tr></thead><tbody>
+<tr><td>시장 한 줄</td><td>1~2문장</td><td>지수 결과 + 당일 핵심 driver + 반대축을 한 번에 압축</td><td>index_close, sector_rank, heatmap_leaders, rates/commodities</td></tr>
+<tr><td>3줄 요약</td><td>3개 불릿</td><td>1번 지수/섹터, 2번 종목/테마, 3번 매크로/스타일/리스크</td><td>driver_score 상위 3개</td></tr>
+<tr><td>섹터 해석</td><td>2~4문장</td><td>상승/하락 섹터의 원인 후보와 히트맵 종목 연결</td><td>sector_performance + top_symbols_by_sector</td></tr>
+<tr><td>상승/하락 종목 원인 라벨</td><td>종목당 1개</td><td>뉴스/공시/수급/실적/테마 중 하나로 짧게 분류</td><td>FMP news, company press, Reuters/MarketWatch, internal note</td></tr>
+<tr><td>내일 체크포인트</td><td>3~5개</td><td>오늘의 해석을 검증할 다음 데이터/이벤트</td><td>calendar, earnings, macro release, rates, follow-through</td></tr>
+</tbody></table>
+
+<h2>2. 데이터 레이어</h2>
+<table><thead><tr><th>레이어</th><th>필수 필드</th><th>1순위 소스</th><th>용도</th></tr></thead><tbody>
+<tr><td>Index</td><td>SPX, Nasdaq, Dow, Russell close/change_pct, intraday_high_low</td><td>FMP quote / 공식 index provider</td><td>시장 방향성 문장</td></tr>
+<tr><td>Sector</td><td>sector_name, korean_name, change_pct, rank, dispersion</td><td>FMP sector performance / S&P sector ETF proxy</td><td>주도/하락 섹터 문장</td></tr>
+<tr><td>Heatmap</td><td>symbol, sector, industry, market_cap, change_pct, dollar_volume</td><td>FMP batch quote + profile</td><td>주도주/압박주 연결</td></tr>
+<tr><td>Macro</td><td>10Y, 2Y, DXY, WTI, Gold, Copper, VIX, Fed pricing</td><td>Treasury/FRED/CME/FMP commodity quote</td><td>금리·달러·유가·위험선호 설명</td></tr>
+<tr><td>Style/ETF</td><td>QQQ, IWM, RSP, TLT, HYG, XLU, XLK, XLC, SOXX, SMH 등</td><td>FMP ETF quote / ETF issuer</td><td>성장/방어/반도체/채권 로테이션</td></tr>
+<tr><td>News/Catalyst</td><td>source_title, source_url, timestamp, related_symbols, catalyst_type</td><td>Reuters, MarketWatch, Nasdaq, company IR, Must Charts/internal</td><td>원인 라벨과 체크포인트</td></tr>
+</tbody></table>
+
+<h2>3. 코멘트 참조 소스</h2>
+<table><thead><tr><th>우선순위</th><th>사이트</th><th>참조 방식</th><th>본문 사용법</th></tr></thead><tbody>
+<tr><td>C1</td><td><a href="https://www.spglobal.com/spdji/en/research-insights/commentary/">S&P Dow Jones Indices Commentary</a></td><td>Daily Index Insights, 섹터/지수/자산군 관점 확인</td><td>지수/섹터 움직임의 공식 index lens로 사용. 문장에 "S&P 관점"이라고 직접 쓰기보다 데이터 투명성 표에 출처 표기</td></tr>
+<tr><td>C1</td><td><a href="https://www.spglobal.com/market-intelligence/en/news-insights">S&P Global Market Intelligence News & Insights</a></td><td>섹터별 뉴스/시장 driver 확인</td><td>섹터 원인 후보 검증. 유료/제한 내용은 보이는 제목/요약만 사용</td></tr>
+<tr><td>C1</td><td><a href="https://www.nasdaq.com/market-activity">Nasdaq Market Activity</a></td><td>시장 시간, 종목/캘린더/market activity 확인</td><td>거래정지, 이벤트, earnings calendar, 종목별 market activity 보조 확인</td></tr>
+<tr><td>C2</td><td><a href="https://www.reuters.com/markets/">Reuters Markets</a> market wrap / Investing.com Reuters syndicated article</td><td>장중/마감 원인 후보 확인</td><td>"Reuters가 원인으로 지목" 식으로 단정하지 않고, data driver와 맞을 때만 catalyst 후보로 반영</td></tr>
+<tr><td>C2</td><td><a href="https://www.marketwatch.com/">MarketWatch</a>, <a href="https://www.morningstar.com/markets">Morningstar Markets</a></td><td>시장 뉴스/섹터/종목 headline 보강</td><td>종목 원인 라벨과 대체 market wrap 확인</td></tr>
+<tr><td>C3</td><td><a href="https://www.edwardjones.com/us-en/market-news-insights/stock-market-news/daily-market-recap">Edward Jones Daily Market Recap</a>, <a href="https://www.schwab.com/learn/market-commentary">Schwab Market Commentary</a>, <a href="https://www.blackrock.com/us/individual/insights/blackrock-investment-institute/weekly-commentary">BlackRock Weekly Commentary</a></td><td>하우스 뷰/주간 맥락 확인</td><td>데일리 원인보다 regime/다음 주 관전 포인트에 사용</td></tr>
+<tr><td>C0 내부</td><td>Must Charts daily_sitwhang, Options Oracle, KEDM Lite, TMTB Morning Wrap, HFIR, ChinaTalk</td><td>사용자가 지정한 내부 레퍼런스/로컬 DB 우선 확인</td><td>LifeInve 시황 톤과 아이템 선정 기준. 외부 기사보다 내부 레퍼런스가 있으면 먼저 반영</td></tr>
+</tbody></table>
+
+<h3>3-1. 참조 소스 수집 절차</h3>
+<table><thead><tr><th>순서</th><th>액션</th><th>추출 필드</th><th>문장 반영 조건</th></tr></thead><tbody>
+<tr><td>1</td><td>FMP/공식 지수 데이터로 market_snapshot 생성</td><td>indices, sectors, heatmap, etfs, macro, futures, commodities</td><td>수치가 없으면 해당 문장 작성 금지</td></tr>
+<tr><td>2</td><td>S&P DJI Commentary와 S&P Global MI에서 지수/섹터 driver 검색</td><td>source_name, source_url, title, timestamp, mentioned_drivers</td><td>지수/섹터 문장 보강. 유료 본문은 보이는 제목/요약만 사용</td></tr>
+<tr><td>3</td><td>Nasdaq Market Activity에서 종목 이벤트/earnings calendar 대조</td><td>related_symbols, event_type, session, timestamp</td><td>종목 원인 라벨 또는 내일 체크포인트에만 사용</td></tr>
+<tr><td>4</td><td>Reuters/MarketWatch/Morningstar market wrap으로 catalyst 후보 대조</td><td>headline_driver, cited_sector, cited_symbols, macro_context</td><td>가격 데이터와 방향이 맞을 때만 confirmed_driver로 승격</td></tr>
+<tr><td>5</td><td>Must Charts/Options Oracle/내부 DB가 있으면 톤과 아이템 우선순위 대조</td><td>internal_theme, repeated_claim, ticker_priority</td><td>LifeInve 문장 순서와 강조 종목 선정에 반영</td></tr>
+</tbody></table>
+
+<h3>3-2. source_commentary 입력 스키마</h3>
+<pre>{
+  "source_name": "S&P Dow Jones Indices Commentary",
+  "source_url": "https://www.spglobal.com/spdji/en/research-insights/commentary/",
+  "title": "Daily Index Insights 또는 확인 가능한 기사/코멘트 제목",
+  "timestamp": "2026-07-01T16:30:00-04:00",
+  "used_for": "index | sector | symbol | macro | checkpoint",
+  "mentioned_drivers": ["semiconductor equipment", "AI data center power", "rates"],
+  "related_symbols": ["SOXX", "SMH", "BE", "VRT"],
+  "confidence": "high | medium | low",
+  "quote_policy": "요약만 사용, 장문 인용 금지"
+}</pre>
+
+<h3>3-3. 수집용 검색어 예시</h3>
+<table><thead><tr><th>목적</th><th>검색/확인 문구</th><th>주의</th></tr></thead><tbody>
+<tr><td>S&P 지수/섹터 코멘트</td><td>site:spglobal.com/spdji/en/research-insights/commentary Daily Index Insights {YYYY-MM-DD}</td><td>날짜가 없으면 최신순 확인 후 as_of 표기</td></tr>
+<tr><td>Reuters 마감 원인</td><td>Reuters Wall Street closes {YYYY-MM-DD} S&P 500 Nasdaq sector</td><td>제목/요약/공개 본문 범위만 사용</td></tr>
+<tr><td>Nasdaq 종목 이벤트</td><td>Nasdaq market activity {TICKER} earnings after hours</td><td>종목별 이벤트와 가격 반응을 분리</td></tr>
+<tr><td>MarketWatch 보강</td><td>MarketWatch stock market today {YYYY-MM-DD} sector</td><td>원인 단정이 아니라 보조 confirmation으로 사용</td></tr>
+<tr><td>내부 레퍼런스</td><td>Must Charts daily_sitwhang {YYYY-MM-DD} / Options Oracle weekly wrap</td><td>사용자 지정 레퍼런스가 있으면 외부 코멘트보다 먼저 반영</td></tr>
+</tbody></table>
+
+<h2>4. 멘트 생성 알고리즘</h2>
+<table><thead><tr><th>단계</th><th>작업</th><th>출력</th></tr></thead><tbody>
+<tr><td>1</td><td>가격 데이터 정리: 지수, 섹터, 히트맵, ETF, 금리, 원자재, VIX, 상승/하락 종목</td><td>raw_market_snapshot</td></tr>
+<tr><td>2</td><td>driver_score 계산: 절대 등락률, 시총 영향, 거래대금, 섹터 확산, 뉴스 일치도</td><td>top_drivers[1..5]</td></tr>
+<tr><td>3</td><td>코멘트 소스 대조: S&P/Nasdaq/Reuters/Must Charts 등에서 같은 테마가 확인되는지 체크</td><td>confirmed_driver / unconfirmed_driver</td></tr>
+<tr><td>4</td><td>문장 생성: index result → leading driver → lagging driver → macro/style context 순서</td><td>market_one_liner, bullets</td></tr>
+<tr><td>5</td><td>검증: 숫자 누락, 출처 누락, 인과 단정, 과장 표현 제거</td><td>publish_ready_commentary</td></tr>
+</tbody></table>
+
+<h2>5. 문장 템플릿</h2>
+<pre>[시장 한 줄]
+{SPX} {spx_change}%, {Nasdaq} {nasdaq_change}%.
+{top_sector_kr} {top_sector_change}%가 {leader_symbols} 중심으로 지수 {주도/방어}했고, {bottom_sector_kr} {bottom_sector_change}%는 {laggard_symbols} 영향으로 약세였음.
+
+[섹터 로테이션]
+상승 상위는 {sector_top_1}/{sector_top_2}/{sector_top_3}, 하락 상위는 {sector_bottom_1}/{sector_bottom_2}/{sector_bottom_3}.
+섹터 간 스프레드가 {sector_spread}p로 확대돼 단순 지수 상승보다 내부 로테이션이 더 컸음.
+
+[매크로 연결]
+10Y {teny_change}bp, WTI {wti_change}%, Gold {gold_change}%.
+금리/유가/달러 중 {dominant_macro}가 당일 스타일 {growth/value/defensive} 선호를 설명하는 보조 변수였음.
+
+[원인 라벨]
+{symbol} {change_pct}%: {source_title}에서 확인된 {catalyst_type}. 가격 반응은 확인됐으나 실적/가이던스 영향은 추가 확인 필요.
+
+[체크포인트]
+내일은 {driver}의 follow-through, {macro_event}, {earnings_event}, {sector_proxy} 상대강도 확인 필요.</pre>
+
+<h2>6. 프롬프트</h2>
+<pre>너는 life inve 데일리 시황 멘트 작성자임.
+아래 INPUT_JSON과 source_commentary 목록만 사용해 한국어 음슴체 시황 멘트를 작성.
+
+[입력 필수]
+- market_snapshot.indices: Dow, S&P 500, Nasdaq, Russell close/change_pct.
+- market_snapshot.sectors: sector_name, korean_name, change_pct, rank.
+- market_snapshot.heatmap: symbol, sector, market_cap, change_pct, dollar_volume.
+- market_snapshot.macro: 10Y, 2Y, DXY, WTI, Gold, Copper, VIX.
+- market_snapshot.etfs: QQQ, IWM, RSP, TLT, HYG, XLU, XLK, XLC, SOXX, SMH 등.
+- source_commentary: source_name, source_url, title, timestamp, used_for, mentioned_drivers, related_symbols, confidence, quote_policy.
+
+[절대 규칙]
+- 숫자는 INPUT_JSON에 있는 값만 사용.
+- 시장 한 줄은 최소 2개 이상 데이터 driver가 있을 때만 작성.
+- "왜 올랐는지"는 가격 데이터 + source_commentary가 동시에 맞을 때만 단정.
+- 코멘트 소스가 없으면 "데이터상 관찰"과 "원인 미확인"을 분리.
+- source_commentary의 used_for가 맞지 않는 소스는 해당 문장에 쓰지 말 것. 예: macro 소스를 종목 원인 라벨로 전용 금지.
+- S&P/Nasdaq/Reuters/MarketWatch/Must Charts 원문은 장문 인용하지 않고 요약만 사용.
+- 지수 상승과 모든 종목 상승을 혼동하지 말 것. breadth/sector dispersion이 없으면 "광범위한 랠리" 금지.
+- 내일 체크포인트는 실제 calendar/event/price level이 있을 때만 작성.
+
+[출력 섹션]
+시장 한 줄 → 3줄 요약 → 주요 지수 마감 → 섹터 퍼포먼스 해석 → 시장 히트맵 해석 → 상승/하락 종목 원인 라벨 → 내일 체크포인트 → 데이터 투명성 표.
+
+[데이터 투명성 표]
+지표 | 값/필드 | 출처 | 상태(fact/reported/partial/private/interpretation) | 비고.</pre>
+
+<h2>7. 검증 게이트</h2>
+<table><thead><tr><th>체크</th><th>통과 기준</th><th>실패 시 문구</th></tr></thead><tbody>
+<tr><td>인과 단정</td><td>가격 driver와 코멘트 소스가 모두 일치</td><td>"원인 후보" 또는 "데이터상 관찰"로 낮춤</td></tr>
+<tr><td>광범위한 랠리</td><td>sector positive count, advance/decline, equal-weight index 확인</td><td>"지수는 상승했으나 내부 확산은 미확인"으로 표기</td></tr>
+<tr><td>섹터 해석</td><td>sector change_pct + 해당 섹터 대형주 heatmap 일치</td><td>섹터 수치만 쓰고 원인 설명 생략</td></tr>
+<tr><td>종목 원인</td><td>source_url/source_title/timestamp 존재</td><td>"원인 미확인" 라벨</td></tr>
+<tr><td>매크로 연결</td><td>금리/달러/유가/원자재 change와 스타일 ETF 방향성 일치</td><td>매크로 문장 삭제</td></tr>
+</tbody></table>
+
+<div class="foot">life inve · market commentary prompt spec · Internal research note. Not investment advice.</div>
+</main>
+</body>
+</html>

@@ -44,6 +44,7 @@
 <tr><td>사업 부문 표</td><td>segment_revenue_by_year, segment_yoy, avg_growth</td><td>회사 10-K/IR segment table + FMP segmentation</td><td>YoY = current / prior - 1</td></tr>
 <tr><td>섹터 퍼포먼스</td><td>sector_name, korean_name, change_pct</td><td>FMP sector performance / S&P sector ETF proxy</td><td>proxy ETF와 방향성 대조</td></tr>
 <tr><td>시장 히트맵</td><td>symbol, market_cap, sector, industry, change_pct</td><td>FMP batch quote + profile/market cap</td><td>박스 크기 합계, 색상 범위, 기준시각 표기</td></tr>
+<tr><td>시황 멘트</td><td>driver_score, source_commentary, confirmed_driver</td><td><a href="lifeinve_market_commentary_prompt_spec.html">시황 멘트 생성 스펙</a> + FMP/S&P/Nasdaq/Reuters/Must Charts</td><td>가격 데이터와 코멘트 소스가 동시에 맞을 때만 인과 단정</td></tr>
 </tbody></table>
 
 <h2>4. 공통 프롬프트</h2>
@@ -86,6 +87,7 @@
 
 <h2>6. 공식 데이터 문서 링크</h2>
 <table><thead><tr><th>용도</th><th>공식 문서</th><th>적용</th></tr></thead><tbody>
+<tr><td>시황 멘트 작성</td><td><a href="lifeinve_market_commentary_prompt_spec.html">LifeInve Market Commentary Prompt Spec</a></td><td>시장 한 줄, 3줄 요약, 섹터 해석, 종목 원인 라벨의 참조 소스와 생성 프롬프트</td></tr>
 <tr><td>손익계산서</td><td><a href="https://site.financialmodelingprep.com/developer/docs/stable/income-statement">FMP Income Statement API</a></td><td>매출, 매출총이익, 영업이익, 순이익, EPS</td></tr>
 <tr><td>손익 성장률</td><td><a href="https://site.financialmodelingprep.com/developer/docs/stable/income-statement-growth">FMP Income Statement Growth API</a></td><td>매출/이익 YoY 성장률</td></tr>
 <tr><td>제품별 매출</td><td><a href="https://site.financialmodelingprep.com/developer/docs/stable/revenue-product-segmentation">FMP Revenue Product Segmentation API</a></td><td>사업부문/제품별 매출 구성</td></tr>

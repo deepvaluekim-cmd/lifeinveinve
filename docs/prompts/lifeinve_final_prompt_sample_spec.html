@@ -18,7 +18,7 @@
 <div class="capsule"><b>최종 계약</b> 모든 문서는 공통 원칙 프롬프트를 먼저 적용한 뒤, 초록 헤더, capsule 한 줄, 표, SVG 차트, Q&A/Day-by-Day/Call Card, 데이터 투명성 표를 기본 구조로 사용함. 샘플은 모두 life inve 템플릿 버전으로 배포됨.</div>
 
 <h2>0. 공통 규칙</h2>
-<p>공통 원칙 프롬프트: <a href="lifeinve_common_prompt_principles.html">lifeinve_common_prompt_principles.html</a></p>
+<p>공통 원칙 프롬프트: <a href="lifeinve_common_prompt_principles.html">lifeinve_common_prompt_principles.html</a> · 시황 멘트 전용 스펙: <a href="lifeinve_market_commentary_prompt_spec.html">lifeinve_market_commentary_prompt_spec.html</a></p>
 <table><thead><tr><th>항목</th><th>정의</th></tr></thead><tbody>
 <tr><td>문체</td><td>라이프자산운용 리서치 톤. 숫자 먼저, 해석 나중. 음슴체.</td></tr>
 <tr><td>상태값</td><td><span class="tag">fact</span><span class="tag">reported</span><span class="tag">partial</span><span class="tag">estimate</span><span class="tag">private</span></td></tr>
@@ -62,7 +62,7 @@
 capsule 한 줄 요약 → 주가 반응 → 기업 개요 → 핵심 실적 vs 컨센서스 → SVG 차트 설명 → 경영진 메시지 → 서프라이즈 포인트 → KPI → 가이던스 → Q&A → 데이터 투명성 표.</pre>
 
 <h2>2. 데일리 시황</h2>
-<p>샘플: <a href="../../daily/2026-07-01-lifeinve-market-brief-v2.html">2026-07-01-lifeinve-market-brief-v2.html</a></p>
+<p>샘플: <a href="../../daily/2026-07-01-lifeinve-market-brief-v2.html">2026-07-01-lifeinve-market-brief-v2.html</a> · 멘트 생성 프롬프트: <a href="lifeinve_market_commentary_prompt_spec.html">lifeinve_market_commentary_prompt_spec.html</a></p>
 <h3>필요 데이터</h3>
 <table><thead><tr><th>블록</th><th>필드</th><th>1순위 소스</th><th>보조</th></tr></thead><tbody>
 <tr><td>주요 지수</td><td>Dow, S&P 500, Nasdaq, Russell close/change_pct</td><td>FMP batch-index-quotes</td><td>index official</td></tr>
@@ -73,6 +73,8 @@ capsule 한 줄 요약 → 주가 반응 → 기업 개요 → 핵심 실적 vs 
 <tr><td>시장 히트맵</td><td>symbol, company, sector, industry, market_cap, change_pct, tile_weight</td><td>FMP batch quote + profile/market cap</td><td>Finviz/Koyfin/TradingView capture fallback</td></tr>
 <tr><td>상승/하락 종목</td><td>symbol, change_pct, dollar_volume, reason_label</td><td>FMP gainers/losers + news</td><td>exchange quote bulk</td></tr>
 <tr><td>신고가/신저가</td><td>is_52w_high/low, sector, dollar_volume</td><td>FMP EOD bulk + 252D rolling</td><td>내부 계산</td></tr>
+<tr><td>시황 멘트 driver</td><td>driver_score, top_drivers, confirmed_driver, unconfirmed_driver</td><td>내부 계산: 지수·섹터·히트맵·ETF·매크로·뉴스 일치도</td><td>source_commentary로 검증</td></tr>
+<tr><td>참조 코멘트</td><td>source_name, source_url, title, timestamp, used_for, mentioned_drivers, related_symbols, confidence, quote_policy</td><td>S&P DJI, S&P Global MI, Nasdaq, Reuters, MarketWatch, Morningstar, Must Charts</td><td>보이는 제목/요약만 사용, 원문 장문 인용 금지</td></tr>
 </tbody></table>
 <h3>그래프 / 표</h3>
 <table><thead><tr><th>위치</th><th>구성</th></tr></thead><tbody>
@@ -96,6 +98,8 @@ capsule 한 줄 요약 → 주가 반응 → 기업 개요 → 핵심 실적 vs 
 - 상승/하락 종목은 change_pct만 쓰지 말고 dollar_volume 또는 market_cap 확인.
 - 신고가/신저가는 252거래일 rolling high/low 계산값이 없으면 작성 금지.
 - 시장 한 줄은 최소 2개 이상 데이터 driver가 있을 때만 작성.
+- 왜 올랐는지/왜 내렸는지는 가격 데이터와 source_commentary가 동시에 맞을 때만 단정.
+- source_commentary가 없으면 "데이터상 관찰"과 "원인 미확인"을 분리.
 
 [출력 섹션]
 시장 한 줄 → 3줄 요약 → 주요 지수 마감 → 섹터 퍼포먼스 SVG → 시장 히트맵 → 지수 선물/원자재 → 상승/하락 종목 → 내일 체크포인트 → 데이터 투명성 표.</pre>
@@ -198,6 +202,8 @@ capsule 한 줄 요약 → 주가 반응 → 기업 개요 → 핵심 실적 vs 
 <h2>6. 최종 샘플 링크</h2>
 <table><thead><tr><th>문서</th><th>URL</th><th>상태</th></tr></thead><tbody>
 <tr><td>공통 원칙 프롬프트</td><td><a href="lifeinve_common_prompt_principles.html">docs/prompts/lifeinve_common_prompt_principles.html</a></td><td>배포 완료</td></tr>
+<tr><td>시황 멘트 생성 스펙</td><td><a href="lifeinve_market_commentary_prompt_spec.html">docs/prompts/lifeinve_market_commentary_prompt_spec.html</a></td><td>배포 완료</td></tr>
+<tr><td>시황 멘트 복붙용 MD</td><td><a href="PROMPT_lifeinve_market_commentary.md">docs/prompts/PROMPT_lifeinve_market_commentary.md</a></td><td>작성 완료</td></tr>
 <tr><td>실적 요약 - AVAV</td><td><a href="../../earnings/AVAV_FQ4FY26.html">earnings/AVAV_FQ4FY26.html</a></td><td>배포 완료</td></tr>
 <tr><td>실적 기준 - SMTC</td><td><a href="../../earnings/SMTC_FQ1FY27.html">earnings/SMTC_FQ1FY27.html</a></td><td>기준</td></tr>
 <tr><td>데일리 시황</td><td><a href="../../daily/2026-07-01-lifeinve-market-brief-v2.html">daily/2026-07-01-lifeinve-market-brief-v2.html</a></td><td>배포 완료</td></tr>
