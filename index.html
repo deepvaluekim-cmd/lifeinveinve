@@ -57,9 +57,10 @@ h1,h2,h3{letter-spacing:-0.02em}
       <button onclick="topTab('local')" data-tab="local" class="tabbtn h-full px-3 text-sm border-b-2 border-transparent text-slate-500">타임라인</button>
       <button onclick="topTab('global')" data-tab="global" class="tabbtn h-full px-3 text-sm border-b-2 border-transparent text-slate-500 flex items-center gap-1.5">글로벌 타임라인 <span class="text-[10px] bg-brand-500 text-white px-1.5 py-0.5 rounded">NEW</span></button>
     </nav>
-    <div class="ml-auto relative">
-      <input placeholder="종목 또는 태그 검색..." oninput="filterStocks(this.value)" class="w-72 text-sm pl-9 pr-3 py-1.5 rounded-lg bg-slate-100 focus:bg-white focus:ring-2 focus:ring-brand-100 outline-none border border-transparent focus:border-brand-200"/>
+    <div class="ml-auto relative" id="gsearch-wrap">
+      <input id="gsearch" autocomplete="off" placeholder="종목·ETF·테마·실적·보기 검색  (⌘/Ctrl K)" oninput="globalSearch(this.value)" onkeydown="gsKey(event)" onfocus="if(this.value)globalSearch(this.value)" class="w-80 text-sm pl-9 pr-3 py-1.5 rounded-lg bg-slate-100 focus:bg-white focus:ring-2 focus:ring-brand-100 outline-none border border-transparent focus:border-brand-200"/>
       <span class="absolute left-3 top-2 text-slate-400">🔍</span>
+      <div id="gsearch-results" class="hidden absolute right-0 top-full mt-1.5 w-[430px] max-h-[70vh] overflow-y-auto bg-white border border-slate-200 rounded-xl shadow-xl z-50 py-1.5"></div>
     </div>
     <button onclick="openCompose()" class="text-sm bg-brand-500 hover:bg-brand-600 text-white px-3 py-1.5 rounded-lg">✎ 작성</button>
     <div class="flex items-center gap-2"><div class="w-7 h-7 rounded-full bg-brand-100 text-brand-600 grid place-items-center text-xs font-semibold">D</div><div class="leading-tight"><div class="text-[13px] font-medium">데모 사용자</div><div class="text-[10px] text-slate-400">리서치팀</div></div></div>
@@ -301,7 +302,9 @@ COVERAGE.forEach(c=>{const s=genSeries(c[0],40+hash(c[0])%860);const cm=c[3];con
 UNIV.forEach(u=>{const s=genSeries(u[0],40+hash(u[0])%860);stocks.push({t:u[0],n:u[1],sec:u[2],cov:false,cm:[],marks:[],...s});});
 const AL='ABCDEFGHIJKLMNOPQRSTUVWXYZ';let gi=0;
 while(stocks.length<500){const t=AL[(gi*7)%26]+AL[(gi*13+5)%26]+AL[(gi*17+2)%26]+(gi%3?AL[(gi*11+1)%26]:'');if(!stocks.some(x=>x.t===t)){const sec=SECS[gi%SECS.length];const s=genSeries(t,40+hash(t)%860);stocks.push({t,n:sec+' 유니버스',sec,cov:false,cm:[],marks:[],...s});}gi++;if(gi>6000)break;}
-[['2330.TW','TSMC','AI 반도체'],['2454.TW','MediaTek','AI 반도체'],['2303.TW','UMC','AI 반도체'],['3711.TW','ASE Technology','AI 반도체'],['005930.KS','삼성전자','AI 반도체'],['000660.KS','SK하이닉스','AI 반도체'],['6857.T','Advantest','AI 반도체']].forEach(c=>{if(!stocks.some(x=>x.t===c[0])){const s=genSeries(c[0],120+hash(c[0])%700);stocks.push({t:c[0],n:c[1],sec:c[2],cov:true,cm:[],marks:[],...s});}});
+[['005930.KS','삼성전자','AI 반도체'],['000660.KS','SK하이닉스','AI 반도체'],['042700.KS','한미반도체','AI 반도체'],['005380.KS','현대차','전기차·자율주행'],['000270.KS','기아','전기차·자율주행'],['373220.KS','LG에너지솔루션','전기차·자율주행'],['035420.KS','NAVER','빅테크 플랫폼'],['035720.KS','카카오','빅테크 플랫폼'],['207940.KS','삼성바이오로직스','헬스케어·비만치료'],['068270.KS','셀트리온','헬스케어·비만치료'],['012450.KS','한화에어로스페이스','전력·데이터센터'],['005490.KS','POSCO홀딩스','전력·데이터센터'],
+['2330.TW','TSMC','AI 반도체'],['2454.TW','MediaTek','AI 반도체'],['2303.TW','UMC','AI 반도체'],['3711.TW','ASE Technology','AI 반도체'],['3034.TW','Novatek','AI 반도체'],['2379.TW','Realtek','AI 반도체'],['3443.TW','Global Unichip','커스텀 ASIC·네트워킹'],['2317.TW','Hon Hai(Foxconn)','전력·데이터센터'],['2308.TW','Delta Electronics','전력·데이터센터'],['2382.TW','Quanta','클라우드·하이퍼스케일러'],
+['6857.T','Advantest','AI 반도체'],['8035.T','Tokyo Electron','리소그래피·장비'],['6146.T','Disco','리소그래피·장비'],['6758.T','Sony','빅테크 플랫폼'],['6861.T','Keyence','전력·데이터센터'],['9984.T','SoftBank Group','빅테크 플랫폼'],['6098.T','Recruit','소프트웨어·SaaS']].forEach(c=>{if(!stocks.some(x=>x.t===c[0])){const s=genSeries(c[0],120+hash(c[0])%700);stocks.push({t:c[0],n:c[1],sec:c[2],cov:true,cm:[],marks:[],...s});}});
 /* FMP 실시간 스냅샷 — 커버리지 종목 실제 시세 반영 */
 const REAL={NVDA:[194.97,2.44],AAPL:[281.74,-2.04],MSFT:[368.57,-4.4],AMZN:[240.14,7.45],GOOGL:[353.65,16.26],META:[562.6,12.35],TSLA:[411.84,32.13],AVGO:[372.45,7.43],AMD:[539.49,17.91],NFLX:[73.78,-0.03],COST:[946.68,-5.86],LLY:[1229.93,21.81]};
 const FMP_AS_OF='2026-06-30';
@@ -607,7 +610,7 @@ function renderHubCards(){
   document.getElementById('hub-n').textContent=DASHBOARDS.length;
   const items=DASHBOARDS.filter(d=>(hubCat==='전체'||d.cat===hubCat)&&(!hubQ||(d.title+d.desc+d.cat+d.by).toLowerCase().includes(hubQ)));
   const cc=c=>c==='미분류'?'bg-slate-100 text-slate-500':'bg-brand-50 text-brand-700 border border-brand-100';
-  document.getElementById('hub-cards').innerHTML=items.map(d=>`<div class="bg-white rounded-xl border border-slate-200 p-4 hover:border-brand-300 hover:shadow-sm transition relative"><button class="absolute top-3 right-3 text-slate-300 hover:text-up text-sm">🗑</button><div class="font-bold text-[15px] leading-snug mb-2 pr-6">${d.title}${d.sample?' <span class="text-[9px] bg-emerald-500 text-white px-1 rounded align-middle">샘플</span>':''}</div><div class="mb-2"><span class="inline-block text-[11px] px-2 py-0.5 rounded ${cc(d.cat)}">${d.cat}</span></div><p class="text-[12px] text-slate-500 leading-relaxed mb-3">${d.desc}</p>${d.page?`<a onclick="openDash('${d.page}')" class="text-[12px] text-brand-600 hover:underline cursor-pointer font-semibold">▶ 팝업으로 열기 (샘플)</a>`:`<a href="https://${d.url}" target="_blank" class="text-[12px] text-brand-600 hover:underline break-all">↗ ${d.url}</a>`}<div class="flex items-center gap-3 mt-3 pt-3 border-t border-slate-50 text-[11px] text-slate-400"><span>👤 ${d.by}</span><span>📅 ${d.date}</span></div></div>`).join('')||'<div class="col-span-3 text-center text-sm text-slate-400 py-10">검색 결과 없음</div>';
+  document.getElementById('hub-cards').innerHTML=items.map(d=>`<div class="bg-white rounded-xl border border-slate-200 p-4 hover:border-brand-300 hover:shadow-sm transition relative"><button class="absolute top-3 right-3 text-slate-300 hover:text-up text-sm">🗑</button><div class="font-bold text-[15px] leading-snug mb-2 pr-6">${d.title}${d.sample?' <span class="text-[9px] bg-emerald-500 text-white px-1 rounded align-middle">샘플</span>':''}</div><div class="mb-2"><span class="inline-block text-[11px] px-2 py-0.5 rounded ${cc(d.cat)}">${d.cat}</span></div><p class="text-[12px] text-slate-500 leading-relaxed mb-3">${d.desc}</p>${d.page?`<a onclick="openDash('${d.page}')" class="text-[12px] text-brand-600 hover:underline cursor-pointer font-semibold">▶ 팝업으로 열기 (샘플)</a>`:(/example\./.test(d.url||'')?`<span class="text-[12px] text-slate-400">🚧 샘플 준비중</span>`:`<a href="https://${d.url}" target="_blank" class="text-[12px] text-brand-600 hover:underline break-all">↗ ${d.url}</a>`)}<div class="flex items-center gap-3 mt-3 pt-3 border-t border-slate-50 text-[11px] text-slate-400"><span>👤 ${d.by}</span><span>📅 ${d.date}</span></div></div>`).join('')||'<div class="col-span-3 text-center text-sm text-slate-400 py-10">검색 결과 없음</div>';
 }
 function openDash(p){window.open(p,'dash','width=1120,height=880,scrollbars=yes');}
 function hubFilter(c){hubCat=c;renderHubCards();}
@@ -618,6 +621,60 @@ function renderCollect(){
   const groups=Object.entries(SOURCES).map(([g,arr])=>{const m=g.match(/\((.*)\)/);const title=g.replace(/\s*\(.*\)/,'');return `<div class="mb-5"><div class="flex items-center justify-between mb-2 pb-1 border-b border-slate-200"><span class="text-xs font-semibold text-slate-500">${title}</span><span class="text-[10px] text-slate-400">${m?m[1]:''}</span></div><div class="grid grid-cols-2 gap-3">${arr.map(srcCard).join('')}</div></div>`;}).join('');
   document.getElementById('g-collect').innerHTML=`<div class="max-w-[1140px]"><div class="bg-[#fbfcfd] rounded-xl border border-slate-200 p-5"><div class="flex items-center justify-between mb-3"><h2 class="text-lg font-bold">데이터 수집 상태</h2><div class="text-[11px] text-slate-400 text-right leading-tight"><div class="text-emerald-600 font-medium">● LIVE · 60초 폴링</div>최근 14일 · 16 sources</div></div><div class="flex items-center gap-4 text-xs mb-4 pb-3 border-b border-slate-100"><span class="text-emerald-600 font-semibold">${counts.ok} 정상</span><span class="text-amber-500 font-semibold">${counts.warn} 지연</span><span class="text-up font-semibold">${counts.fail} 실패</span><div class="ml-auto flex items-center gap-3 text-[10px] text-slate-400"><span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-sm" style="background:#10b981"></span>수집됨</span><span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-sm" style="background:#f59e0b"></span>지연</span><span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-sm" style="background:#ef4444"></span>실패</span><span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-sm" style="background:#e5e7eb"></span>추적이전</span></div></div>${groups}</div></div>`;
 }
+/* ========== 글로벌 검색·매칭 (command palette) ========== */
+let gsSel=-1, gsItems=[];
+function _esc(s){return (s+'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+function _hl(text,q){const t=_esc(text);if(!q)return t;const i=(text+'').toLowerCase().indexOf(q);if(i<0)return t;return _esc(text.slice(0,i))+'<mark class="bg-brand-100 text-brand-700 rounded px-0.5">'+_esc(text.slice(i,i+q.length))+'</mark>'+_esc(text.slice(i+q.length));}
+function buildSearchIndex(){
+  const idx=[];
+  stocks.forEach(s=>idx.push({cat:'종목',icon:s.cov?'📈':'○',key:(s.t+' '+s.n+' '+s.sec+(s.cov?' 커버 coverage':' 미커버')).toLowerCase(),title:s.t,sub:s.n+' · '+s.sec+(s.cov?' · 커버':''),go:()=>{topTab('global');gotoStock(s.t);}}));
+  ETFS.forEach((e,i)=>idx.push({cat:'산업·ETF',icon:'🏭',key:(e.t+' '+e.n+' '+e.g+' etf').toLowerCase(),title:e.t,sub:e.n+' · '+e.g,go:()=>{topTab('global');showG('industry');pickInd(i);}}));
+  THEMES.forEach(([code,name,tk])=>idx.push({cat:'테마',icon:'🗂️',key:(code+' '+name+' '+tk.join(' ')+' theme 바스켓').toLowerCase(),title:name,sub:code+' · '+tk.join(', '),go:()=>{topTab('global');showG('sector');}}));
+  earnings.forEach(e=>idx.push({cat:'실적',icon:'📅',key:(e.t+' '+e.n+' 실적 컨콜 earnings').toLowerCase(),title:e.t+' 실적',sub:e.n+' · '+e.d+(e.when?' '+e.when:'')+' · '+(e.st||'')+(e.link?' · 리포트↗':''),go:()=>{ if(e.link){window.open(e.link,'_blank');} else {topTab('global');openDaily('earn');} }}));
+  [['데일리 시황','매크로 시황 시장 market','📰',()=>{topTab('global');openDaily('market');}],
+   ['데일리 익스퍼트 콜','전문가 expert call 인터뷰','🎧',()=>{topTab('global');openDaily('expert');}],
+   ['데일리 서브스택','substack 뉴스레터 newsletter','✉️',()=>{topTab('global');openDaily('substack');}],
+   ['실적/컨콜 요약','earnings 실적 컨콜 캘린더','📅',()=>{topTab('global');openDaily('earn');}],
+   ['데일리 유튜브','youtube 영상 video','🎥',()=>{topTab('global');openYoutube();}],
+   ['섹터 대시보드','sector 히트맵 heatmap 테마','🗂️',()=>{topTab('global');showG('sector');}],
+   ['대시보드 허브','hub dashboard 대시보드','📊',()=>{topTab('global');showG('hub');}],
+   ['데이터 수집 상태','collect status live 수집','🛰️',()=>{topTab('global');showG('collect');}],
+   ['타임라인','timeline feed 피드 로컬','🗒️',()=>{topTab('local');}],
+  ].forEach(([name,kw,icon,go])=>idx.push({cat:'보기',icon,key:(name+' '+kw).toLowerCase(),title:name,sub:'뷰로 이동',go}));
+  return idx;
+}
+function globalSearch(q){
+  q=(q||'').trim().toLowerCase();
+  const box=document.getElementById('gsearch-results');
+  if(!q){box.classList.add('hidden');box.innerHTML='';gsItems=[];gsSel=-1;return;}
+  const toks=q.split(/\s+/).filter(Boolean);
+  const hits=buildSearchIndex().map(it=>{let sc=0;const k=it.key;for(const tk of toks){const p=k.indexOf(tk);if(p<0){sc=-999;break;}sc+=(p===0?4:(k.indexOf(' '+tk)>=0?2:1));}if(it.title.toLowerCase()===q)sc+=20;else if(it.title.toLowerCase().startsWith(q))sc+=6;return{it,sc};}).filter(x=>x.sc>0);
+  const catOrder={'종목':0,'산업·ETF':1,'테마':2,'실적':3,'보기':4};
+  hits.sort((a,b)=>b.sc-a.sc||(catOrder[a.it.cat]-catOrder[b.it.cat]));
+  gsItems=hits.slice(0,40).map(h=>h.it);gsSel=gsItems.length?0:-1;
+  renderGS(q);
+}
+function renderGS(q){
+  const box=document.getElementById('gsearch-results');box.classList.remove('hidden');
+  if(!gsItems.length){box.innerHTML='<div class="px-4 py-6 text-center text-sm text-slate-400">검색 결과 없음</div>';return;}
+  let out='',lastCat='';
+  gsItems.forEach((it,i)=>{if(it.cat!==lastCat){lastCat=it.cat;out+=`<div class="px-3 pt-2 pb-1 text-[10px] font-semibold text-slate-400 uppercase tracking-wide">${it.cat}</div>`;}
+    out+=`<div data-i="${i}" onmouseenter="gsSel=${i};gsPaint()" onclick="gsPick(${i})" class="gs-row px-3 py-2 mx-1 rounded-lg cursor-pointer flex items-center gap-2.5 ${i===gsSel?'bg-brand-50':''}"><span class="w-5 text-center shrink-0">${it.icon}</span><div class="min-w-0 flex-1"><div class="text-[13px] font-semibold text-slate-700 truncate">${_hl(it.title,q)}</div><div class="text-[11px] text-slate-400 truncate">${_hl(it.sub,q)}</div></div><span class="text-[10px] text-slate-300 shrink-0">↵</span></div>`;});
+  box.innerHTML=out;
+}
+function gsPaint(){document.querySelectorAll('.gs-row').forEach(r=>r.classList.toggle('bg-brand-50',+r.dataset.i===gsSel));}
+function gsPick(i){const it=gsItems[i];if(!it)return;closeGS();const el=document.getElementById('gsearch');if(el)el.blur();it.go();}
+function closeGS(){const b=document.getElementById('gsearch-results');if(b)b.classList.add('hidden');}
+function scrollGS(){const r=document.querySelector('.gs-row[data-i="'+gsSel+'"]');if(r)r.scrollIntoView({block:'nearest'});}
+function gsKey(e){
+  if(e.key==='ArrowDown'){e.preventDefault();if(gsItems.length){gsSel=(gsSel+1)%gsItems.length;gsPaint();scrollGS();}}
+  else if(e.key==='ArrowUp'){e.preventDefault();if(gsItems.length){gsSel=(gsSel-1+gsItems.length)%gsItems.length;gsPaint();scrollGS();}}
+  else if(e.key==='Enter'){e.preventDefault();if(gsSel>=0)gsPick(gsSel);}
+  else if(e.key==='Escape'){closeGS();e.target.blur();}
+}
+document.addEventListener('keydown',e=>{if((e.metaKey||e.ctrlKey)&&(e.key==='k'||e.key==='K')){e.preventDefault();const el=document.getElementById('gsearch');if(el){el.focus();el.select();}}});
+document.addEventListener('click',e=>{const w=document.getElementById('gsearch-wrap');if(w&&!w.contains(e.target))closeGS();});
+
 /* init */
 renderLocal();renderStatus();setCov('all');renderDetail();renderIndustry();renderSectors();renderHub();renderCollect();openDaily('market');topTab('global');
 </script>
