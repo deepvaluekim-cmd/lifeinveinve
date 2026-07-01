@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>life inve - 재무 그래프 샘플 / 데이터 매핑</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--green:#3F5C21;--green-mid:#608C34;--green-light:#8FB85D;--ink:#070203;--bg:#fff;--line:#E7E6E6;--muted:#6b7280;--tint:#eaf3df;--blue:#4d6189;--sky:#b2cbe0;--mist:#d2e1e6;--gold:#f0d78c;--amber:#e8bd43;--purple:#a263e8;}
+*{box-sizing:border-box}html,body{overflow-x:hidden}body{margin:0;background:#fff;color:var(--ink);line-height:1.6;font-family:"Noto Sans KR","Open Sans",-apple-system,"Segoe UI","Malgun Gothic",sans-serif;font-variant-numeric:tabular-nums}.hdr{background:var(--green);color:#fff;padding:26px 0 24px}.in,.wrap{max-width:1180px;margin:0 auto;padding:0 22px}.brandrow{display:flex;gap:10px;align-items:center;margin-bottom:14px}.logo{width:34px;height:34px;border-radius:8px;background:#fff;color:var(--green);font-weight:900;display:grid;place-items:center}.brandname{font-weight:900;letter-spacing:.5px}.kicker{font-size:.76em;font-weight:700;letter-spacing:1.5px;color:#d7e6c4;text-transform:uppercase}.hdr h1{font-size:1.75em;margin:.15em 0 .1em;color:#fff;font-weight:900}.meta{color:#d7e6c4;font-size:.9em}.wrap{padding-bottom:80px}.capsule{background:var(--tint);border:1px solid var(--line);border-left:4px solid var(--green);border-radius:8px;padding:14px 18px;margin:18px 0}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.chart{border:1px solid var(--line);border-radius:8px;background:#fff;padding:14px 16px;margin:12px 0;max-width:100%}.chart h2,.chart h3{margin:0 0 8px;color:#333;font-size:1.02em}.cap{color:var(--muted);font-size:.8em;border-top:1px dashed var(--line);padding-top:7px;margin-top:6px}.legend{display:flex;justify-content:center;gap:16px;flex-wrap:wrap;color:#444;font-size:.82em;margin-top:4px}.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px}.wide{margin-top:18px}.tabs{display:flex;justify-content:space-between;gap:10px;margin:6px 0 12px}.tab,.toggle{border:1px solid #d2d5db;border-radius:6px;padding:5px 10px;color:#30343b;font-weight:700;background:#fff}.toggle{color:#8f94a1}.toggle.active{color:#333;border-color:#bfc4cd}.unit{color:#8a8f9c;font-weight:700;margin:8px 0}.fin-table{border-collapse:collapse;width:100%;font-size:.9em;margin-top:12px;border-top:1px solid #cfd3da}.fin-table th,.fin-table td{border:1px solid #d9dce1;padding:9px 10px;text-align:right}.fin-table th:first-child,.fin-table td:first-child{text-align:left;min-width:210px}.fin-table th{background:#f4f5f7;color:#5c6472;font-weight:700}.subrow{background:#f5f5f7;color:#555;font-size:.82em}.pos{background:#b6d2c2}.hot{background:#83aa91}.neg{background:#c77a7d}.softneg{background:#ddb8ba}.foot{color:var(--muted);font-size:.82em;margin-top:42px;border-top:1px solid var(--line);padding-top:14px}table.map{border-collapse:collapse;width:100%;margin:12px 0;font-size:.9em;border:1px solid var(--line)}.map th,.map td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}.map th{background:var(--tint);color:var(--green)}@media(max-width:900px){.grid3{grid-template-columns:1fr}.chart{overflow-x:auto}.chart svg{min-width:640px}.fin-table{display:block;overflow-x:auto;white-space:nowrap;max-width:100%}}
+</style>
+</head>
+<body>
+<header class="hdr"><div class="in"><div class="brandrow"><div class="logo">Li</div><div class="brandname">life inve</div></div><div class="kicker">LIFE ASSET · FINANCIAL CHART TEMPLATE</div><h1>재무 그래프 샘플 - 매출 구성 / 이익률 / YoY / 세그먼트</h1><div class="meta">예시 입력값 기준 · 단위: 백만 USD · 실제 발행 시 10-K/IR/FMP 재확인 필수</div></div></header>
+<main class="wrap">
+<div class="capsule"><b>사용 방식</b> 이 페이지는 첨부 예시처럼 실적/기업 분석에 들어갈 재무 그래프 모듈임. 원데이터는 회사 10-K/IR 세그먼트 표와 FMP income-statement / income-statement-growth / revenue segmentation에서 가져오고, HTML/SVG로 재생성함.</div>
+
+<section class="grid3">
+<div class="chart"><div class="tabs"><h2>매출액 구성</h2><span class="toggle active">절대값</span></div>
+<svg viewBox="0 0 420 240" width="100%" role="img" aria-label="매출액 구성">
+<line x1="45" y1="190" x2="396" y2="190" stroke="#9ca3af"/><line x1="45" y1="40" x2="45" y2="190" stroke="#9ca3af"/>
+<g fill="none" stroke="#e5e7eb"><line x1="45" y1="151" x2="396" y2="151"/><line x1="45" y1="112" x2="396" y2="112"/><line x1="45" y1="73" x2="396" y2="73"/></g>
+<g font-size="11" fill="#7a808c"><text x="18" y="194">$0M</text><text x="6" y="155">$55,000M</text><text x="2" y="116">$110,000M</text><text x="2" y="77">$165,000M</text><text x="2" y="43">$215,938M</text></g>
+<g>
+<rect x="70" y="171" width="27" height="19" fill="var(--blue)"/><rect x="70" y="168" width="27" height="3" fill="var(--sky)"/><rect x="70" y="165" width="27" height="3" fill="var(--mist)"/><rect x="70" y="162" width="27" height="3" fill="var(--gold)"/>
+<rect x="124" y="169" width="27" height="21" fill="var(--blue)"/><rect x="124" y="164" width="27" height="5" fill="var(--sky)"/><rect x="124" y="161" width="27" height="3" fill="var(--mist)"/>
+<rect x="178" y="157" width="27" height="33" fill="var(--blue)"/><rect x="178" y="151" width="27" height="6" fill="var(--sky)"/><rect x="178" y="148" width="27" height="3" fill="var(--mist)"/>
+<rect x="232" y="110" width="27" height="80" fill="var(--blue)"/><rect x="232" y="101" width="27" height="9" fill="var(--sky)"/><rect x="232" y="97" width="27" height="4" fill="var(--mist)"/><rect x="232" y="95" width="27" height="2" fill="var(--gold)"/>
+<rect x="286" y="55" width="27" height="135" fill="var(--blue)"/><rect x="286" y="38" width="27" height="17" fill="var(--sky)"/><rect x="286" y="33" width="27" height="5" fill="var(--mist)"/><rect x="286" y="30" width="27" height="3" fill="var(--gold)"/>
+<polyline points="83,172 137,171 191,154 245,100 299,28" fill="none" stroke="#72c267" stroke-width="2.5"/><circle cx="299" cy="28" r="3" fill="#72c267"/>
+</g>
+<g font-size="11" fill="#7a808c"><text x="67" y="212">FY22</text><text x="121" y="212">FY23</text><text x="175" y="212">FY24</text><text x="229" y="212">FY25</text><text x="283" y="212">FY26</text></g>
+</svg>
+<div class="legend"><span><i class="dot" style="background:#72c267"></i>매출액</span><span><i class="dot" style="background:var(--blue)"></i>데이터 센터</span><span><i class="dot" style="background:var(--sky)"></i>게이밍</span><span><i class="dot" style="background:var(--gold)"></i>기타</span></div>
+<div class="cap">데이터: 10-K/IR segment table + FMP revenue-product-segmentation. 세그먼트 합계와 total revenue 차이 검산 필요.</div></div>
+
+<div class="chart"><div class="tabs"><h2>이익률</h2><span class="toggle active">절대값</span></div>
+<svg viewBox="0 0 420 240" width="100%" role="img" aria-label="이익률">
+<line x1="45" y1="190" x2="396" y2="190" stroke="#9ca3af"/><line x1="45" y1="40" x2="45" y2="190" stroke="#9ca3af"/><line x1="340" y1="40" x2="340" y2="190" stroke="#9ca3af"/>
+<g fill="none" stroke="#e5e7eb"><line x1="45" y1="151" x2="396" y2="151"/><line x1="45" y1="112" x2="396" y2="112"/><line x1="45" y1="73" x2="396" y2="73"/></g>
+<g fill="#8fca80"><rect x="72" y="184" width="24" height="6"/><rect x="125" y="182" width="24" height="8"/><rect x="178" y="172" width="24" height="18"/><rect x="231" y="143" width="24" height="47"/><rect x="284" y="91" width="24" height="99"/></g>
+<polyline points="84,128 137,116 190,119 243,72 296,47" fill="none" stroke="#67aaf5" stroke-width="2.5"/>
+<polyline points="84,138 137,111 190,117 243,84 296,66" fill="none" stroke="#e2a100" stroke-width="2.5"/>
+<polyline points="84,72 137,66 190,62 243,44 296,40" fill="none" stroke="#9b63ff" stroke-width="2.5"/>
+<polyline points="296,40 326,48" fill="none" stroke="#72c267" stroke-width="2.5"/>
+<g font-size="11" fill="#7a808c"><text x="68" y="212">2017</text><text x="121" y="212">2019</text><text x="174" y="212">2021</text><text x="227" y="212">2023</text><text x="280" y="212">2025</text><text x="347" y="44">75.0%</text><text x="347" y="91">50.0%</text><text x="347" y="142">25.0%</text><text x="347" y="192">0.0%</text></g>
+</svg>
+<div class="legend"><span><i class="dot" style="background:#8fca80"></i>매출액</span><span><i class="dot" style="background:var(--purple)"></i>매출총이익률</span><span><i class="dot" style="background:#e2a100"></i>순이익률</span><span><i class="dot" style="background:#67aaf5"></i>영업이익률</span></div>
+<div class="cap">데이터: FMP income-statement. margin = grossProfit/operatingIncome/netIncome ÷ revenue.</div></div>
+
+<div class="chart"><div class="tabs"><h2>이익성장률(YoY)</h2><span class="toggle active">절대값</span></div>
+<svg viewBox="0 0 420 240" width="100%" role="img" aria-label="이익성장률">
+<line x1="45" y1="190" x2="396" y2="190" stroke="#c8cdd4"/><line x1="45" y1="40" x2="45" y2="190" stroke="#9ca3af"/>
+<g fill="none" stroke="#e5e7eb"><line x1="45" y1="151" x2="396" y2="151"/><line x1="45" y1="112" x2="396" y2="112"/><line x1="45" y1="73" x2="396" y2="73"/></g>
+<polyline points="45,72 100,105 155,128 210,139 265,88 320,46 375,90" fill="none" stroke="#72c267" stroke-width="2.5"/>
+<polyline points="45,72 100,101 155,130 210,135 265,91 320,62 375,92" fill="none" stroke="#9b63ff" stroke-width="2.5"/>
+<polyline points="45,68 100,98 155,126 210,144 265,86 320,44 375,88" fill="none" stroke="#e2a100" stroke-width="2.5"/>
+<polyline points="45,65 100,100 155,132 210,84 265,80 320,40 375,90" fill="none" stroke="#67aaf5" stroke-width="2.5"/>
+<g font-size="11" fill="#7a808c"><text x="40" y="212">2017</text><text x="151" y="212">2019</text><text x="262" y="212">2021</text><text x="373" y="212">2025</text><text x="0" y="45">600%</text><text x="0" y="85">400%</text><text x="0" y="125">200%</text><text x="12" y="192">0%</text></g>
+</svg>
+<div class="legend"><span><i class="dot" style="background:#72c267"></i>매출액성장률</span><span><i class="dot" style="background:var(--purple)"></i>매출총이익성장률</span><span><i class="dot" style="background:#e2a100"></i>순이익성장률</span><span><i class="dot" style="background:#67aaf5"></i>영업이익성장률</span></div>
+<div class="cap">데이터: FMP income-statement-growth 또는 직접 계산. 극단값은 축/라벨 명시.</div></div>
+</section>
+
+<section class="chart wide"><div class="tabs"><span><span class="tab">사업 부문</span> <span class="toggle">지역</span></span><span><span class="tab">$ 금액</span> <span class="toggle">비율</span></span></div>
+<div class="unit">단위: 백만 $</div>
+<svg viewBox="0 0 980 320" width="100%" role="img" aria-label="사업 부문별 매출">
+<line x1="70" y1="250" x2="940" y2="250" stroke="#9ca3af"/><g stroke="#d8dce2"><line x1="70" y1="190" x2="940" y2="190"/><line x1="70" y1="130" x2="940" y2="130"/><line x1="70" y1="70" x2="940" y2="70"/></g>
+<g font-size="14" fill="#707783"><text x="28" y="254">0</text><text x="20" y="194">100k</text><text x="20" y="134">200k</text><text x="20" y="74">300k</text></g>
+<g>
+<rect x="140" y="236" width="130" height="14" fill="var(--blue)"/><rect x="140" y="226" width="130" height="10" fill="var(--sky)"/><rect x="140" y="222" width="130" height="4" fill="var(--mist)"/><rect x="140" y="220" width="130" height="2" fill="var(--gold)"/>
+<rect x="322" y="235" width="130" height="15" fill="var(--blue)"/><rect x="322" y="226" width="130" height="9" fill="var(--sky)"/><rect x="322" y="222" width="130" height="4" fill="var(--mist)"/>
+<rect x="504" y="191" width="130" height="59" fill="var(--blue)"/><rect x="504" y="180" width="130" height="11" fill="var(--sky)"/><rect x="504" y="176" width="130" height="4" fill="var(--mist)"/><rect x="504" y="174" width="130" height="2" fill="var(--gold)"/>
+<rect x="686" y="127" width="130" height="123" fill="var(--blue)"/><rect x="686" y="113" width="130" height="14" fill="var(--sky)"/><rect x="686" y="108" width="130" height="5" fill="var(--mist)"/><rect x="686" y="106" width="130" height="2" fill="var(--gold)"/>
+<rect x="868" y="50" width="100" height="200" fill="var(--blue)"/><rect x="868" y="33" width="100" height="17" fill="var(--sky)"/><rect x="868" y="28" width="100" height="5" fill="var(--mist)"/><rect x="868" y="25" width="100" height="3" fill="var(--gold)"/>
+</g>
+<g font-size="14" fill="#707783"><text x="175" y="280">FY2022</text><text x="357" y="280">FY2023</text><text x="539" y="280">FY2024</text><text x="721" y="280">FY2025</text><text x="887" y="280">FY2026</text></g>
+</svg>
+<div class="legend"><span><i class="dot" style="background:var(--blue)"></i>데이터 센터</span><span><i class="dot" style="background:var(--sky)"></i>게이밍</span><span><i class="dot" style="background:var(--mist)"></i>전문가용 시각화</span><span><i class="dot" style="background:var(--gold)"></i>자동차</span><span><i class="dot" style="background:var(--amber)"></i>OEM 및 기타</span></div>
+<table class="fin-table"><thead><tr><th>회계기간</th><th>FY2022</th><th>FY2023</th><th>FY2024</th><th>FY2025</th><th>FY2026</th><th>연평균 성장률</th></tr></thead><tbody>
+<tr><td><b>총 매출</b><br>Total Revenue</td><td>26,914.0</td><td>26,974.0</td><td>60,922.0</td><td>130,497.0</td><td>215,938.0</td><td></td></tr>
+<tr class="subrow"><td>전년 동기 대비 성장률 (%)</td><td class="softneg">61.40%</td><td class="neg">0.22%</td><td class="hot">125.85%</td><td class="pos">114.20%</td><td>65.47%</td><td>68.30%</td></tr>
+<tr><td><b>데이터 센터</b><br>Data Center</td><td>10,613.0</td><td>15,005.0</td><td>47,525.0</td><td>115,186.0</td><td>193,737.0</td><td></td></tr>
+<tr class="subrow"><td>전년 동기 대비 성장률 (%)</td><td class="softneg">58.50%</td><td class="neg">41.38%</td><td class="hot">216.73%</td><td class="pos">142.37%</td><td>68.19%</td><td>106.70%</td></tr>
+<tr><td><b>게이밍</b><br>Gaming</td><td>12,462.0</td><td>9,067.0</td><td>10,447.0</td><td>11,350.0</td><td>16,042.0</td><td></td></tr>
+<tr class="subrow"><td>전년 동기 대비 성장률 (%)</td><td class="hot">60.61%</td><td class="neg">-27.24%</td><td>15.22%</td><td class="softneg">8.64%</td><td class="pos">41.34%</td><td>6.52%</td></tr>
+</tbody></table>
+<div class="cap">예시 데이터: 첨부 그래프 샘플 기반. 실사용 시 회사 10-K/IR segment footnote와 FMP revenue segmentation으로 재생성.</div></section>
+
+<h2>데이터 매핑</h2>
+<table class="map"><thead><tr><th>블록</th><th>필드</th><th>주 소스</th><th>검증</th></tr></thead><tbody>
+<tr><td>매출 구성</td><td>total_revenue, segment_revenue</td><td>SEC 10-K/IR deck, FMP revenue-product-segmentation</td><td>segment sum vs total revenue</td></tr>
+<tr><td>이익률</td><td>grossProfit, operatingIncome, netIncome, revenue</td><td>FMP income-statement, 회사 손익계산서</td><td>margin formula 표기</td></tr>
+<tr><td>YoY 성장률</td><td>growthRevenue, growthOperatingIncome, growthNetIncome</td><td>FMP income-statement-growth</td><td>직접 계산값 대조</td></tr>
+<tr><td>표 색상</td><td>growth bucket</td><td>내부 계산</td><td>음수 red, 0~50 neutral, 50+ green</td></tr>
+</tbody></table>
+<div class="foot">life inve · financial chart template · Internal research note. Not investment advice.</div>
+</main>
+</body>
+</html>

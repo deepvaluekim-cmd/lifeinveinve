@@ -15,14 +15,16 @@
 <body>
 <header class="hdr"><div class="in"><div class="brandrow"><div class="logo">Li</div><div class="brandname">life inve</div></div><div class="kicker">LIFE ASSET · FINAL PROMPT SPEC</div><h1>문서별 최종 프롬프트 / 데이터 매핑 / 샘플</h1><div class="meta">2026-07-02 · 기준 레이아웃: SMTC_FQ1FY27.html · fact-first 음슴체</div></div></header>
 <main class="wrap">
-<div class="capsule"><b>최종 계약</b> 모든 문서는 초록 헤더, capsule 한 줄, 표, SVG 차트, Q&A/Day-by-Day/Call Card, 데이터 투명성 표를 기본 구조로 사용함. 샘플은 모두 life inve 템플릿 버전으로 배포됨.</div>
+<div class="capsule"><b>최종 계약</b> 모든 문서는 공통 원칙 프롬프트를 먼저 적용한 뒤, 초록 헤더, capsule 한 줄, 표, SVG 차트, Q&A/Day-by-Day/Call Card, 데이터 투명성 표를 기본 구조로 사용함. 샘플은 모두 life inve 템플릿 버전으로 배포됨.</div>
 
 <h2>0. 공통 규칙</h2>
+<p>공통 원칙 프롬프트: <a href="lifeinve_common_prompt_principles.html">lifeinve_common_prompt_principles.html</a></p>
 <table><thead><tr><th>항목</th><th>정의</th></tr></thead><tbody>
 <tr><td>문체</td><td>라이프자산운용 리서치 톤. 숫자 먼저, 해석 나중. 음슴체.</td></tr>
 <tr><td>상태값</td><td><span class="tag">fact</span><span class="tag">reported</span><span class="tag">partial</span><span class="tag">estimate</span><span class="tag">private</span></td></tr>
 <tr><td>금지</td><td>입력 데이터에 없는 숫자 생성, 컨센서스 공급자 생략, private 원문 장문 인용, 주가 반응 원인 단정, 과장 SVG 스케일.</td></tr>
 <tr><td>필수 검증</td><td>본문 주요 숫자는 데이터 투명성 표에서 역추적 가능해야 함.</td></tr>
+<tr><td>그래프 소스</td><td>원데이터 기반 HTML/SVG 생성이 기본. 외부 캡처는 Finviz/Koyfin/TradingView/EarningsHub fallback으로만 사용하고 캡처 시각·필터·as_of 표기.</td></tr>
 </tbody></table>
 
 <h2>1. 실적 요약 / 컨콜 요약</h2>
@@ -163,13 +165,45 @@ capsule 한 줄 요약 → 주가 반응 → 기업 개요 → 핵심 실적 vs 
 [출력 섹션]
 오늘의 한 줄 → 오늘의 한 방 3~5개 → Ticker Coverage → 콜 카드 3~5개 → 반복 주장/반대 증거 → 데이터 매핑 → 작성 프롬프트 → 데이터 투명성 표.</pre>
 
-<h2>5. 최종 샘플 링크</h2>
+<h2>5. 기업 재무 그래프 모듈</h2>
+<p>샘플: <a href="../../dashboards/lifeinve-financial-chart-template.html">lifeinve-financial-chart-template.html</a></p>
+<h3>필요 데이터</h3>
+<table><thead><tr><th>블록</th><th>필드</th><th>1순위 소스</th><th>보조</th></tr></thead><tbody>
+<tr><td>매출액 구성</td><td>fiscal_year, total_revenue, segment_name, segment_revenue</td><td>회사 10-K/IR segment footnote</td><td>FMP revenue-product-segmentation / revenue-geographic-segmentation</td></tr>
+<tr><td>이익률</td><td>revenue, grossProfit, operatingIncome, netIncome</td><td>FMP income-statement annual/quarter</td><td>회사 income statement</td></tr>
+<tr><td>이익성장률(YoY)</td><td>growthRevenue, growthGrossProfit, growthOperatingIncome, growthNetIncome</td><td>FMP income-statement-growth</td><td>직접 계산</td></tr>
+<tr><td>사업 부문 표</td><td>segment_revenue_by_year, segment_yoy, avg_growth</td><td>회사 10-K/IR segment table</td><td>FMP revenue segmentation</td></tr>
+</tbody></table>
+<h3>그래프 / 표</h3>
+<table><thead><tr><th>위치</th><th>구성</th></tr></thead><tbody>
+<tr><td>상단 3분할</td><td>매출액 구성 stacked bar + 매출액 line, 이익률 bar/line combo, 이익성장률(YoY) multi-line</td></tr>
+<tr><td>대형 세그먼트 차트</td><td>사업 부문 stacked bar. 토글 UI는 시각적 표시만 하고, 실제 값은 금액 기준으로 고정</td></tr>
+<tr><td>하단 표</td><td>FY별 총 매출, 부문 매출, YoY 성장률, 연평균 성장률. 색상은 성장률 bucket 기준</td></tr>
+<tr><td>데이터 투명성</td><td>10-K/IR/FMP/계산값을 분리하고, 세그먼트 합계와 total revenue 차이율 기록</td></tr>
+</tbody></table>
+<h3>프롬프트</h3>
+<pre>너는 life inve 기업 재무 그래프 모듈 작성자임.
+아래 INPUT_JSON만 사용해 매출 구성, 이익률, 이익성장률(YoY), 사업부문 표를 HTML/SVG로 작성.
+
+[절대 규칙]
+- total_revenue와 segment_revenue는 source_key가 있어야 출력.
+- segment sum과 total_revenue가 다르면 차이율을 데이터 투명성 표에 기록.
+- margin은 revenue가 0이거나 누락이면 계산 금지.
+- YoY는 FMP growth endpoint와 직접 계산값을 비교. 차이가 있으면 reported와 calculated를 분리.
+- 축은 0에서 시작. 극단 growth 값은 축 범위와 단위를 명시.
+
+[출력 섹션]
+상단 capsule → 3개 차트(매출 구성/이익률/YoY) → 사업부문 stacked bar → FY별 표 → 데이터 매핑 → 데이터 투명성 표.</pre>
+
+<h2>6. 최종 샘플 링크</h2>
 <table><thead><tr><th>문서</th><th>URL</th><th>상태</th></tr></thead><tbody>
+<tr><td>공통 원칙 프롬프트</td><td><a href="lifeinve_common_prompt_principles.html">docs/prompts/lifeinve_common_prompt_principles.html</a></td><td>배포 완료</td></tr>
 <tr><td>실적 요약 - AVAV</td><td><a href="../../earnings/AVAV_FQ4FY26.html">earnings/AVAV_FQ4FY26.html</a></td><td>배포 완료</td></tr>
 <tr><td>실적 기준 - SMTC</td><td><a href="../../earnings/SMTC_FQ1FY27.html">earnings/SMTC_FQ1FY27.html</a></td><td>기준</td></tr>
 <tr><td>데일리 시황</td><td><a href="../../daily/2026-07-01-lifeinve-market-brief-v2.html">daily/2026-07-01-lifeinve-market-brief-v2.html</a></td><td>배포 완료</td></tr>
 <tr><td>주간 시황</td><td><a href="../../daily/2026-06-22-26-lifeinve-weekly-market-wrap.html">daily/2026-06-22-26-lifeinve-weekly-market-wrap.html</a></td><td>배포 완료</td></tr>
 <tr><td>AlphaSense 익스퍼트 콜</td><td><a href="../../daily/alphasense_expert_call_daily_template.html">daily/alphasense_expert_call_daily_template.html</a></td><td>배포 완료</td></tr>
+<tr><td>재무 그래프 샘플</td><td><a href="../../dashboards/lifeinve-financial-chart-template.html">dashboards/lifeinve-financial-chart-template.html</a></td><td>배포 완료</td></tr>
 <tr><td>샘플 허브</td><td><a href="../../samples.html">samples.html</a></td><td>배포 완료</td></tr>
 </tbody></table>
 <div class="foot"><span class="brand">life inve</span> · final prompt/data/sample spec · Internal research note. Not investment advice.</div>

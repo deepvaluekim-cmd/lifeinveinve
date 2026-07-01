@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>life inve - 공통 원칙 프롬프트 / 데이터 검증 규칙</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--green:#3F5C21;--green-mid:#608C34;--green-light:#8FB85D;--ink:#070203;--bg:#FFFFFF;--line:#E7E6E6;--muted:#6b7280;--tint:#eaf3df;--warn:#fff4e5;}
+*{box-sizing:border-box}body{margin:0;background:#fff;color:var(--ink);line-height:1.65;font-family:"Noto Sans KR","Open Sans",-apple-system,"Segoe UI","Malgun Gothic",sans-serif;font-variant-numeric:tabular-nums}.hdr{background:var(--green);color:#fff;padding:26px 0 24px}.in,.wrap{max-width:1060px;margin:0 auto;padding:0 22px}.brandrow{display:flex;gap:10px;align-items:center;margin-bottom:14px}.logo{width:34px;height:34px;border-radius:8px;background:#fff;color:var(--green);font-weight:900;display:grid;place-items:center}.brandname{font-weight:900;letter-spacing:.5px}.kicker{font-size:.76em;font-weight:700;letter-spacing:1.5px;color:#d7e6c4;text-transform:uppercase}.hdr h1{font-size:1.75em;margin:.15em 0 .1em;color:#fff;font-weight:900}.meta{color:#d7e6c4;font-size:.9em}.wrap{padding-bottom:80px}.capsule{background:var(--tint);border:1px solid var(--line);border-left:4px solid var(--green);border-radius:8px;padding:14px 18px;margin:18px 0}.warn{background:var(--warn);border-left-color:#d8982b}h2{color:var(--green);margin-top:38px;border-bottom:2px solid var(--green);padding-bottom:6px;font-size:1.2em;font-weight:900}h3{color:var(--green);font-size:1.03em;margin:22px 0 8px}table{border-collapse:collapse;width:100%;margin:12px 0;background:#fff;border-radius:8px;overflow:hidden;font-size:.9em;border:1px solid var(--line)}th,td{padding:9px 11px;text-align:left;border:1px solid var(--line);vertical-align:top}th{background:var(--tint);color:var(--green);font-weight:700;white-space:nowrap}tr:nth-child(even) td{background:#fafbf7}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#f7faf2;border:1px solid var(--line);border-left:4px solid var(--green);border-radius:8px;padding:14px 16px;font-family:"Open Sans","Noto Sans KR",monospace;font-size:.88em;line-height:1.55}.tag{display:inline-block;font-size:.72em;font-weight:700;padding:1px 7px;border-radius:10px;margin-right:6px;background:var(--tint);color:var(--green)}.foot{color:var(--muted);font-size:.82em;margin-top:42px;border-top:1px solid var(--line);padding-top:14px}a{color:var(--green-mid);overflow-wrap:anywhere}@media(max-width:640px){.hdr h1{font-size:1.4em}table{display:block;overflow-x:auto;white-space:nowrap}}
+</style>
+</head>
+<body>
+<header class="hdr"><div class="in"><div class="brandrow"><div class="logo">Li</div><div class="brandname">life inve</div></div><div class="kicker">LIFE ASSET · COMMON PROMPT RULES</div><h1>공통 원칙 프롬프트 / 데이터 검증 규칙</h1><div class="meta">모든 데일리 시황 · 실적 요약 · AlphaSense 콜 · 재무 그래프 페이지에 선행 적용</div></div></header>
+<main class="wrap">
+<div class="capsule"><b>핵심 계약</b> 포맷은 고정. 숫자는 입력 데이터와 소스키가 있을 때만 사용. 문체는 음슴체/개조식. 그래프는 캡처보다 원데이터 기반 HTML/SVG 재생성을 기본으로 함.</div>
+
+<h2>1. 공통 출력 원칙</h2>
+<table><thead><tr><th>규칙</th><th>정의</th><th>실패 처리</th></tr></thead><tbody>
+<tr><td>포맷 고정</td><td>초록 헤더 → capsule 한 줄 → 3줄 요약/오늘의 한 방 → 본문 카드/표/차트 → 데이터 투명성 표 → 푸터</td><td>섹션 누락 금지. 데이터가 없으면 "미확인"으로 빈칸 처리</td></tr>
+<tr><td>문체</td><td>음슴체. 숫자 먼저, 해석 나중. 과장/감탄/투자의견 금지</td><td>"좋아 보임", "매수", "확실" 같은 단정 금지</td></tr>
+<tr><td>숫자 근거</td><td>모든 수치에 source_key, as_of, provider를 붙임</td><td>source_key 없는 숫자는 본문 사용 금지</td></tr>
+<tr><td>그래프 원칙</td><td>원데이터로 SVG/HTML 생성. 캡처는 fallback이며 캡션에 캡처 출처/시각 명시</td><td>축 왜곡, 임의 스케일, 값 없는 라벨 금지</td></tr>
+<tr><td>소스 우선순위</td><td>공시/회사 IR > 공식 거래소/지수/기관 > FMP 등 데이터 벤더 > Must Charts/AlphaSense visible summary > 편집자 해석</td><td>하위 소스만 있을 경우 상태값 partial 또는 interpretation</td></tr>
+</tbody></table>
+
+<h2>2. 소스 등급</h2>
+<table><thead><tr><th>등급</th><th>소스</th><th>사용 위치</th><th>상태값</th></tr></thead><tbody>
+<tr><td>T1</td><td>SEC 10-K/10-Q/8-K, 회사 IR release/deck, 공식 transcript</td><td>실적 actual, segment, guidance, Q&A</td><td><span class="tag">fact</span></td></tr>
+<tr><td>T2</td><td>공식 거래소, S&P/CME/ICE/FRED/Treasury, ETF issuer</td><td>지수, 선물, 원자재, 금리, ETF 정의</td><td><span class="tag">fact</span></td></tr>
+<tr><td>T3</td><td>FMP income statement, income statement growth, revenue segmentation, quote/profile/news</td><td>재무 그래프, 히트맵, 시황 표, 보조 컨센서스</td><td><span class="tag">reported</span></td></tr>
+<tr><td>T4</td><td>FactSet/Visible Alpha/언론 보도 컨센서스, EarningsHub UI</td><td>컨센서스, 과거 실적 히스토리, QoQ/YoY 화면 확인</td><td><span class="tag">partial</span></td></tr>
+<tr><td>T5</td><td>Must Charts visible page, AlphaSense local archive, research_memory.sqlite</td><td>익스퍼트 콜, read-through, 반복 주장</td><td><span class="tag">private</span></td></tr>
+<tr><td>E</td><td>편집자 계산/요약/해석</td><td>시장 한 줄, 투자 연결, 체크포인트</td><td><span class="tag">interpretation</span></td></tr>
+</tbody></table>
+
+<h2>3. 그래프별 데이터 매핑</h2>
+<table><thead><tr><th>그래프</th><th>필수 필드</th><th>1순위 데이터</th><th>검산</th></tr></thead><tbody>
+<tr><td>매출액 구성</td><td>fiscal_year, total_revenue, segment_name, segment_revenue</td><td>회사 10-K segment footnote / FMP revenue-product-segmentation 또는 revenue-geographic-segmentation</td><td>세그먼트 합계와 total_revenue 차이율 표기</td></tr>
+<tr><td>이익률</td><td>revenue, gross_profit, operating_income, net_income</td><td>FMP income-statement annual/quarter + 회사 재무제표</td><td>gross/operating/net margin = 각 이익 / revenue</td></tr>
+<tr><td>이익성장률(YoY)</td><td>growthRevenue, growthGrossProfit, growthOperatingIncome, growthNetIncome</td><td>FMP income-statement-growth</td><td>직전 연도 대비 직접 계산값과 비교</td></tr>
+<tr><td>사업 부문 표</td><td>segment_revenue_by_year, segment_yoy, avg_growth</td><td>회사 10-K/IR segment table + FMP segmentation</td><td>YoY = current / prior - 1</td></tr>
+<tr><td>섹터 퍼포먼스</td><td>sector_name, korean_name, change_pct</td><td>FMP sector performance / S&P sector ETF proxy</td><td>proxy ETF와 방향성 대조</td></tr>
+<tr><td>시장 히트맵</td><td>symbol, market_cap, sector, industry, change_pct</td><td>FMP batch quote + profile/market cap</td><td>박스 크기 합계, 색상 범위, 기준시각 표기</td></tr>
+</tbody></table>
+
+<h2>4. 공통 프롬프트</h2>
+<pre>너는 life inve 리서치 HTML 작성자임.
+아래 INPUT_JSON과 지정 source_url만 사용해 자기완결형 HTML 리서치 노트를 작성.
+
+[포맷 고정]
+- 헤더: life inve 로고, LIFE ASSET · {문서유형}, 제목, 날짜/as_of/source_count.
+- 첫 블록: capsule 한 줄 요약. 최소 2개 이상의 숫자 driver가 있을 때만 작성.
+- 본문: 숫자 표 → 그래프/SVG → 해석 카드 → 체크포인트 → 데이터 투명성 표 순서.
+- 푸터: life inve · Internal research note. Not investment advice.
+
+[문체]
+- 음슴체/개조식. 숫자 먼저, 해석 나중.
+- 과장 금지. "확실", "무조건", "매수/매도" 금지.
+- private transcript 또는 유료 원문은 장문 인용 금지. 요약만 허용.
+
+[데이터]
+- 모든 숫자는 INPUT_JSON에 있는 값만 사용.
+- 각 숫자는 source_key, provider, as_of가 있어야 함.
+- source_key 없는 숫자는 "미확인"으로 표기하고 본문 핵심 주장에 쓰지 않음.
+- 계산값은 formula와 input field를 데이터 투명성 표에 남김.
+
+[그래프]
+- 원데이터 기반 HTML/SVG 생성을 기본으로 함.
+- 외부 캡처는 Finviz/Koyfin/TradingView/EarningsHub 등에서만 fallback으로 허용.
+- 캡처 사용 시 URL, 캡처 시각, 필터, 기준 날짜를 캡션에 명시.
+- 차트 축은 0 또는 명시된 기준선에서 시작. 임의 확대 금지.
+
+[데이터 투명성 표 필수 컬럼]
+지표 | 값/필드 | 출처 | 상태(fact/reported/partial/private/interpretation) | 검산/비고.</pre>
+
+<h2>5. 예시 입력값</h2>
+<div class="capsule warn"><b>예시</b> 아래 숫자는 첨부된 재무 그래프 샘플을 재현하기 위한 입력 예시임. 실제 발행 시 회사 10-K/IR/FMP로 재확인해야 함.</div>
+<table><thead><tr><th>항목</th><th>FY2022</th><th>FY2023</th><th>FY2024</th><th>FY2025</th><th>FY2026</th><th>검산</th></tr></thead><tbody>
+<tr><td>Total Revenue ($M)</td><td>26,914.0</td><td>26,974.0</td><td>60,922.0</td><td>130,497.0</td><td>215,938.0</td><td>YoY: 61.40%, 0.22%, 125.85%, 114.20%, 65.47%</td></tr>
+<tr><td>Data Center ($M)</td><td>10,613.0</td><td>15,005.0</td><td>47,525.0</td><td>115,186.0</td><td>193,737.0</td><td>5Y avg growth 106.70%</td></tr>
+<tr><td>Gaming ($M)</td><td>12,462.0</td><td>9,067.0</td><td>10,447.0</td><td>11,350.0</td><td>16,042.0</td><td>5Y avg growth 6.52%</td></tr>
+</tbody></table>
+
+<h2>6. 공식 데이터 문서 링크</h2>
+<table><thead><tr><th>용도</th><th>공식 문서</th><th>적용</th></tr></thead><tbody>
+<tr><td>손익계산서</td><td><a href="https://site.financialmodelingprep.com/developer/docs/stable/income-statement">FMP Income Statement API</a></td><td>매출, 매출총이익, 영업이익, 순이익, EPS</td></tr>
+<tr><td>손익 성장률</td><td><a href="https://site.financialmodelingprep.com/developer/docs/stable/income-statement-growth">FMP Income Statement Growth API</a></td><td>매출/이익 YoY 성장률</td></tr>
+<tr><td>제품별 매출</td><td><a href="https://site.financialmodelingprep.com/developer/docs/stable/revenue-product-segmentation">FMP Revenue Product Segmentation API</a></td><td>사업부문/제품별 매출 구성</td></tr>
+<tr><td>지역별 매출</td><td><a href="https://site.financialmodelingprep.com/developer/docs/stable/revenue-geographic-segments">FMP Revenue Geographic Segments API</a></td><td>지역별 매출 구성</td></tr>
+<tr><td>전체 FMP 문서</td><td><a href="https://site.financialmodelingprep.com/developer/docs">FMP Developer Docs</a></td><td>quote, profile, market data, statement endpoint 확인</td></tr>
+</tbody></table>
+
+<div class="foot">life inve · common prompt principles · Copy-ready internal spec.</div>
+</main>
+</body>
+</html>

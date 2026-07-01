@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>life inve — 데일리 샘플 모음</title>
+<title>life inve — 샘플 허브 / 프롬프트 스펙</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
@@ -21,6 +21,7 @@ font-family:"Noto Sans KR","Open Sans",-apple-system,"Segoe UI","Malgun Gothic",
 .logo{display:inline-flex;align-items:center;gap:8px;margin-bottom:8px;}
 .logo .m{width:30px;height:30px;border-radius:7px;background:#fff;color:var(--green);display:grid;place-items:center;font-weight:800;}
 .note{background:#f0f5ea;border-left:4px solid var(--green);border-radius:8px;padding:12px 16px;margin:22px 0;font-size:13.5px;color:#3f5c21;}
+.note.warn{background:#fff4e5;border-left-color:#d8982b;color:#6b4b14;}
 h2{font-size:16px;color:var(--green);border-bottom:1px solid var(--line);padding-bottom:6px;margin:30px 0 14px;}
 .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;}
 @media(max-width:640px){.grid{grid-template-columns:1fr;}}
@@ -32,6 +33,12 @@ h2{font-size:16px;color:var(--green);border-bottom:1px solid var(--line);padding
 .badge{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;background:#eaf3df;color:var(--green);margin-left:6px;vertical-align:middle;}
 .badge.demo{background:#fff4e5;color:#b26a00;}
 .go{margin-top:12px;font-size:12.5px;color:var(--green);font-weight:700;}
+.example{border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:14px 0;background:#fff;}
+.example b{color:var(--green);}
+table{border-collapse:collapse;width:100%;font-size:13px;margin:12px 0;border:1px solid var(--line);}
+th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top;}
+th{background:#eaf3df;color:var(--green);white-space:nowrap;}
+tr:nth-child(even) td{background:#fafbf7;}
 .foot{color:var(--muted);font-size:12px;border-top:1px solid var(--line);margin-top:40px;padding:16px 0 60px;}
 a.plain{color:var(--green);}
 </style>
@@ -40,19 +47,41 @@ a.plain{color:var(--green);}
 <div class="bar"><div class="wrap">
 <div class="logo"><span class="m">Li</span><span style="font-weight:800;letter-spacing:.5px">life inve</span></div>
 <div class="kick">LIFE ASSET · DAILY SAMPLES</div>
-<h1>데일리 샘플 모음</h1>
-<p>라이프 인베 데일리 자동 요약 — 케이스별 예시 페이지. 이 링크 하나로 전부 공유하세요.</p>
+<h1>LifeInve 샘플 허브</h1>
+<p>문서별 샘플, 공통 프롬프트, 데이터 매핑, 그래프 소스 규칙을 한 곳에 고정.</p>
 </div></div>
 
 <div class="wrap">
-<div class="note">⚠️ 아래 페이지의 내용은 <b>[데모]/예시 데이터</b>입니다(실데이터 미반영). 포맷·디자인 확인용. 실데이터 연동은 백엔드 구축 후 자동 발행됩니다.</div>
+<div class="note">이 허브는 작업 기준 페이지임. 새 문서를 만들 때는 ① 공통 원칙 프롬프트 → ② 문서별 최종 스펙 → ③ 해당 샘플 페이지 순서로 확인.</div>
+<div class="note warn">일부 데모 페이지는 예시 데이터 포함. 실제 발행 시 모든 숫자는 공시/IR/FMP/AlphaSense/Must Charts 원문 소스키로 재검증해야 함.</div>
 
-<h2>📌 최종 프롬프트 / 데이터 매핑 스펙</h2>
+<h2>📌 공통 프롬프트 / 데이터 매핑 스펙</h2>
 <div class="grid">
+<a class="card" href="docs/prompts/lifeinve_common_prompt_principles.html" target="_blank">
+  <div class="ico">RULE</div><div class="t">공통 원칙 프롬프트 <span class="badge">required</span></div>
+  <div class="d">포맷 고정, 음슴체, 숫자 근거, 그래프 소스, 데이터 투명성 표, 캡처 fallback 규칙을 모든 문서에 선행 적용.</div><div class="go">열기 →</div></a>
 <a class="card" href="docs/prompts/lifeinve_final_prompt_sample_spec.html" target="_blank">
   <div class="ico">SPEC</div><div class="t">문서별 최종 프롬프트 스펙 <span class="badge">final</span></div>
   <div class="d">실적 요약, 데일리 시황, 주간 시황, AlphaSense 익스퍼트 콜의 데이터 소스·멘트·그래프·샘플 URL 정리.</div><div class="go">열기 →</div></a>
+<a class="card" href="dashboards/lifeinve-financial-chart-template.html" target="_blank">
+  <div class="ico">FIN</div><div class="t">재무 그래프 샘플 <span class="badge">chart</span></div>
+  <div class="d">매출액 구성, 이익률, 이익성장률(YoY), 사업부문 표. 첨부 예시처럼 financial chart block을 HTML/SVG로 재현.</div><div class="go">열기 →</div></a>
 </div>
+
+<h2>🔒 공통 원칙 요약</h2>
+<div class="example">
+<b>복붙 기준:</b> 포맷은 고정. 숫자는 source_key/provider/as_of가 있을 때만 사용. 문체는 음슴체. 그래프는 원데이터 기반 HTML/SVG 재생성을 기본으로 하고, 외부 캡처는 fallback으로만 사용.
+</div>
+<table>
+<thead><tr><th>데이터</th><th>우선 소스</th><th>그래프/문구 적용</th></tr></thead>
+<tbody>
+<tr><td>실적 actual / 세그먼트</td><td>SEC 8-K/10-Q/10-K, 회사 IR release/deck, FMP income-statement</td><td>핵심 실적 표, 매출 구성, 사업부문 표</td></tr>
+<tr><td>재무 성장률 / 이익률</td><td>FMP income-statement-growth, FMP income-statement, 직접 계산</td><td>이익률 라인, YoY 성장률 라인, 데이터 투명성 표 formula</td></tr>
+<tr><td>시황 지수 / 섹터 / 히트맵</td><td>FMP quote, FMP sector performance, market cap/profile</td><td>섹터 발산형 차트, 시장 히트맵, 상승/하락 종목 표</td></tr>
+<tr><td>익스퍼트 콜</td><td>Must Charts visible page, AlphaSense local archive, research_memory.sqlite</td><td>오늘의 한 방, ticker coverage, 콜 카드, read-through</td></tr>
+<tr><td>캡처 fallback</td><td>Finviz Map, Koyfin heatmap, TradingView heatmap, EarningsHub UI</td><td>URL/캡처시각/필터/as_of를 캡션에 명시</td></tr>
+</tbody>
+</table>
 
 <h2>🗞 데일리 요약 (5종)</h2>
 <div class="grid">
@@ -76,13 +105,13 @@ a.plain{color:var(--green);}
   <div class="d">SMTC 기본 레이아웃 기준. Q4 FY26 매출/EPS/EBITDA/backlog/guidance + 데이터 투명성 표.</div><div class="go">열기 →</div></a>
 <a class="card" href="daily/2026-07-01-lifeinve-market-brief-v2.html" target="_blank">
   <div class="ico">M</div><div class="t">데일리 시황 v2 <span class="badge">life inve</span></div>
-  <div class="d">지수, 선물, 원자재, ETF Top/Bottom, 상승·하락 종목, 데이터 투명성 표.</div><div class="go">열기 →</div></a>
+  <div class="d">지수, 섹터 퍼포먼스 발산형 차트, 시장 히트맵, 선물·원자재, 상승·하락 종목, 데이터 투명성 표.</div><div class="go">열기 →</div></a>
 <a class="card" href="daily/2026-06-22-26-lifeinve-weekly-market-wrap.html" target="_blank">
   <div class="ico">W</div><div class="t">주간 시황 랩 <span class="badge">life inve</span></div>
   <div class="d">Options Oracle weekly wrap 참고. weekly scorecard, 로테이션 해석, day-by-day 구조.</div><div class="go">열기 →</div></a>
 <a class="card" href="daily/alphasense_expert_call_daily_template.html" target="_blank">
   <div class="ico">A</div><div class="t">AlphaSense 익스퍼트 콜 <span class="badge">template</span></div>
-  <div class="d">Must Charts 익스퍼트 콜 구조 기반. ticker coverage, 반복 주장, read-through, 데이터 매핑.</div><div class="go">열기 →</div></a>
+  <div class="d">Must Charts 2026-06-16 실제 구조 기반. MU/TXN/AMZN/NVDA/GOOGL 콜 카드, ticker coverage, read-through, 데이터 매핑.</div><div class="go">열기 →</div></a>
 </div>
 
 <h2>📊 대시보드</h2>
