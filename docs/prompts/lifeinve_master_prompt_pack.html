@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>life inve - 마스터 프롬프트 팩 / 데이터 소스 / 샘플 링크</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--green:#3F5C21;--green-mid:#608C34;--green-light:#8FB85D;--ink:#070203;--line:#E7E6E6;--muted:#6b7280;--tint:#eaf3df;--warn:#fff4e5}
+*{box-sizing:border-box}body{margin:0;background:#fff;color:var(--ink);line-height:1.65;font-family:"Noto Sans KR","Open Sans",-apple-system,"Segoe UI","Malgun Gothic",sans-serif;font-variant-numeric:tabular-nums}.hdr{background:var(--green);color:#fff;padding:26px 0 24px}.wrap,.in{max-width:1120px;margin:0 auto;padding:0 22px}.brandrow{display:flex;gap:10px;align-items:center;margin-bottom:14px}.logo{width:34px;height:34px;border-radius:8px;background:#fff;color:var(--green);font-weight:900;display:grid;place-items:center}.brandname{font-weight:900;letter-spacing:.5px}.kicker{font-size:.76em;font-weight:700;letter-spacing:1.5px;color:#d7e6c4;text-transform:uppercase}.hdr h1{font-size:1.8em;margin:.15em 0 .1em;font-weight:900}.meta{color:#d7e6c4;font-size:.9em}.wrap{padding-bottom:80px}.capsule{background:var(--tint);border:1px solid var(--line);border-left:4px solid var(--green);border-radius:9px;padding:14px 18px;margin:18px 0}.warn{background:var(--warn);border-left-color:#d8982b;color:#5f4615}h2{color:var(--green);margin-top:38px;border-bottom:2px solid var(--green);padding-bottom:6px;font-size:1.18em;font-weight:900}h3{color:var(--green);font-size:1.03em;margin:22px 0 8px}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.card{border:1px solid var(--line);border-radius:8px;padding:14px;background:#fff}.card b{color:var(--green)}.card a{font-weight:700}.tag{display:inline-block;font-size:.72em;font-weight:700;padding:1px 7px;border-radius:10px;margin-right:5px;background:var(--tint);color:var(--green)}table{border-collapse:collapse;width:100%;margin:12px 0;background:#fff;border-radius:8px;overflow:hidden;font-size:.9em;border:1px solid var(--line)}th,td{padding:9px 11px;text-align:left;border:1px solid var(--line);vertical-align:top}th{background:var(--tint);color:var(--green);font-weight:700;white-space:nowrap}tr:nth-child(even) td{background:#fafbf7}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#f7faf2;border:1px solid var(--line);border-left:4px solid var(--green);border-radius:9px;padding:14px 16px;font-family:"Open Sans","Noto Sans KR",monospace;font-size:.88em;line-height:1.55}a{color:var(--green-mid);overflow-wrap:anywhere}.foot{color:var(--muted);font-size:.82em;margin-top:42px;border-top:1px solid var(--line);padding-top:14px}@media(max-width:760px){.grid{grid-template-columns:1fr}.hdr h1{font-size:1.38em}table{display:block;overflow-x:auto;white-space:nowrap}}
+</style>
+</head>
+<body>
+<header class="hdr"><div class="in"><div class="brandrow"><div class="logo">Li</div><div class="brandname">life inve</div></div><div class="kicker">LIFE ASSET · MASTER PROMPT PACK</div><h1>마스터 프롬프트 팩 / 데이터 소스 / 샘플 링크</h1><div class="meta">공통 원칙 · 데일리 시황 · 주간 시황 · 실적 요약 · AlphaSense 콜 · 재무 그래프 통합본</div></div></header>
+<main class="wrap">
+<div class="capsule"><b>사용 계약</b> 새 문서를 만들 때는 이 문서 하나에서 시작함. 공통 원칙을 먼저 적용하고, 문서별 데이터 매핑과 프롬프트를 선택한 뒤, 샘플 HTML 레이아웃을 복제해 숫자와 출처를 교체함.</div>
+<div class="capsule warn"><b>복붙용 MD</b> 실제 생성기에 넣을 통합 프롬프트는 <a href="PROMPT_lifeinve_master_pack.md">PROMPT_lifeinve_master_pack.md</a> 사용. 세부 시황 멘트는 <a href="PROMPT_lifeinve_market_commentary.md">PROMPT_lifeinve_market_commentary.md</a> 사용.</div>
+
+<h2>1. 작업 순서</h2>
+<table><thead><tr><th>순서</th><th>작업</th><th>산출물</th><th>검증</th></tr></thead><tbody>
+<tr><td>1</td><td><a href="lifeinve_common_prompt_principles.html">공통 원칙</a> 적용: 포맷, 음슴체, 숫자 근거, 그래프 소스, 데이터 투명성 표</td><td>문서 공통 골격</td><td>입력값 없는 숫자 없음</td></tr>
+<tr><td>2</td><td><a href="lifeinve_final_prompt_sample_spec.html">문서별 최종 스펙</a>에서 문서 유형 선택</td><td>실적/시황/주간/콜/재무 중 하나</td><td>필수 필드 충족</td></tr>
+<tr><td>3</td><td>원천 데이터 수집: 공시/IR/FMP/AlphaSense/Must Charts/시장 코멘트</td><td>INPUT_JSON + source_commentary</td><td>source_key, provider, as_of 포함</td></tr>
+<tr><td>4</td><td>HTML/SVG 생성. 외부 캡처는 fallback으로만 사용</td><td>LifeInve 스타일 HTML</td><td>데스크톱/모바일 렌더 확인</td></tr>
+<tr><td>5</td><td>배포 후 라이브 URL 확인</td><td>GitHub Pages URL</td><td>200 응답 + 핵심 키워드 확인</td></tr>
+</tbody></table>
+
+<h2>2. 통합 링크</h2>
+<div class="grid">
+<div class="card"><b>공통 원칙</b><br><a href="lifeinve_common_prompt_principles.html">lifeinve_common_prompt_principles.html</a><br>모든 문서 선행 규칙.</div>
+<div class="card"><b>문서별 최종 스펙</b><br><a href="lifeinve_final_prompt_sample_spec.html">lifeinve_final_prompt_sample_spec.html</a><br>데이터 매핑/그래프/프롬프트/샘플 URL.</div>
+<div class="card"><b>시황 멘트 전용</b><br><a href="lifeinve_market_commentary_prompt_spec.html">lifeinve_market_commentary_prompt_spec.html</a><br>시장 한 줄과 원인 라벨 생성 규칙.</div>
+<div class="card"><b>통합 MD</b><br><a href="PROMPT_lifeinve_master_pack.md">PROMPT_lifeinve_master_pack.md</a><br>복붙용 전체 프롬프트.</div>
+<div class="card"><b>시황 MD</b><br><a href="PROMPT_lifeinve_market_commentary.md">PROMPT_lifeinve_market_commentary.md</a><br>시황 멘트 생성기용.</div>
+<div class="card"><b>샘플 허브</b><br><a href="../../samples.html">samples.html</a><br>배포 샘플 전체 모음.</div>
+</div>
+
+<h2>3. 문서별 산출물 정의</h2>
+<table><thead><tr><th>문서</th><th>핵심 출력</th><th>필수 그래프/표</th><th>복붙 문체</th></tr></thead><tbody>
+<tr><td>데일리 시황</td><td>시장 한 줄, 3줄 요약, 지수 마감, 섹터 해석, 히트맵 해석, 상승/하락 원인 라벨, 내일 체크포인트</td><td>섹터 퍼포먼스 발산형 차트, 시장 히트맵, 선물/원자재 표, 상승/하락 종목 표</td><td>숫자 먼저. 원인 단정은 가격 데이터와 source_commentary가 동시에 맞을 때만.</td></tr>
+<tr><td>주간 시황</td><td>주간 한 줄, 3줄 요약, Weekly Scorecard, Day by Day, 다음 주 관전 포인트</td><td>주간 승자/압박 bar chart, 매크로/스타일 scorecard</td><td>주간 수익률 기준일과 5거래일 기준 명시.</td></tr>
+<tr><td>실적 요약</td><td>주가 반응, 기업 개요, 핵심 실적 vs 컨센서스, 경영진 메시지, KPI, 가이던스, Q&A</td><td>핵심 실적 표, 매출 actual vs consensus, 세그먼트 매출, 가이던스/KPI 차트</td><td>SEC/IR actual과 consensus provider 분리.</td></tr>
+<tr><td>AlphaSense 콜</td><td>오늘의 한 줄, 오늘의 한 방, Ticker Coverage, 콜 카드, 반복 주장/반대 증거</td><td>콜 카드 3~5개, ticker coverage 표, 데이터 매핑 표</td><td>Must Charts visible page 먼저, AlphaSense 원문은 장문 인용 금지.</td></tr>
+<tr><td>재무 그래프</td><td>매출 구성, 이익률, YoY 성장률, 사업부문 표, 데이터 투명성</td><td>stacked bar, bar/line combo, multi-line, FY별 표</td><td>세그먼트 합계와 total revenue 차이율 기록.</td></tr>
+</tbody></table>
+
+<h2>4. 데이터 소스 맵</h2>
+<table><thead><tr><th>데이터</th><th>1순위</th><th>보조/Fallback</th><th>사용 위치</th></tr></thead><tbody>
+<tr><td>실적 actual</td><td>SEC 8-K/10-Q/10-K, 회사 IR release/deck</td><td>FMP income statement</td><td>실적 표, KPI, 가이던스</td></tr>
+<tr><td>컨센서스</td><td>FactSet/Visible Alpha 보도, 회사/언론 명시 consensus</td><td>FMP earnings calendar</td><td>실적 vs 컨센서스</td></tr>
+<tr><td>과거 실적/재무</td><td>FMP income-statement, income-statement-growth, revenue segmentation</td><td>회사 10-K segment footnote</td><td>재무 그래프, 과거 실적 분석</td></tr>
+<tr><td>시장 지수/ETF/종목</td><td>FMP quote, batch quote, ETF quote, profile/market cap</td><td>공식 index/ETF issuer</td><td>시황 표, 히트맵, 상승/하락 종목</td></tr>
+<tr><td>섹터 퍼포먼스</td><td>FMP sector performance</td><td>S&P sector ETF proxy(XLK/XLC/XLF 등)</td><td>섹터 발산형 차트</td></tr>
+<tr><td>매크로</td><td>Treasury/FRED/CME/ICE</td><td>FMP commodity quote, Reuters/AP</td><td>금리, 달러, 유가, 금, 구리, VIX</td></tr>
+<tr><td>시황 코멘트</td><td>S&P DJI, S&P Global MI, Nasdaq, Reuters, MarketWatch, Morningstar</td><td>Edward Jones, Schwab, BlackRock, 내부 Must Charts</td><td>source_commentary, confirmed_driver</td></tr>
+<tr><td>익스퍼트 콜</td><td>Must Charts visible page, AlphaSense local archive</td><td>research_memory.sqlite, analyst override</td><td>콜 카드, read-through, 반복 주장</td></tr>
+<tr><td>외부 캡처</td><td>원칙상 사용하지 않음</td><td>Finviz/Koyfin/TradingView/EarningsHub UI</td><td>원데이터 재생성이 불가할 때만 캡션 포함</td></tr>
+</tbody></table>
+
+<h2>5. 통합 프롬프트</h2>
+<pre>너는 life inve 리서치 HTML 작성자임.
+아래 INPUT_JSON, source_commentary, source_url 목록만 사용해 문서 유형에 맞는 한국어 음슴체 HTML을 작성.
+
+[공통 규칙]
+- 숫자는 입력값에 있는 값만 사용.
+- 모든 주요 수치는 source_key/provider/as_of가 있어야 함.
+- 포맷은 초록 헤더 → capsule 한 줄 → 표/차트 → 해석 카드 → 데이터 투명성 표 순서.
+- 그래프는 원데이터 기반 HTML/SVG로 재생성.
+- 외부 캡처는 fallback으로만 쓰고 URL/캡처시각/필터/as_of를 캡션에 명시.
+- private transcript와 유료 원문은 장문 인용 금지. 요약만 허용.
+- 원인 단정은 데이터와 코멘트 소스가 동시에 맞을 때만.
+
+[문서 유형]
+daily_market | weekly_market | earnings_summary | expert_call | financial_chart
+
+[출력]
+문서 유형별 필수 섹션을 빠짐없이 작성하고, 마지막에 데이터 투명성 표를 붙임.</pre>
+
+<h2>6. 샘플 페이지</h2>
+<table><thead><tr><th>샘플</th><th>URL</th><th>용도</th></tr></thead><tbody>
+<tr><td>데일리 시황 v2</td><td><a href="../../daily/2026-07-01-lifeinve-market-brief-v2.html">daily/2026-07-01-lifeinve-market-brief-v2.html</a></td><td>섹터 발산형 차트 + 시장 히트맵 기준</td></tr>
+<tr><td>주간 시황 랩</td><td><a href="../../daily/2026-06-22-26-lifeinve-weekly-market-wrap.html">daily/2026-06-22-26-lifeinve-weekly-market-wrap.html</a></td><td>Options Oracle식 weekly wrap 구조</td></tr>
+<tr><td>AVAV 실적 요약</td><td><a href="../../earnings/AVAV_FQ4FY26.html">earnings/AVAV_FQ4FY26.html</a></td><td>LifeInve 실적 요약 샘플</td></tr>
+<tr><td>SMTC 기준 레이아웃</td><td><a href="../../earnings/SMTC_FQ1FY27.html">earnings/SMTC_FQ1FY27.html</a></td><td>표/차트 골격 기준</td></tr>
+<tr><td>AlphaSense 콜</td><td><a href="../../daily/alphasense_expert_call_daily_template.html">daily/alphasense_expert_call_daily_template.html</a></td><td>Must Charts 기반 콜 카드 구조</td></tr>
+<tr><td>재무 그래프</td><td><a href="../../dashboards/lifeinve-financial-chart-template.html">dashboards/lifeinve-financial-chart-template.html</a></td><td>매출/이익률/YoY/사업부문 그래프</td></tr>
+<tr><td>샘플 허브</td><td><a href="../../samples.html">samples.html</a></td><td>전체 배포 샘플 목차</td></tr>
+</tbody></table>
+
+<div class="foot">life inve · master prompt pack · Internal research note. Not investment advice.</div>
+</main>
+</body>
+</html>
