@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>라이프 인베 차트 — 2026-07-01</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --life-green:#608C34;       /* primary/key */
+  --life-green-light:#8FB85D; /* accent */
+  --life-ink:#070203;         /* text */
+  --life-bg:#FFFFFF;
+  --life-line:#E7E6E6;        /* 근사 */
+  --life-urgent:#C0392B;      /* 기능색 */
+  --life-muted:#6B6B6B;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:var(--life-bg);
+  color:var(--life-ink);
+  font-family:"Noto Sans KR","Open Sans",-apple-system,"Segoe UI","Malgun Gothic",sans-serif;
+  font-size:16px;
+  line-height:1.72;
+  -webkit-font-smoothing:antialiased;
+}
+.num,.pct,.ticker,.tabnum{
+  font-family:"Open Sans","Noto Sans KR",sans-serif;
+  font-variant-numeric:tabular-nums;
+}
+.wrap{max-width:760px;margin:0 auto;padding:0 20px 64px;}
+
+/* ── 데모 배너 ── */
+.demo-banner{
+  background:repeating-linear-gradient(45deg,#FBF3E7,#FBF3E7 12px,#F5E9D4 12px,#F5E9D4 24px);
+  border:1px solid #E4C77E;
+  color:#8A6100;
+  font-size:13px;
+  font-weight:700;
+  text-align:center;
+  padding:9px 14px;
+  letter-spacing:.02em;
+}
+
+/* ── 헤더 ── */
+.masthead-bar{
+  background:var(--life-green);
+  color:#fff;
+  padding:8px 0;
+}
+.masthead-bar .inner{
+  max-width:760px;margin:0 auto;padding:0 20px;
+  display:flex;justify-content:space-between;align-items:center;
+  font-size:13px;font-weight:700;letter-spacing:.06em;
+}
+.masthead-bar .brandmark{text-transform:uppercase;}
+.masthead-bar .edition{font-weight:600;opacity:.9;}
+header.page-head{padding:30px 0 22px;border-bottom:3px solid var(--life-green);}
+.kicker{
+  font-family:"Open Sans","Noto Sans KR",sans-serif;
+  font-size:12.5px;font-weight:700;letter-spacing:.11em;
+  color:var(--life-green);text-transform:uppercase;margin-bottom:12px;
+}
+h1.title{
+  font-size:33px;font-weight:900;line-height:1.2;margin:0 0 12px;
+  letter-spacing:-.01em;
+}
+.tagline{font-size:16px;color:var(--life-ink);font-weight:500;margin:0 0 14px;}
+.meta-line{
+  font-size:13.5px;color:var(--life-muted);
+  border-top:1px solid var(--life-line);padding-top:12px;
+  font-family:"Open Sans","Noto Sans KR",sans-serif;
+}
+
+/* ── 섹션 공통 ── */
+section{margin-top:38px;}
+h2.sec{
+  font-size:20px;font-weight:900;margin:0 0 18px;
+  padding-bottom:8px;position:relative;
+}
+h2.sec::after{
+  content:"";position:absolute;left:0;bottom:0;
+  width:56px;height:3px;background:var(--life-green);
+}
+
+/* ── 오늘의 한 방 ── */
+.takeaways{
+  list-style:none;margin:0;padding:0;
+  border:1px solid var(--life-line);border-radius:8px;overflow:hidden;
+}
+.takeaways li{
+  display:flex;gap:12px;padding:14px 16px;
+  border-bottom:1px solid var(--life-line);
+  font-size:15px;line-height:1.55;
+}
+.takeaways li:last-child{border-bottom:none;}
+.takeaways .n{
+  flex:0 0 auto;width:24px;height:24px;border-radius:50%;
+  background:var(--life-green);color:#fff;font-weight:700;font-size:13px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:"Open Sans",sans-serif;margin-top:1px;
+}
+.takeaways .tk-ticker{font-weight:700;color:var(--life-green);}
+.pct.up{color:var(--life-green);font-weight:700;}
+.pct.down{color:var(--life-urgent);font-weight:700;}
+
+/* ── 메인 아이템 ── */
+.item{
+  padding:26px 0;border-bottom:1px solid var(--life-line);
+}
+.item:last-of-type{border-bottom:none;}
+.item-top{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:9px;}
+.item-num{
+  font-family:"Open Sans",sans-serif;font-weight:700;font-size:14px;
+  color:#fff;background:var(--life-ink);
+  width:26px;height:26px;border-radius:5px;
+  display:flex;align-items:center;justify-content:center;
+}
+.badge-ticker{
+  font-family:"Open Sans","Noto Sans KR",sans-serif;
+  font-weight:700;font-size:13px;letter-spacing:.02em;
+  color:#fff;background:var(--life-green);
+  padding:3px 9px;border-radius:4px;
+  font-variant-numeric:tabular-nums;
+}
+.badge{
+  font-size:12px;font-weight:700;padding:3px 9px;border-radius:4px;
+  letter-spacing:.02em;
+}
+.badge.urgent{background:var(--life-urgent);color:#fff;}
+.badge.hot{background:var(--life-green-light);color:#1F3510;}
+.badge.demo{background:#F5E9D4;color:#8A6100;border:1px solid #E4C77E;}
+.headline{font-size:20px;font-weight:900;line-height:1.34;margin:4px 0 6px;letter-spacing:-.01em;}
+.subhead{font-size:14.5px;color:var(--life-muted);font-weight:500;margin:0 0 12px;line-height:1.5;}
+.source-line{
+  font-size:12.5px;color:var(--life-green);font-weight:600;
+  font-family:"Open Sans","Noto Sans KR",sans-serif;
+  margin:0 0 14px;padding-left:0;
+}
+.source-line b{color:var(--life-ink);font-weight:700;}
+.item p{margin:0 0 12px;font-size:15.5px;line-height:1.76;}
+.quote{
+  border-left:3px solid var(--life-green);
+  background:#F7FAF3;
+  padding:12px 16px;margin:16px 0 4px;
+  font-size:15px;line-height:1.6;border-radius:0 6px 6px 0;
+}
+.quote .who{font-weight:700;color:var(--life-green);}
+
+/* ── 그 외 오늘 ── */
+.rapid{list-style:none;margin:0;padding:0;}
+.rapid li{
+  padding:10px 0 10px 20px;position:relative;
+  font-size:14.5px;line-height:1.55;border-bottom:1px dashed var(--life-line);
+}
+.rapid li:last-child{border-bottom:none;}
+.rapid li::before{
+  content:"›";position:absolute;left:0;top:9px;
+  color:var(--life-green);font-weight:700;font-size:16px;
+}
+.rapid .r-ticker{font-weight:700;color:var(--life-green);font-family:"Open Sans","Noto Sans KR",sans-serif;}
+
+/* ── 푸터 ── */
+footer{margin-top:46px;border-top:3px solid var(--life-green);padding-top:22px;}
+.foot-brand{font-size:14px;font-weight:700;margin-bottom:10px;}
+.foot-sources{font-size:12.5px;color:var(--life-muted);line-height:1.7;margin-bottom:16px;}
+.foot-sources b{color:var(--life-ink);}
+.caveat{
+  font-size:11.5px;color:var(--life-muted);line-height:1.65;
+  background:#FAFAF8;border:1px solid var(--life-line);
+  border-radius:6px;padding:12px 14px;
+}
+.caveat b{color:var(--life-urgent);}
+
+.section-label{
+  display:inline-block;font-size:11px;font-weight:700;letter-spacing:.08em;
+  color:var(--life-muted);text-transform:uppercase;margin-bottom:4px;
+  font-family:"Open Sans",sans-serif;
+}
+
+@media (max-width:600px){
+  h1.title{font-size:26px;}
+  .headline{font-size:18px;}
+  .wrap{padding:0 15px 48px;}
+  .masthead-bar .inner{flex-direction:column;gap:2px;align-items:flex-start;}
+}
+</style>
+</head>
+<body>
+
+<div class="demo-banner">⚠️ [데모 / 예시 데이터] — 이 페이지의 모든 종목·수치·인용은 포맷 시연용 가상 콘텐츠이며 실제 보도·시세가 아닙니다.</div>
+
+<div class="masthead-bar">
+  <div class="inner">
+    <span class="brandmark">라이프 인베 차트 — 데일리</span>
+    <span class="edition">[데모 에디션]</span>
+  </div>
+</div>
+
+<div class="wrap">
+
+<header class="page-head">
+  <div class="kicker">LIFE ASSET · SUBSTACK 리뷰 2026-07-01</div>
+  <h1 class="title">라이프 인베 차트 — 2026-07-01</h1>
+  <p class="tagline">오늘 섭스택에선 무슨 얘기가 — 뉴스레터 한 면 요약</p>
+  <div class="meta-line">수요일 · 2026년 7월 1일 | 섭스택 6건 커버 · <b style="color:#8A6100;">[데모]</b></div>
+</header>
+
+<!-- ② 오늘의 한 방 -->
+<section>
+  <span class="section-label">Top Takeaways</span>
+  <h2 class="sec">오늘의 한 방 <span class="badge demo" style="vertical-align:middle;">데모</span></h2>
+  <ol class="takeaways">
+    <li>
+      <span class="n">1</span>
+      <div><span class="tk-ticker">$NVDA</span> <span class="pct up">+6.1%</span> — 차세대 추론칩 조기 양산 루머에 갭업, 공급망 섭스택들 일제히 강세 톤</div>
+    </li>
+    <li>
+      <span class="n">2</span>
+      <div><span class="tk-ticker">005930.KS</span> <span class="pct up">+3.4%</span> — HBM4 퀄테스트 통과설, 내수 반도체 뉴스레터 매수 심리 급회복</div>
+    </li>
+    <li>
+      <span class="n">3</span>
+      <div><span class="tk-ticker">$TSLA</span> <span class="pct down">-4.7%</span> — 로보택시 인허가 지연 헤드라인에 셀오프, 모빌리티 섭스택 온도차 뚜렷</div>
+    </li>
+    <li>
+      <span class="n">4</span>
+      <div><span class="tk-ticker">373220.KS</span> <span class="pct up">+2.2%</span> — 유럽 ESS 수주 낙수 기대, 2차전지 뉴스레터 "바닥 확인" 톤</div>
+    </li>
+  </ol>
+</section>
+
+<!-- ③ 메인 아이템 -->
+<section>
+  <span class="section-label">Main Items · 글로벌 → 한국 → 기타</span>
+  <h2 class="sec">본문 — 오늘의 여섯 조각 <span class="badge demo" style="vertical-align:middle;">데모</span></h2>
+
+  <!-- 1 -->
+  <article class="item">
+    <div class="item-top">
+      <span class="item-num">1</span>
+      <span class="badge-ticker">$NVDA</span>
+      <span class="badge urgent">🔴 긴급</span>
+      <span class="badge demo">데모</span>
+    </div>
+    <h3 class="headline">차세대 추론칩 조기 양산설 — 갭업 후 장중 내내 강세 유지함</h3>
+    <p class="subhead">공급망 섭스택 3곳이 같은 파운드리 예약 물량 정황을 지목, 로드맵 6개월 당겨졌단 해석</p>
+    <p class="source-line">출처: <b>SemiFlow Weekly</b> · <b>칩레터(ChipLetter)</b> · <b>AI Infra Notes</b></p>
+    <p>가상의 반도체 섭스택 세 곳이 오늘 아침 동시에 같은 관측을 냈다. 차세대 추론 전용 가속기의 위탁 양산 일정이 기존 로드맵보다 앞당겨졌다는 내용이다. 세 필자 모두 파운드리 예약 캐파의 이례적 증가를 근거로 들었으나, 어느 곳도 1차 공시로 확인된 사실은 아니라고 명시했다.</p>
+    <p>시장은 개장과 함께 반응했다. 프리마켓에서 갭업으로 출발한 주가는 장중 내내 강세를 유지했고, 관련 공급망 종목까지 온기가 번졌다. 다만 일부 필자는 "예약 캐파 증가가 곧 신제품 조기 출시를 뜻하지는 않는다"며 과열 해석을 경계했다.</p>
+    <p>본 항목의 수치와 정황은 전부 포맷 시연을 위한 가상 예시다. 실제 기업의 로드맵이나 파운드리 계약과는 무관하다.</p>
+    <div class="quote">
+      <span class="who">SemiFlow Weekly 필자:</span> "예약 물량은 확실히 튀었는데, 그게 신제품인지 리비전인지는 아직 아무도 몰라요. 흥분은 이르다고 봅니다." <em style="color:#8A6100;">(예시 인용)</em>
+    </div>
+  </article>
+
+  <!-- 2 -->
+  <article class="item">
+    <div class="item-top">
+      <span class="item-num">2</span>
+      <span class="badge-ticker">$TSLA</span>
+      <span class="badge urgent">🔴 긴급</span>
+      <span class="badge demo">데모</span>
+    </div>
+    <h3 class="headline">로보택시 인허가 또 밀림 — 개장 전부터 매물 쏟아짐</h3>
+    <p class="subhead">특정 주(州) 상업운행 승인이 분기 이월됐다는 관측, 모빌리티 뉴스레터 사이 온도차 확연</p>
+    <p class="source-line">출처: <b>Autonomy Digest</b> · <b>모빌리티 브리프</b></p>
+    <p>자율주행 관련 가상 섭스택들은 오늘 상반된 톤을 보였다. 한 곳은 인허가 지연을 "일정 미세조정"으로 축소 해석한 반면, 다른 곳은 "연내 상업화 시나리오 자체가 흔들린다"고 짚었다. 주가는 후자의 해석에 무게가 실리며 하락 출발했다.</p>
+    <p>비관론의 핵심은 매출 인식 시점이다. 상업 운행 승인이 다음 분기로 밀리면 관련 소프트웨어 이연매출 인식도 함께 지연된다는 논리다. 반면 낙관론자들은 누적 주행 데이터의 질이 계속 개선되고 있다는 점을 반론으로 들었다.</p>
+    <p>여기 담긴 인허가 일정과 주가 반응은 모두 시연용 허구다.</p>
+  </article>
+
+  <!-- 3 -->
+  <article class="item">
+    <div class="item-top">
+      <span class="item-num">3</span>
+      <span class="badge-ticker">005930.KS</span>
+      <span class="badge hot">화제</span>
+      <span class="badge demo">데모</span>
+    </div>
+    <h3 class="headline">HBM4 퀄테스트 통과설 — 내수 반도체 심리 하루 만에 반전됨</h3>
+    <p class="subhead">주요 고객사 인증 막바지 단계 진입 관측, 국내 반도체 뉴스레터 "밸류 리레이팅 구간" 톤</p>
+    <p class="source-line">출처: <b>한투 반도체노트</b> · <b>K-메모리 인사이트</b> · <b>버틀러레터</b></p>
+    <p>국내 가상 반도체 섭스택들은 차세대 고대역폭 메모리의 고객사 인증이 최종 단계에 접어들었다는 관측을 공유했다. 필자들은 인증 통과 시 공급 물량 배분에서 유리한 고지를 점할 수 있다는 점을 강조했다.</p>
+    <p>다만 신중론도 있었다. 한 필자는 "퀄 통과와 대량 양산 수율은 별개의 문제이고, 실제 실적 기여까지는 시차가 있다"고 적었다. 그럼에도 전반적 심리는 전날의 약세에서 하루 만에 매수 우위로 돌아섰다.</p>
+    <div class="quote">
+      <span class="who">K-메모리 인사이트 필자:</span> "인증은 문을 여는 거고, 돈이 되는 건 수율이 잡히고 나서예요. 순서를 헷갈리면 안 됩니다." <em style="color:#8A6100;">(예시 인용)</em>
+    </div>
+  </article>
+
+  <!-- 4 -->
+  <article class="item">
+    <div class="item-top">
+      <span class="item-num">4</span>
+      <span class="badge-ticker">373220.KS</span>
+      <span class="badge hot">화제</span>
+      <span class="badge demo">데모</span>
+    </div>
+    <h3 class="headline">유럽 ESS 수주 낙수 기대 — 2차전지 뉴스레터 "바닥은 봤다" 톤</h3>
+    <p class="subhead">전력망 저장장치 발주 사이클 재개 관측, 셀·소재 밸류체인 전반으로 기대 확산</p>
+    <p class="source-line">출처: <b>배터리 플로우</b> · <b>이차전지 위클리</b></p>
+    <p>가상의 2차전지 섭스택들은 유럽 지역 에너지저장장치(ESS) 발주가 재개 조짐을 보인다는 데 주목했다. 전기차 수요 둔화로 눌려 있던 셀 업체들에 ESS가 새 수요처가 될 수 있다는 기대다.</p>
+    <p>필자들은 소재·부품·장비로 이어지는 낙수 효과 가능성을 언급하면서도, 발주가 실제 계약과 매출로 이어지기까지의 리드타임을 감안하면 "기대 선반영은 경계해야 한다"고 덧붙였다. 이 항목 역시 시연용 가상 사례다.</p>
+  </article>
+
+  <!-- 5 -->
+  <article class="item">
+    <div class="item-top">
+      <span class="item-num">5</span>
+      <span class="badge-ticker">247540.KQ</span>
+      <span class="badge hot">화제</span>
+      <span class="badge demo">데모</span>
+    </div>
+    <h3 class="headline">코스닥 소재주 실적 서프라이즈 루머 — 개미 뉴스레터 들썩임</h3>
+    <p class="subhead">2분기 가이던스 상향 가능성 채터, 다만 무출처 관측이라 신뢰도는 필자마다 갈림</p>
+    <p class="source-line">출처: <b>코스닥 스몰캡 레터</b> · <b>텐배거 노트</b></p>
+    <p>코스닥 소재 종목을 다루는 가상 섭스택들 사이에서 2분기 실적이 시장 기대를 웃돌 수 있다는 관측이 돌았다. 다만 이는 공식 가이던스가 아니라 유통 채널 점검에 기반한 추정 수준이었고, 필자들의 확신 정도는 제각각이었다.</p>
+    <p>한 필자는 "숫자가 좋아도 이미 주가에 상당 부분 반영됐을 수 있다"며 뒤늦은 추격 매수를 경계했다. 반대로 다른 필자는 밸류에이션 매력이 여전하다고 봤다. 관측·수치 전부 예시 데이터다.</p>
+  </article>
+
+  <!-- 6 -->
+  <article class="item">
+    <div class="item-top">
+      <span class="item-num">6</span>
+      <span class="badge-ticker">$XLE</span>
+      <span class="badge hot">화제</span>
+      <span class="badge demo">데모</span>
+    </div>
+    <h3 class="headline">유가 급등에 에너지 섹터 로테이션 — 매크로 레터들 "인플레 재점화" 경계</h3>
+    <p class="subhead">공급 차질 헤드라인에 원자재 강세, 성장주 대비 가치주 상대강도 부각됐다는 진단</p>
+    <p class="source-line">출처: <b>매크로 다이제스트</b> · <b>Rates &amp; Barrels</b></p>
+    <p>매크로를 다루는 가상 뉴스레터들은 유가 급등이 하반기 물가 경로에 부담을 줄 수 있다고 짚었다. 에너지 섹터로의 자금 로테이션 조짐과 함께, 금리 인하 기대가 후퇴할 수 있다는 관측이 제기됐다.</p>
+    <p>다만 필자들은 단기 공급 이슈와 구조적 인플레를 구분해야 한다고 강조했다. 일시적 공급 차질이라면 물가 파급은 제한적일 수 있다는 것이다. 본 항목의 지표·해석은 모두 포맷 시연을 위한 가상 예시다.</p>
+  </article>
+</section>
+
+<!-- ⑤ 그 외 오늘 -->
+<section>
+  <span class="section-label">Rapid Fire</span>
+  <h2 class="sec">그 외 오늘 <span class="badge demo" style="vertical-align:middle;">데모</span></h2>
+  <ul class="rapid">
+    <li><span class="r-ticker">$AAPL</span> — 신규 온디바이스 AI 기능 티저에 소폭 강세, 다만 섭스택 반응 미지근함</li>
+    <li><span class="r-ticker">000660.KS</span> — 장비 발주 재개 관측 나옴, 소부장 레터 조심스런 낙관 톤</li>
+    <li><span class="r-ticker">$AMZN</span> — 물류 자동화 캡엑스 확대설, 리테일 뉴스레터 마진 우려 여전</li>
+    <li><span class="r-ticker">035420.KS</span> — 커머스 광고 단가 반등 채터, 인터넷주 밸류 논쟁 재점화</li>
+    <li><span class="r-ticker">$COIN</span> — 스테이블코인 규제 명확화 기대에 반등, 크립토 레터 신중론 우세</li>
+  </ul>
+</section>
+
+<!-- ⑥ 푸터 -->
+<footer>
+  <div class="foot-brand">라이프 인베 차트 · 섭스택 6건 근거 · 자동 생성 <span class="badge demo">데모</span></div>
+  <div class="foot-sources">
+    <b>커버 소스 (예시):</b> SemiFlow Weekly · 칩레터(ChipLetter) · AI Infra Notes · Autonomy Digest · 모빌리티 브리프 · 한투 반도체노트 · K-메모리 인사이트 · 버틀러레터 · 배터리 플로우 · 이차전지 위클리 · 코스닥 스몰캡 레터 · 텐배거 노트 · 매크로 다이제스트 · Rates &amp; Barrels
+  </div>
+  <div class="caveat">
+    <b>[데모 · 예시 데이터]</b> 이 페이지는 라이프 인베 차트 데일리 포맷을 시연하기 위한 <b>자동 생성물</b>입니다. 위 종목명·티커·등락률·인용·소스는 전부 <b>가상의 예시</b>이며 실제 보도, 시세, 특정 매체의 콘텐츠가 아닙니다. 본 문서는 원문 요약 성격의 자동 산출물로 <b>투자자문이 아니며</b>, 모든 수치는 (가상) 발행 시점 기준입니다. 투자 판단과 그 책임은 전적으로 이용자 본인에게 있습니다.
+  </div>
+</footer>
+
+</div>
+</body>
+</html>
