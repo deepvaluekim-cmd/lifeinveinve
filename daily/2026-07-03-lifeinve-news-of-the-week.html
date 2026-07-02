@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>라이프 인베 — 뉴스 오브 더 위크 · 2026-06-25~07-02</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--green:#3F5C21;--green-mid:#608C34;--green-light:#8FB85D;--ink:#070203;
+--bg:#FFFFFF;--line:#E7E6E6;--muted:#6b7280;--up:#e0392b;--down:#1769d6;}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{-webkit-text-size-adjust:100%;}
+body{background:var(--bg);color:var(--ink);
+font-family:"Noto Sans KR","Open Sans",-apple-system,"Segoe UI","Malgun Gothic",sans-serif;
+line-height:1.7;font-size:15px;}
+.wrap{max-width:1020px;margin:0 auto;padding:0 18px 64px;}
+b,strong{font-weight:700;}
+.num{font-family:"Open Sans","Noto Sans KR",sans-serif;font-variant-numeric:tabular-nums;}
+.up{color:var(--up);font-weight:700;}
+.down{color:var(--down);font-weight:700;}
+
+/* Header */
+.hdr{background:var(--green);color:#fff;padding:26px 18px 30px;margin-bottom:0;}
+.hdr-in{max-width:1020px;margin:0 auto;}
+.logo{display:flex;align-items:center;gap:10px;margin-bottom:16px;}
+.logo .mark{width:34px;height:34px;border-radius:9px;background:#fff;color:var(--green);
+font-weight:900;font-size:18px;display:flex;align-items:center;justify-content:center;
+font-family:"Open Sans",sans-serif;letter-spacing:-.5px;}
+.logo .word{font-weight:700;font-size:16px;letter-spacing:.3px;}
+.kicker{font-family:"Open Sans",sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;
+color:var(--green-light);text-transform:uppercase;margin-bottom:8px;}
+.hdr h1{font-size:29px;font-weight:900;line-height:1.25;letter-spacing:-.5px;}
+.tagline{font-size:14px;color:#e7efdd;margin-top:9px;font-weight:400;}
+.meta{margin-top:14px;font-size:12.5px;color:#cfe0bd;display:flex;flex-wrap:wrap;gap:8px 18px;
+font-family:"Open Sans",sans-serif;}
+.meta span::before{content:"•";color:var(--green-light);font-size:8px;vertical-align:middle;margin-right:6px;}
+
+/* Demo banner */
+.demo{background:#fff4e5;border:1px solid #f3c98b;border-left:4px solid #e08a1e;
+color:#7a4a06;font-size:13px;padding:11px 16px;border-radius:9px;margin:20px 0 8px;
+display:flex;gap:10px;align-items:flex-start;}
+.demo .tag{background:#e08a1e;color:#fff;font-weight:700;font-size:11px;padding:2px 8px;
+border-radius:5px;letter-spacing:.5px;flex-shrink:0;margin-top:1px;}
+
+/* Sections */
+h2{color:var(--green);font-size:22px;font-weight:900;margin:38px 0 4px;
+padding-bottom:9px;border-bottom:2px solid var(--green);letter-spacing:-.3px;
+display:flex;align-items:center;gap:9px;}
+h3{color:var(--ink);font-size:16.5px;font-weight:700;margin:26px 0 12px;
+padding-left:11px;border-left:4px solid var(--green-mid);}
+h3 .en{color:var(--muted);font-weight:600;font-size:13px;font-family:"Open Sans",sans-serif;}
+p.lead{color:#333;margin:12px 0;font-size:14.5px;}
+
+/* Index cards */
+.cards{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:16px 0;}
+.card{border:1px solid var(--line);border-radius:12px;padding:13px 12px;background:#fff;
+transition:.15s;text-align:left;}
+.card:hover{border-color:var(--green-light);transform:translateY(-2px);
+box-shadow:0 4px 14px rgba(63,92,33,.08);}
+.card .nm{font-size:12.5px;color:var(--muted);font-weight:700;margin-bottom:5px;
+font-family:"Open Sans",sans-serif;letter-spacing:.3px;}
+.card .val{font-size:19px;font-weight:700;font-family:"Open Sans",sans-serif;
+font-variant-numeric:tabular-nums;letter-spacing:-.5px;}
+.card .chg{font-size:13.5px;font-weight:700;margin-top:2px;font-family:"Open Sans",sans-serif;}
+
+/* Chart box */
+.chartbox{border:1px solid var(--line);border-radius:12px;padding:16px 14px 10px;margin:16px 0;
+background:#fff;overflow-x:auto;}
+.chartbox svg{display:block;max-width:100%;height:auto;}
+.cap{font-size:11.5px;color:var(--muted);margin-top:8px;font-family:"Open Sans",sans-serif;
+line-height:1.5;}
+.cap b{color:#555;}
+
+/* Tables */
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13.5px;
+font-family:"Open Sans","Noto Sans KR",sans-serif;}
+th,td{padding:9px 11px;text-align:left;border-bottom:1px solid var(--line);
+font-variant-numeric:tabular-nums;}
+thead th{background:#eef3e6;color:var(--green);font-weight:700;font-size:12.5px;
+letter-spacing:.3px;border-bottom:2px solid var(--green-light);}
+tbody tr:nth-child(even){background:#fafbf8;}
+td.r,th.r{text-align:right;}
+.tk{font-weight:700;color:var(--ink);font-family:"Open Sans",sans-serif;}
+
+/* Trending list */
+.trend{list-style:none;margin:12px 0;display:grid;grid-template-columns:1fr 1fr;gap:8px 16px;}
+.trend li{border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:13px;
+background:#fff;transition:.15s;}
+.trend li:hover{border-color:var(--green-light);}
+.trend .t{font-weight:700;font-family:"Open Sans",sans-serif;font-size:14px;}
+.trend .why{color:#444;font-size:12.5px;margin-top:2px;}
+
+/* News */
+.news{list-style:none;margin:12px 0;}
+.news li{border:1px solid var(--line);border-left:4px solid var(--green);border-radius:10px;
+padding:13px 15px;margin-bottom:11px;background:#fdfdfb;}
+.news .h{font-weight:700;font-size:15px;margin-bottom:4px;color:var(--ink);}
+.news .b{font-size:13.5px;color:#3a3a3a;}
+.news .no{color:var(--green);font-weight:900;margin-right:6px;font-family:"Open Sans",sans-serif;}
+
+/* Snapshot grid */
+.snap{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin:14px 0;}
+.snapcard{border:1px solid var(--line);border-radius:12px;padding:14px 16px;background:#fff;}
+.snapcard h4{font-size:13px;color:var(--green);font-weight:700;margin-bottom:9px;
+letter-spacing:.3px;text-transform:uppercase;font-family:"Open Sans",sans-serif;}
+.kv{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px dashed #eee;
+font-size:13.5px;font-family:"Open Sans",sans-serif;font-variant-numeric:tabular-nums;}
+.kv:last-child{border-bottom:none;}
+.kv .k{color:#444;font-weight:600;}
+
+.badge{display:inline-block;background:#eaf3df;color:var(--green);font-size:11px;font-weight:700;
+padding:2px 9px;border-radius:20px;letter-spacing:.3px;vertical-align:middle;margin-left:6px;}
+
+/* Footer */
+footer{margin-top:44px;padding-top:20px;border-top:1px solid var(--line);
+font-size:12px;color:var(--muted);line-height:1.7;font-family:"Open Sans","Noto Sans KR",sans-serif;}
+footer .cav{background:#f7f7f4;border:1px solid var(--line);border-radius:9px;padding:11px 14px;margin-top:10px;}
+
+@media(max-width:640px){
+.cards{grid-template-columns:repeat(2,1fr);}
+.trend{grid-template-columns:1fr;}
+.snap{grid-template-columns:1fr;}
+.hdr h1{font-size:23px;}
+h2{font-size:19px;}
+table{display:block;width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;}
+th,td{min-width:118px;}
+}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="hdr-in">
+    <div class="logo"><span class="mark">Li</span><span class="word">life inve · 라이프 인베</span></div>
+    <div class="kicker">LIFE ASSET · NEWS OF THE WEEK</div>
+    <h1>라이프 인베 — 뉴스 오브 더 위크 · 2026-06-25~07-02</h1>
+    <div class="tagline">AI ROI 검증, 에너지 리프라이싱, 에이전트 보안·협업 레이어가 만든 주간 시황</div>
+    <div class="meta">
+      <span>2026년 6월 25일~7월 2일 · ET/KST 혼합 기준</span>
+      <span>구성: 뉴스·트렌딩·테마·필요 데이터·스냅샷</span>
+      <span>원문 5개 기반 주간형 정리</span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="demo">
+    <span class="tag">데이터 상태</span>
+    <div><b>이번 버전은 원문 5개를 기준으로 한 주간 뉴스 브리핑입니다.</b> 6/25~7/2의 공식 주간 지수·섹터·ETF·신고가 데이터셋은 아직 붙이지 않았습니다. 아래 "필요 데이터 정의"에 정확히 어떤 payload가 필요한지 분리했습니다.</div>
+  </div>
+
+  <!-- ================= MARKET OF THE WEEK ================= -->
+  <h2>⭐️ Market of the Week</h2>
+
+  <h3>1. 주간 시장 프레임 <span class="en">Weekly Market Frame</span></h3>
+
+  <div class="cards">
+    <div class="card">
+      <div class="nm">AI ROI</div>
+      <div class="val">비용↑ 가격↓</div>
+      <div class="chg down">검증 국면</div>
+    </div>
+    <div class="card">
+      <div class="nm">META / CRWV</div>
+      <div class="val">고객=경쟁자</div>
+      <div class="chg down">희소성 프리미엄 흔들림</div>
+    </div>
+    <div class="card">
+      <div class="nm">ENERGY</div>
+      <div class="val">MPLX 7.6%</div>
+      <div class="chg up">정유보다 톨로드</div>
+    </div>
+    <div class="card">
+      <div class="nm">AGENT STACK</div>
+      <div class="val">PR 65%</div>
+      <div class="chg up">팀 단위 AI 확산</div>
+    </div>
+    <div class="card">
+      <div class="nm">LIQUIDITY</div>
+      <div class="val">No Edge</div>
+      <div class="chg down">연휴 전 관망</div>
+    </div>
+  </div>
+
+  <div class="chartbox">
+    <svg viewBox="0 0 640 280" role="img" aria-label="주간 핵심 뉴스 강도 막대 차트">
+      <line x1="44" y1="48" x2="620" y2="48" stroke="#eee"/>
+      <line x1="44" y1="102" x2="620" y2="102" stroke="#c9c9c9" stroke-width="1.4"/>
+      <line x1="44" y1="158" x2="620" y2="158" stroke="#eee"/>
+      <line x1="44" y1="213" x2="620" y2="213" stroke="#eee"/>
+      <text x="38" y="52" text-anchor="end" font-size="11" fill="#888" font-family="Open Sans">High</text>
+      <text x="38" y="106" text-anchor="end" font-size="11" fill="#666" font-family="Open Sans">Mid</text>
+      <text x="38" y="217" text-anchor="end" font-size="11" fill="#888" font-family="Open Sans">Low</text>
+      <rect x="74" y="34" width="56" height="68" fill="#1769d6" rx="2"/>
+      <rect x="190" y="59" width="56" height="43" fill="#1769d6" rx="2"/>
+      <rect x="306" y="72" width="56" height="30" fill="#e0392b" rx="2"/>
+      <rect x="422" y="52" width="56" height="50" fill="#e0392b" rx="2"/>
+      <rect x="538" y="102" width="56" height="32" fill="#1769d6" rx="2"/>
+      <text x="102" y="28" text-anchor="middle" font-size="12" font-weight="700" fill="#1769d6" font-family="Open Sans">AI ROI</text>
+      <text x="218" y="53" text-anchor="middle" font-size="12" font-weight="700" fill="#1769d6" font-family="Open Sans">META</text>
+      <text x="334" y="66" text-anchor="middle" font-size="12" font-weight="700" fill="#e0392b" font-family="Open Sans">ENERGY</text>
+      <text x="450" y="46" text-anchor="middle" font-size="12" font-weight="700" fill="#e0392b" font-family="Open Sans">AGENT</text>
+      <text x="566" y="151" text-anchor="middle" font-size="12" font-weight="700" fill="#1769d6" font-family="Open Sans">NO EDGE</text>
+      <text x="102" y="266" text-anchor="middle" font-size="11.5" fill="#333" font-family="Open Sans">AI 비용</text>
+      <text x="218" y="266" text-anchor="middle" font-size="11.5" fill="#333" font-family="Open Sans">컴퓨트</text>
+      <text x="334" y="266" text-anchor="middle" font-size="11.5" fill="#333" font-family="Open Sans">에너지</text>
+      <text x="450" y="266" text-anchor="middle" font-size="11.5" fill="#333" font-family="Open Sans">에이전트</text>
+      <text x="566" y="266" text-anchor="middle" font-size="11.5" fill="#333" font-family="Open Sans">유동성</text>
+    </svg>
+    <div class="cap">주간 핵심 뉴스 강도 맵 — <b>긍정=빨강 / 부정=파랑</b>, 정량 수익률 차트가 아니라 원문 5개 기반 테마 강도 표시. 정확한 시장 성과 차트는 아래 필요 데이터가 채워진 뒤 교체.</div>
+  </div>
+
+  <p class="lead">이번 주의 핵심은 지수가 아니라 <b>AI 체인의 경제학</b>이었다. Micron HBM 장기계약과 Amazon EC2 GPU 가격 인상은 인프라 비용이 위로 고정되고 있음을 보여줬고, GLM 5.2 같은 저가 오픈모델은 토큰 가격 하락 압력을 만들었다. 동시에 Meta가 컴퓨트를 사는 고객이면서 잉여 컴퓨트를 팔 수 있다는 뉴스가 나오며, neocloud의 희소성 프리미엄에도 질문이 붙었다. 에너지에서는 정유사의 강한 펀더멘털보다 <b>주가가 이미 피크 시나리오를 반영했다</b>는 비대칭이 더 중요했고, MPLX 같은 계약형 인프라가 대안으로 부각됐다. 소프트웨어 쪽에서는 NVIDIA의 에이전트 보안 스택과 Claude Tag의 팀 채널 상주형 AI가 같은 메시지를 냈다. 에이전트 시대의 병목은 모델 성능만이 아니라 <b>보안, 권한, 메모리, 협업 워크플로</b>다.</p>
+
+  <h3>2. Trending Themes & Stocks <span class="en">주간 화제 종목·테마</span></h3>
+  <ul class="trend">
+    <li><span class="t">MU / HBM <span class="up">mid-80s GM</span></span><div class="why">LTA로 높은 HBM 가격이 다년 고정. 공급자에는 호재, AI 인프라 구매자에는 비용 고정 리스크.</div></li>
+    <li><span class="t">AMZN EC2 GPU <span class="down">+20%</span></span><div class="why">특정 Capacity Block 가격 인상. 메모리·GPU·전력·냉각 비용 상승 프레임 강화.</div></li>
+    <li><span class="t">META <span class="down">buyer & seller</span></span><div class="why">CoreWeave·Nebius·Google Cloud 고객이면서 잉여 컴퓨트 판매 가능성. 희소성 프리미엄 질문.</div></li>
+    <li><span class="t">CRWV / Nebius <span class="down">premium risk</span></span><div class="why">고객 집중도와 컴퓨트 재판매 뉴스가 동시에 부각. 다음 계약 경제학이 핵심.</div></li>
+    <li><span class="t">NVDA Agent Stack <span class="up">5x / -30%</span></span><div class="why">Nemotron Ultra, OpenShell, NemoClaw, Nemo Relay. 속도·비용·보안 풀스택을 동시에 제시.</div></li>
+    <li><span class="t">ServiceNow AIQ <span class="up">90%</span></span><div class="why">NVIDIA AIQ 사례에서 L1 티켓 90% 자동 해결. 에이전트 ROI의 구체 사례.</div></li>
+    <li><span class="t">Claude Tag <span class="up">PR 65%</span></span><div class="why">Anthropic 제품팀 PR의 65%를 AI가 작성. 최대 16시간 자율 작업과 메모리가 차별점.</div></li>
+    <li><span class="t">MPLX <span class="up">7.6% yield</span></span><div class="why">정유 크랙스프레드 대신 물량 수수료를 받는 톨로드형 현금흐름.</div></li>
+    <li><span class="t">VLO / MPC / PSX <span class="down">비대칭</span></span><div class="why">강한 펀더멘털에도 주가는 피크 시나리오를 반영. 평균 회귀 시 하방 리스크가 큼.</div></li>
+    <li><span class="t">MARKET <span class="down">No Edge</span></span><div class="why">연휴 전 단축 세션, 저거래량, 신규 옵션 셋업 부재. 현금도 포지션.</div></li>
+  </ul>
+
+  <h3>3. 테마 Top &amp; Bottom <span class="en">Theme Leaders &amp; Laggards</span></h3>
+
+  <div class="chartbox">
+    <svg viewBox="0 0 640 286" role="img" aria-label="주간 긍정 테마 수평 막대">
+      <text x="0" y="12" font-size="12" font-weight="700" fill="#3F5C21" font-family="Open Sans">긍정 테마 Top 5</text>
+      <g font-family="Open Sans" font-size="11.5">
+        <text x="126" y="46" text-anchor="end" font-weight="700">Agent Security</text><rect x="136" y="32" width="410" height="18" fill="#e0392b" rx="2"/><text x="552" y="46" font-size="11" font-weight="700" fill="#e0392b">NVDA</text>
+        <text x="126" y="82" text-anchor="end" font-weight="700">Team AI</text><rect x="136" y="68" width="370" height="18" fill="#e0392b" rx="2"/><text x="512" y="82" font-size="11" font-weight="700" fill="#e0392b">Claude</text>
+        <text x="126" y="118" text-anchor="end" font-weight="700">Midstream</text><rect x="136" y="104" width="334" height="18" fill="#e0392b" rx="2"/><text x="476" y="118" font-size="11" font-weight="700" fill="#e0392b">MPLX</text>
+        <text x="126" y="154" text-anchor="end" font-weight="700">Integrated Energy</text><rect x="136" y="140" width="296" height="18" fill="#e0392b" rx="2"/><text x="438" y="154" font-size="11" font-weight="700" fill="#e0392b">CVE/SU</text>
+        <text x="126" y="190" text-anchor="end" font-weight="700">Memory Supplier</text><rect x="136" y="176" width="270" height="18" fill="#e0392b" rx="2"/><text x="412" y="190" font-size="11" font-weight="700" fill="#e0392b">MU</text>
+      </g>
+      <line x1="136" y1="26" x2="136" y2="214" stroke="#c9c9c9"/>
+    </svg>
+    <div class="cap">긍정 테마는 원문 뉴스 강도 기준. 공식 ETF/섹터 주간 수익률 데이터가 들어오면 이 차트는 수익률 기반 Top 10으로 교체.</div>
+  </div>
+
+  <div class="chartbox">
+    <svg viewBox="0 0 640 286" role="img" aria-label="주간 부정 테마 수평 막대">
+      <text x="0" y="12" font-size="12" font-weight="700" fill="#1769d6" font-family="Open Sans">부정 테마 Bottom 5</text>
+      <g font-family="Open Sans" font-size="11.5">
+        <text x="126" y="46" text-anchor="end" font-weight="700">AI ROI Doubt</text><rect x="136" y="32" width="420" height="18" fill="#1769d6" rx="2"/><text x="562" y="46" font-size="11" font-weight="700" fill="#1769d6">capex</text>
+        <text x="126" y="82" text-anchor="end" font-weight="700">Neocloud</text><rect x="136" y="68" width="384" height="18" fill="#1769d6" rx="2"/><text x="526" y="82" font-size="11" font-weight="700" fill="#1769d6">CRWV</text>
+        <text x="126" y="118" text-anchor="end" font-weight="700">Refiners</text><rect x="136" y="104" width="350" height="18" fill="#1769d6" rx="2"/><text x="492" y="118" font-size="11" font-weight="700" fill="#1769d6">VLO/MPC</text>
+        <text x="126" y="154" text-anchor="end" font-weight="700">Pure LLM Margin</text><rect x="136" y="140" width="314" height="18" fill="#1769d6" rx="2"/><text x="456" y="154" font-size="11" font-weight="700" fill="#1769d6">OpenAI</text>
+        <text x="126" y="190" text-anchor="end" font-weight="700">Holiday Liquidity</text><rect x="136" y="176" width="240" height="18" fill="#1769d6" rx="2"/><text x="382" y="190" font-size="11" font-weight="700" fill="#1769d6">No Edge</text>
+      </g>
+      <line x1="136" y1="26" x2="136" y2="214" stroke="#c9c9c9"/>
+    </svg>
+    <div class="cap">부정 테마 역시 원문 뉴스 강도 기준. 가격 기반 Bottom ETF/종목 랭킹은 별도 market payload 필요.</div>
+  </div>
+
+  <h2>⭐️ News of the Week</h2>
+  <ul class="news">
+    <li><div class="h"><span class="no">①</span>AI 체인: 비용은 오르고 토큰 가격은 내려간다</div><div class="b">Micron HBM LTA와 Amazon EC2 GPU +20% 인상은 인프라 비용 상승을 고정시키는 뉴스다. 반대로 GLM 5.2 같은 오픈웨이트 모델은 토큰 가격 하락 압력을 만든다. 이 조합은 hyperscaler와 neocloud가 다음 실적 콜에서 capex의 수익 전환 경로를 직접 증명해야 한다는 뜻이다.</div></li>
+    <li><div class="h"><span class="no">②</span>Meta: 가장 큰 구매자가 잠재 판매자가 될 수 있다</div><div class="b">Meta가 CoreWeave·Nebius·Google Cloud의 고객이면서 잉여 컴퓨트를 팔 수 있다는 뉴스는 neocloud 희소성 프리미엄에 균열을 냈다. 구매자가 판매자가 되는 순간, "컴퓨트는 항상 부족하다"는 전제가 약해진다.</div></li>
+    <li><div class="h"><span class="no">③</span>에너지: 정유사 펀더멘털은 강하지만 롱 비대칭은 약하다</div><div class="b">VLO·MPC·PSX는 강한 크랙스프레드와 현금흐름을 보여도 주가는 이미 피크 시나리오를 많이 반영했다. HFI는 정유주보다 MPLX 같은 계약형 미드스트림, CVE·SU 같은 통합 에너지, CLMT 같은 특수상황을 더 선호한다.</div></li>
+    <li><div class="h"><span class="no">④</span>NVIDIA: 에이전트 시대의 병목은 보안과 관찰 가능성</div><div class="b">OpenShell은 에이전트를 격리 실행환경에 넣고, NemoClaw는 오픈소스 블루프린트를 제공하며, Nemo Relay는 행동 추적과 비용 최적화를 담당한다. AI 에이전트가 오래 자율 실행될수록 보안·권한·로그가 제품 경쟁력이 된다.</div></li>
+    <li><div class="h"><span class="no">⑤</span>Claude Tag: AI가 개인 도구에서 팀원으로 이동</div><div class="b">Anthropic 내부 제품팀 PR의 65%를 Claude Tag가 작성하고, 최대 16시간 자율 작업과 메모리 기능을 전면에 내세웠다. Slack 다음 Teams 확장이 예고되며 협업 플랫폼 안의 AI 에이전트 경쟁이 본격화된다.</div></li>
+    <li><div class="h"><span class="no">⑥</span>연휴 전 시장: 엣지가 없으면 현금도 전략</div><div class="b">독립기념일 연휴 전 단축 세션은 거래량이 얇고 신규 옵션 셋업이 부족했다. 이번 주 가격 신호는 결론보다 다음 풀 거래 주간의 확인 과제로 보는 편이 맞다.</div></li>
+  </ul>
+
+  <!-- ================= REQUIRED DATA ================= -->
+  <h2>📈 필요한 데이터 정의 <span class="badge">Weekly Market Payload</span></h2>
+
+  <div class="chartbox">
+    <svg viewBox="0 0 640 262" role="img" aria-label="주간 데이터 필요 항목 막대">
+      <text x="0" y="10" font-size="12" font-weight="700" fill="#3F5C21" font-family="Open Sans">정확한 주간형 포맷에 필요한 데이터 항목</text>
+      <g font-family="Open Sans" font-size="11.5">
+        <text x="150" y="46" text-anchor="end" font-weight="700">Index weekly close</text><rect x="158" y="32" width="400" height="18" fill="#3F5C21" rx="2"/><text x="565" y="46" font-weight="700" fill="#3F5C21">필수</text>
+        <text x="150" y="78" text-anchor="end" font-weight="700">ETF Top/Bottom</text><rect x="158" y="64" width="360" height="18" fill="#608C34" rx="2"/><text x="525" y="78" font-weight="700" fill="#3F5C21">필수</text>
+        <text x="150" y="110" text-anchor="end" font-weight="700">Sector/Industry</text><rect x="158" y="96" width="338" height="18" fill="#608C34" rx="2"/><text x="503" y="110" font-weight="700" fill="#3F5C21">필수</text>
+        <text x="150" y="142" text-anchor="end" font-weight="700">Stock movers</text><rect x="158" y="128" width="318" height="18" fill="#8FB85D" rx="2"/><text x="483" y="142" font-weight="700" fill="#3F5C21">필수</text>
+        <text x="150" y="174" text-anchor="end" font-weight="700">52w high/low</text><rect x="158" y="160" width="275" height="18" fill="#8FB85D" rx="2"/><text x="440" y="174" font-weight="700" fill="#3F5C21">권장</text>
+        <text x="150" y="206" text-anchor="end" font-weight="700">Source ledger</text><rect x="158" y="192" width="400" height="18" fill="#3F5C21" rx="2"/><text x="565" y="206" font-weight="700" fill="#3F5C21">필수</text>
+      </g>
+    </svg>
+    <div class="cap">정확한 6/29 샘플 포맷을 주간형으로 완성하려면 위 데이터가 필요합니다. 이번 페이지는 뉴스 원문 5개는 확보했지만, 가격·섹터·신고가 주간 payload는 미연결 상태입니다.</div>
+  </div>
+
+  <table>
+    <thead><tr><th>블록</th><th>필요 데이터</th><th>현재 상태</th><th>우선 소스</th></tr></thead>
+    <tbody>
+      <tr><td class="tk">Weekly index close</td><td>Dow, S&P 500, Nasdaq, Russell 2000, VIX의 6/25~7/2 종가·주간 등락률</td><td>미확보</td><td>FMP batch-index-quotes / index historical EOD / AP 마감 기사</td></tr>
+      <tr><td class="tk">ETF Top & Bottom</td><td>SOXX, SMH, QQQ, XLK, XLE, USO, VNQ, TLT 등 ETF 주간 수익률 Top/Bottom 10</td><td>미확보</td><td>FMP batch-etf-quotes + historical EOD</td></tr>
+      <tr><td class="tk">Sector / Industry</td><td>섹터·산업 주간 수익률, 상위 구성 종목, 상승·하락 원인</td><td>미확보</td><td>FMP sector/industry snapshot + 내부 계산</td></tr>
+      <tr><td class="tk">Trending stocks</td><td>주간 상승·하락 종목, 거래대금, catalyst, reason_label(확인/보도/추정/미확인)</td><td>부분 확보</td><td>원문 5개 + FMP gainers/losers/news</td></tr>
+      <tr><td class="tk">High / Low screen</td><td>52주 신고가·신저가 종목 수, 섹터 분포, 대형주 필터, dollar volume</td><td>미확보</td><td>FMP EOD bulk + 252거래일 rolling high/low</td></tr>
+      <tr><td class="tk">Source ledger</td><td>각 숫자별 source_key, provider, as_of, confidence</td><td>원문 소스만 확보</td><td>HFI, StreetSignal, NVIDIA, Claude, Options Oracle + market data provider</td></tr>
+    </tbody>
+  </table>
+
+  <h2>🛢️ 시장 스냅샷 <span class="badge">2026.06.25~07.02</span></h2>
+  <div class="snap">
+    <div class="snapcard">
+      <h4>원문 확보</h4>
+      <div class="kv"><span class="k">콘텐츠 소스</span><span class="num">5개</span></div>
+      <div class="kv"><span class="k">핵심 주제</span><span>AI ROI / 에너지 / 에이전트</span></div>
+      <div class="kv"><span class="k">원문 숫자</span><span>+20%, 65%, 7.6%</span></div>
+    </div>
+    <div class="snapcard">
+      <h4>시장 데이터</h4>
+      <div class="kv"><span class="k">지수 주간 수익률</span><span class="down">필요</span></div>
+      <div class="kv"><span class="k">ETF Top/Bottom</span><span class="down">필요</span></div>
+      <div class="kv"><span class="k">신고가/신저가</span><span class="down">필요</span></div>
+    </div>
+    <div class="snapcard">
+      <h4>주요 숫자</h4>
+      <div class="kv"><span class="k">Amazon EC2 GPU</span><span class="down">+20%</span></div>
+      <div class="kv"><span class="k">Micron HBM GM</span><span class="up">mid-80s%</span></div>
+      <div class="kv"><span class="k">Claude Tag PR</span><span class="up">65%</span></div>
+      <div class="kv"><span class="k">MPLX yield</span><span class="up">7.6%</span></div>
+    </div>
+    <div class="snapcard">
+      <h4>다음 작업</h4>
+      <div class="kv"><span class="k">정량 차트</span><span>market payload 필요</span></div>
+      <div class="kv"><span class="k">수익률 문장</span><span>숫자 확보 후 작성</span></div>
+      <div class="kv"><span class="k">검증 로그</span><span>provider별 기록</span></div>
+    </div>
+  </div>
+
+  <footer>
+    <div><b>life inve · 뉴스 오브 더 위크 (News of the Week) · 주간 시황 정리</b></div>
+    <div class="cav">
+      본 브리핑은 원문 5개를 기반으로 작성한 주간 뉴스형 정리입니다. 공식 주간 시장 데이터(지수·ETF·섹터·신고가)는 아직 연결하지 않았으므로, 가격 수익률 차트는 테마 강도 표시로 대체했습니다. 투자 판단 전 별도 가격·실적·리스크 검증이 필요합니다.
+    </div>
+    <div style="margin-top:10px;color:#9a9a9a;">© 2026 라이프자산운용 (life inve) · 상승=빨강 / 하락=파랑 (한국식 표기) · 인라인 SVG 차트, 외부 스크립트 없음</div>
+  </footer>
+</div>
+</body>
+</html>
