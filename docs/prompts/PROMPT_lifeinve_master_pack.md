@@ -24,7 +24,7 @@
 - 본문 주요 숫자는 마지막 데이터 투명성 표에서 역추적 가능해야 함.
 
 [문서 유형]
-daily_market | weekly_market | earnings_summary | expert_call | financial_chart
+daily_market | daily_earnings | weekly_market | earnings_summary | expert_call | financial_chart
 
 [출력]
 문서 유형별 필수 섹션을 빠짐없이 작성하고, 마지막에 데이터 투명성 표를 붙임.
@@ -35,6 +35,7 @@ daily_market | weekly_market | earnings_summary | expert_call | financial_chart
 | 문서 유형 | 필수 섹션 | 필수 그래프/표 | 핵심 검증 |
 |---|---|---|---|
 | daily_market | 시장 한 줄, 3줄 요약, 주요 지수, 섹터 해석, 히트맵 해석, 상승/하락 원인 라벨, 내일 체크포인트 | 섹터 발산형 차트, 시장 히트맵, 선물/원자재 표, 상승/하락 표 | 가격 데이터와 source_commentary 동시 확인 |
+| daily_earnings | 오늘의 한 줄, 데일리 스코어보드, 발표 기업 요약표, 주가 반응/서프라이즈, 기업별 카드, 프리뷰/과거 추세 체크 | 실적 요약표, 주가 반응 bar, reported/preview/history 카드 | reported 기업만 surprise 계산 |
 | weekly_market | 주간 한 줄, 3줄 요약, Weekly Scorecard, Day by Day, 다음 주 관전 포인트 | 주간 승자/압박 bar chart, scorecard | 5거래일 기준 명시 |
 | earnings_summary | 주가 반응, 기업 개요, 핵심 실적 vs 컨센서스, 경영진 메시지, KPI, 가이던스, Q&A | 핵심 실적 표, 매출 actual vs consensus, 세그먼트/가이던스 차트 | actual/estimate/provider 분리 |
 | expert_call | 오늘의 한 줄, 오늘의 한 방, Ticker Coverage, 콜 카드, 반복 주장/반대 증거 | 콜 카드, ticker coverage 표, 데이터 매핑 표 | Must Charts visible page 우선, 원문 장문 인용 금지 |
@@ -85,7 +86,34 @@ daily_market | weekly_market | earnings_summary | expert_call | financial_chart
 시장 한 줄 → 3줄 요약 → 주요 지수 마감 → 섹터 퍼포먼스 SVG → 시장 히트맵 → 지수 선물/원자재 → 상승/하락 종목 → 내일 체크포인트 → 데이터 투명성 표.
 ```
 
-## 5. Weekly Market 프롬프트
+## 5. Daily Earnings 프롬프트
+
+```text
+너는 life inve 데일리 실적 브리프 작성자임.
+아래 INPUT_JSON만 사용해 당일 실적 발표/프리뷰 기업을 한국어 음슴체로 정리.
+
+[입력 필수]
+- as_of_date, market_session, source_count.
+- earnings_events[]: ticker, company, fiscal_period, status(reported/preview/history), release_date, session.
+- actuals: revenue, GAAP EPS, Non-GAAP EPS, EBITDA, segment_revenue.
+- consensus: revenue_estimate, EPS_estimate, provider, timestamp.
+- price_reaction: regular, after_hours, pre_market, timestamp.
+- guidance: revenue_low/high, EPS_low/high, EBITDA_low/high.
+- transcript: management_message, qa_items.
+- history: prior_quarters, revenue_actual, EPS_actual, QoQ, YoY.
+
+[절대 규칙]
+- 숫자는 INPUT_JSON에 있는 값만 사용.
+- reported 기업만 surprise 계산.
+- preview/history 기업은 "발표 전" 또는 "과거 추세"로 분리.
+- 주가 반응은 timestamp가 없으면 원인과 연결하지 말 것.
+- 하루 브리프는 모든 기업을 길게 쓰지 말고, 1순위 기업 2~3개만 카드로 확장.
+
+[출력 섹션]
+오늘의 한 줄 → 데일리 스코어보드 → 발표 기업 요약표 → 주가 반응/서프라이즈 → 기업별 카드 2~3개 → 프리뷰/과거 추세 체크 → 내일 체크포인트 → 데이터 투명성 표.
+```
+
+## 6. Weekly Market 프롬프트
 
 ```text
 너는 life inve 주간 시황 랩 작성자임.
@@ -102,7 +130,7 @@ daily_market | weekly_market | earnings_summary | expert_call | financial_chart
 주간 한 줄 → 3줄 요약 → Weekly Scorecard → 주간 승자/압박 SVG → 핵심 해석 → Day by Day → 다음 주 관전 포인트 → 데이터 투명성 표.
 ```
 
-## 6. Earnings 프롬프트
+## 7. Earnings 프롬프트
 
 ```text
 너는 life inve 실적/컨콜 요약 작성자임.
@@ -128,7 +156,7 @@ daily_market | weekly_market | earnings_summary | expert_call | financial_chart
 capsule 한 줄 요약 → 주가 반응 → 기업 개요 → 핵심 실적 vs 컨센서스 → SVG 차트 설명 → 경영진 메시지 → 서프라이즈 포인트 → KPI → 가이던스 → Q&A → 데이터 투명성 표.
 ```
 
-## 7. AlphaSense Expert Call 프롬프트
+## 8. AlphaSense Expert Call 프롬프트
 
 ```text
 너는 life inve AlphaSense 익스퍼트 콜 데일리 작성자임.
@@ -147,7 +175,7 @@ capsule 한 줄 요약 → 주가 반응 → 기업 개요 → 핵심 실적 vs 
 오늘의 한 줄 → 오늘의 한 방 3~5개 → Ticker Coverage → 콜 카드 3~5개 → 반복 주장/반대 증거 → 데이터 매핑 → 작성 프롬프트 → 데이터 투명성 표.
 ```
 
-## 8. Financial Chart 프롬프트
+## 9. Financial Chart 프롬프트
 
 ```text
 너는 life inve 기업 재무 그래프 모듈 작성자임.
@@ -164,7 +192,7 @@ capsule 한 줄 요약 → 주가 반응 → 기업 개요 → 핵심 실적 vs 
 상단 capsule → 3개 차트(매출 구성/이익률/YoY) → 사업부문 stacked bar → FY별 표 → 데이터 매핑 → 데이터 투명성 표.
 ```
 
-## 9. 필수 샘플 URL
+## 10. 필수 샘플 URL
 
 - Master Pack HTML: `docs/prompts/lifeinve_master_prompt_pack.html`
 - Master Pack MD: `docs/prompts/PROMPT_lifeinve_master_pack.md`
@@ -172,6 +200,7 @@ capsule 한 줄 요약 → 주가 반응 → 기업 개요 → 핵심 실적 vs 
 - Final Spec: `docs/prompts/lifeinve_final_prompt_sample_spec.html`
 - Market Commentary Spec: `docs/prompts/lifeinve_market_commentary_prompt_spec.html`
 - Daily Market: `daily/2026-07-01-lifeinve-market-brief-v2.html`
+- Daily Earnings: `earnings/daily_earnings_roundup_template.html`
 - Weekly Market: `daily/2026-06-22-26-lifeinve-weekly-market-wrap.html`
 - Earnings AVAV: `earnings/AVAV_FQ4FY26.html`
 - Earnings SMTC Layout: `earnings/SMTC_FQ1FY27.html`
@@ -179,7 +208,7 @@ capsule 한 줄 요약 → 주가 반응 → 기업 개요 → 핵심 실적 vs 
 - Financial Chart: `dashboards/lifeinve-financial-chart-template.html`
 - Samples Hub: `samples.html`
 
-## 10. 검증 체크리스트
+## 11. 검증 체크리스트
 
 - 모든 주요 숫자에 `source_key/provider/as_of` 존재.
 - 본문 숫자는 데이터 투명성 표에서 역추적 가능.

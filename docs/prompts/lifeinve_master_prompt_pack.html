@@ -13,7 +13,7 @@
 </style>
 </head>
 <body>
-<header class="hdr"><div class="in"><div class="brandrow"><div class="logo">Li</div><div class="brandname">life inve</div></div><div class="kicker">LIFE ASSET · MASTER PROMPT PACK</div><h1>마스터 프롬프트 팩 / 데이터 소스 / 샘플 링크</h1><div class="meta">공통 원칙 · 데일리 시황 · 주간 시황 · 실적 요약 · AlphaSense 콜 · 재무 그래프 통합본</div></div></header>
+<header class="hdr"><div class="in"><div class="brandrow"><div class="logo">Li</div><div class="brandname">life inve</div></div><div class="kicker">LIFE ASSET · MASTER PROMPT PACK</div><h1>마스터 프롬프트 팩 / 데이터 소스 / 샘플 링크</h1><div class="meta">공통 원칙 · 데일리 시황 · 데일리 실적 · 주간 시황 · 실적 요약 · AlphaSense 콜 · 재무 그래프 통합본</div></div></header>
 <main class="wrap">
 <div class="capsule"><b>사용 계약</b> 새 문서를 만들 때는 이 문서 하나에서 시작함. 공통 원칙을 먼저 적용하고, 문서별 데이터 매핑과 프롬프트를 선택한 뒤, 샘플 HTML 레이아웃을 복제해 숫자와 출처를 교체함.</div>
 <div class="capsule warn"><b>복붙용 MD</b> 실제 생성기에 넣을 통합 프롬프트는 <a href="PROMPT_lifeinve_master_pack.md">PROMPT_lifeinve_master_pack.md</a> 사용. 세부 시황 멘트는 <a href="PROMPT_lifeinve_market_commentary.md">PROMPT_lifeinve_market_commentary.md</a> 사용.</div>
@@ -34,12 +34,14 @@
 <div class="card"><b>시황 멘트 전용</b><br><a href="lifeinve_market_commentary_prompt_spec.html">lifeinve_market_commentary_prompt_spec.html</a><br>시장 한 줄과 원인 라벨 생성 규칙.</div>
 <div class="card"><b>통합 MD</b><br><a href="PROMPT_lifeinve_master_pack.md">PROMPT_lifeinve_master_pack.md</a><br>복붙용 전체 프롬프트.</div>
 <div class="card"><b>시황 MD</b><br><a href="PROMPT_lifeinve_market_commentary.md">PROMPT_lifeinve_market_commentary.md</a><br>시황 멘트 생성기용.</div>
+<div class="card"><b>데일리 실적 MD</b><br><a href="PROMPT_lifeinve_daily_earnings_roundup.md">PROMPT_lifeinve_daily_earnings_roundup.md</a><br>당일 실적 브리프 생성기용.</div>
 <div class="card"><b>샘플 허브</b><br><a href="../../samples.html">samples.html</a><br>배포 샘플 전체 모음.</div>
 </div>
 
 <h2>3. 문서별 산출물 정의</h2>
 <table><thead><tr><th>문서</th><th>핵심 출력</th><th>필수 그래프/표</th><th>복붙 문체</th></tr></thead><tbody>
 <tr><td>데일리 시황</td><td>시장 한 줄, 3줄 요약, 지수 마감, 섹터 해석, 히트맵 해석, 상승/하락 원인 라벨, 내일 체크포인트</td><td>섹터 퍼포먼스 발산형 차트, 시장 히트맵, 선물/원자재 표, 상승/하락 종목 표</td><td>숫자 먼저. 원인 단정은 가격 데이터와 source_commentary가 동시에 맞을 때만.</td></tr>
+<tr><td>데일리 실적</td><td>오늘의 한 줄, 데일리 스코어보드, 발표 기업 요약표, 주가 반응/서프라이즈, 기업별 카드, 프리뷰/과거 추세 체크</td><td>실적 요약표, 주가 반응 bar, reported/preview/history 카드</td><td>reported 기업만 surprise 계산. preview/history는 발표 전/과거 추세로 분리.</td></tr>
 <tr><td>주간 시황</td><td>주간 한 줄, 3줄 요약, Weekly Scorecard, Day by Day, 다음 주 관전 포인트</td><td>주간 승자/압박 bar chart, 매크로/스타일 scorecard</td><td>주간 수익률 기준일과 5거래일 기준 명시.</td></tr>
 <tr><td>실적 요약</td><td>주가 반응, 기업 개요, 핵심 실적 vs 컨센서스, 경영진 메시지, KPI, 가이던스, Q&A</td><td>핵심 실적 표, 매출 actual vs consensus, 세그먼트 매출, 가이던스/KPI 차트</td><td>SEC/IR actual과 consensus provider 분리.</td></tr>
 <tr><td>AlphaSense 콜</td><td>오늘의 한 줄, 오늘의 한 방, Ticker Coverage, 콜 카드, 반복 주장/반대 증거</td><td>콜 카드 3~5개, ticker coverage 표, 데이터 매핑 표</td><td>Must Charts visible page 먼저, AlphaSense 원문은 장문 인용 금지.</td></tr>
@@ -73,7 +75,7 @@
 - 원인 단정은 데이터와 코멘트 소스가 동시에 맞을 때만.
 
 [문서 유형]
-daily_market | weekly_market | earnings_summary | expert_call | financial_chart
+daily_market | daily_earnings | weekly_market | earnings_summary | expert_call | financial_chart
 
 [출력]
 문서 유형별 필수 섹션을 빠짐없이 작성하고, 마지막에 데이터 투명성 표를 붙임.</pre>
@@ -83,6 +85,7 @@ daily_market | weekly_market | earnings_summary | expert_call | financial_chart
 <tr><td>데일리 시황 v2</td><td><a href="../../daily/2026-07-01-lifeinve-market-brief-v2.html">daily/2026-07-01-lifeinve-market-brief-v2.html</a></td><td>섹터 발산형 차트 + 시장 히트맵 기준</td></tr>
 <tr><td>주간 시황 랩</td><td><a href="../../daily/2026-06-22-26-lifeinve-weekly-market-wrap.html">daily/2026-06-22-26-lifeinve-weekly-market-wrap.html</a></td><td>Options Oracle식 weekly wrap 구조</td></tr>
 <tr><td>AVAV 실적 요약</td><td><a href="../../earnings/AVAV_FQ4FY26.html">earnings/AVAV_FQ4FY26.html</a></td><td>LifeInve 실적 요약 샘플</td></tr>
+<tr><td>데일리 실적 브리프</td><td><a href="../../earnings/daily_earnings_roundup_template.html">earnings/daily_earnings_roundup_template.html</a></td><td>당일 발표/프리뷰 기업 스코어보드</td></tr>
 <tr><td>SMTC 기준 레이아웃</td><td><a href="../../earnings/SMTC_FQ1FY27.html">earnings/SMTC_FQ1FY27.html</a></td><td>표/차트 골격 기준</td></tr>
 <tr><td>AlphaSense 콜</td><td><a href="../../daily/alphasense_expert_call_daily_template.html">daily/alphasense_expert_call_daily_template.html</a></td><td>Must Charts 기반 콜 카드 구조</td></tr>
 <tr><td>재무 그래프</td><td><a href="../../dashboards/lifeinve-financial-chart-template.html">dashboards/lifeinve-financial-chart-template.html</a></td><td>매출/이익률/YoY/사업부문 그래프</td></tr>

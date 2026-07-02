@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>life inve - 데일리 실적 브리프 기본 샘플</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--green:#3F5C21;--green-mid:#608C34;--green-light:#8FB85D;--ink:#070203;--line:#E7E6E6;--muted:#6b7280;--tint:#eaf3df;--warn:#fff4e5;--red:#9b1c1c;--red-bg:#fff1f1}
+*{box-sizing:border-box}body{margin:0;background:#fff;color:var(--ink);line-height:1.65;font-family:"Noto Sans KR","Open Sans",-apple-system,"Segoe UI","Malgun Gothic",sans-serif;font-variant-numeric:tabular-nums}.hdr{background:var(--green);color:#fff;padding:26px 0 24px}.wrap,.in{max-width:1160px;margin:0 auto;padding:0 22px}.brandrow{display:flex;gap:10px;align-items:center;margin-bottom:14px}.logo{width:34px;height:34px;border-radius:8px;background:#fff;color:var(--green);font-weight:900;display:grid;place-items:center}.brandname{font-weight:900;letter-spacing:.5px}.kicker{font-size:.76em;font-weight:700;letter-spacing:1.5px;color:#d7e6c4;text-transform:uppercase}.hdr h1{font-size:1.78em;margin:.15em 0 .1em;font-weight:900}.meta{color:#d7e6c4;font-size:.9em}.wrap{padding-bottom:80px}.capsule{background:var(--tint);border:1px solid var(--line);border-left:4px solid var(--green);border-radius:9px;padding:14px 18px;margin:18px 0}.warn{background:var(--warn);border-left-color:#d8982b;color:#5f4615}h2{color:var(--green);margin-top:38px;border-bottom:2px solid var(--green);padding-bottom:6px;font-size:1.18em;font-weight:900}h3{color:var(--green);font-size:1.03em;margin:20px 0 8px}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.metric{border:1px solid var(--line);border-radius:8px;padding:13px 14px;background:#fff}.metric .label{font-size:.78em;color:var(--muted);font-weight:700;text-transform:uppercase}.metric .value{font-size:1.45em;font-weight:900;color:var(--green);margin-top:3px}.metric .sub{font-size:.84em;color:var(--muted)}.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.card{border:1px solid var(--line);border-radius:8px;padding:16px;background:#fff}.card .top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.ticker{font-size:1.35em;font-weight:900;color:var(--green)}.badge{display:inline-block;font-size:.72em;font-weight:800;padding:2px 8px;border-radius:999px;background:var(--tint);color:var(--green);white-space:nowrap}.badge.warn{background:var(--warn);color:#9a6100}.badge.red{background:var(--red-bg);color:var(--red)}.tag{display:inline-block;font-size:.72em;font-weight:700;padding:1px 7px;border-radius:10px;margin-right:5px;background:var(--tint);color:var(--green)}.beat{color:var(--green);font-weight:800}.miss{color:var(--red);font-weight:800}.muted{color:var(--muted)}table{border-collapse:collapse;width:100%;margin:12px 0;background:#fff;border-radius:8px;overflow:hidden;font-size:.88em;border:1px solid var(--line)}th,td{padding:9px 10px;text-align:left;border:1px solid var(--line);vertical-align:top}th{background:var(--tint);color:var(--green);font-weight:800;white-space:nowrap}tr:nth-child(even) td{background:#fafbf7}.barrow{display:grid;grid-template-columns:80px 1fr 75px;gap:10px;align-items:center;margin:10px 0}.track{height:14px;background:#f2f3ef;border-radius:999px;position:relative;overflow:hidden}.fill{height:100%;border-radius:999px;background:var(--green)}.fill.neg{background:var(--red)}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#f7faf2;border:1px solid var(--line);border-left:4px solid var(--green);border-radius:9px;padding:14px 16px;font-family:"Open Sans","Noto Sans KR",monospace;font-size:.88em;line-height:1.55}a{color:var(--green-mid);overflow-wrap:anywhere}.foot{color:var(--muted);font-size:.82em;margin-top:42px;border-top:1px solid var(--line);padding-top:14px}@media(max-width:860px){.grid,.cards{grid-template-columns:1fr 1fr}}@media(max-width:640px){.grid,.cards{grid-template-columns:1fr}.hdr h1{font-size:1.38em}table{display:block;overflow-x:auto;white-space:nowrap}.barrow{grid-template-columns:70px 1fr 65px}}
+</style>
+</head>
+<body>
+<header class="hdr"><div class="in"><div class="brandrow"><div class="logo">Li</div><div class="brandname">life inve</div></div><div class="kicker">LIFE ASSET · DAILY EARNINGS BRIEF</div><h1>데일리 실적 브리프 기본 샘플</h1><div class="meta">Sample template · Reported / Preview / History check · 음슴체 · 숫자 근거 우선</div></div></header>
+<main class="wrap">
+<div class="capsule"><b>오늘의 한 줄</b> 실적 브리프는 단일 기업 딥다이브가 아니라, 당일 발표 기업을 한 화면에서 비교하는 운영용 문서임. AVAV는 매출·EPS beat와 backlog가 주가 반응을 견인했고, BOX는 AI/Enterprise Advanced 모멘텀을 확인하는 소프트웨어 beat 사례로 배치. FDS는 EarningsHub식 과거 실적/프리뷰 체크 샘플로 사용.</div>
+<div class="capsule warn"><b>주의</b> 이 페이지는 기본 샘플임. 실제 발행 시 모든 숫자는 회사 IR/SEC/FMP/EarningsHub/FactSet 보도/컨콜 transcript로 source_key와 as_of를 붙여 재검증해야 함.</div>
+
+<h2>1. 데일리 스코어보드</h2>
+<div class="grid">
+<div class="metric"><div class="label">Reported</div><div class="value">2</div><div class="sub">AVAV, BOX</div></div>
+<div class="metric"><div class="label">Preview / History</div><div class="value">1</div><div class="sub">FDS</div></div>
+<div class="metric"><div class="label">Beat Count</div><div class="value">2/2</div><div class="sub">매출 기준 sample</div></div>
+<div class="metric"><div class="label">Best Reaction</div><div class="value">AVAV</div><div class="sub">시간외 +12~19% 보도 범위</div></div>
+</div>
+
+<h2>2. 발표 기업 요약표</h2>
+<table>
+<thead><tr><th>티커</th><th>상태</th><th>세션</th><th>주가 반응</th><th>매출</th><th>EPS</th><th>퀄리티</th><th>한 줄 판정</th></tr></thead>
+<tbody>
+<tr><td><b>AVAV</b></td><td><span class="badge">Reported</span></td><td>장후</td><td class="beat">+12~19%</td><td>$641.6M vs $556.0M <span class="beat">+15.4%</span></td><td>Non-GAAP $1.84 vs $1.46 <span class="beat">+26.0%</span></td><td>8/10</td><td>매출·EPS·EBITDA·backlog가 동시에 확인된 강한 방산 실적.</td></tr>
+<tr><td><b>BOX</b></td><td><span class="badge">Reported</span></td><td>장후</td><td class="beat">+10% sample</td><td>$305.94M vs $304.39M <span class="beat">+0.5%</span></td><td>Non-GAAP $0.37 vs $0.36 <span class="beat">+2.8%</span></td><td>7/10</td><td>수치 beat는 작지만 Enterprise Advanced/AI adoption 메시지가 핵심.</td></tr>
+<tr><td><b>FDS</b></td><td><span class="badge warn">History</span></td><td>프리뷰/과거 체크</td><td class="muted">N/A</td><td>Q2 FY26 $611.02M · YoY +7.07%</td><td>Q2 FY26 $4.46 · YoY +4.21%</td><td>체크 필요</td><td>EarningsHub 과거 실적 표를 캡처/재생성해 추세와 다음 컨센서스 확인.</td></tr>
+</tbody>
+</table>
+
+<h2>3. 주가 반응 / 실적 서프라이즈</h2>
+<div class="card">
+<h3>주가 반응</h3>
+<div class="barrow"><b>AVAV</b><div class="track"><div class="fill" style="width:95%"></div></div><span class="beat">+19%</span></div>
+<div class="barrow"><b>BOX</b><div class="track"><div class="fill" style="width:50%"></div></div><span class="beat">+10%</span></div>
+<div class="barrow"><b>FDS</b><div class="track"><div class="fill" style="width:0%"></div></div><span class="muted">N/A</span></div>
+<p class="muted">실제 발행 시 regular/pre-market/after-hours를 구분하고 timestamp를 붙임. timestamp가 없으면 주가 반응 원인 단정 금지.</p>
+</div>
+
+<h2>4. 기업별 카드</h2>
+<div class="cards">
+<div class="card">
+<div class="top"><div><div class="ticker">AVAV</div><div class="muted">AeroVironment · Defense Tech</div></div><span class="badge">8/10</span></div>
+<p><b>핵심:</b> Q4 매출 $641.6M, 컨센서스 $556.0M 대비 +15.4%. Non-GAAP EPS $1.84로 +26.0% beat. adjusted EBITDA $140.1M, funded backlog $1.2B.</p>
+<p><b>서프라이즈:</b> BlueHalo 통합 후 counter-UAS/space/cyber 역량 확대와 FY27 매출 가이던스 $2.125B-$2.225B 제시.</p>
+<p><b>체크:</b> FY27 CapEx, SCAR 종료 영향, backlog conversion.</p>
+</div>
+<div class="card">
+<div class="top"><div><div class="ticker">BOX</div><div class="muted">Intelligent Content Management</div></div><span class="badge">7/10</span></div>
+<p><b>핵심:</b> 매출 $305.94M, 컨센서스 $304.39M 대비 +0.5%. Non-GAAP EPS $0.37로 +2.8% beat.</p>
+<p><b>서프라이즈:</b> Enterprise Advanced와 Box AI adoption이 리텐션/업셀링 driver로 부각. NRR 105%, RPO $1.6B sample.</p>
+<p><b>체크:</b> AI unit 소비, Enterprise Advanced penetration, FY 가이던스 상향 여부.</p>
+</div>
+<div class="card">
+<div class="top"><div><div class="ticker">FDS</div><div class="muted">FactSet · EarningsHub history check</div></div><span class="badge warn">Preview</span></div>
+<p><b>핵심:</b> EarningsHub식 과거 실적 테이블을 통해 Q2 FY26 매출 $611.02M, EPS $4.46, 매출 YoY +7.07%, EPS YoY +4.21% 확인하는 샘플.</p>
+<p><b>서프라이즈:</b> 아직 발표/프리뷰 단계면 surprise 계산 금지. 다음 발표 컨센서스와 과거 추세만 분리.</p>
+<p><b>체크:</b> release date, consensus provider, QoQ/YoY, price reaction timestamp.</p>
+</div>
+</div>
+
+<h2>5. 데이터 매핑</h2>
+<table>
+<thead><tr><th>블록</th><th>필수 필드</th><th>1순위 소스</th><th>Fallback</th></tr></thead>
+<tbody>
+<tr><td>캘린더</td><td>ticker, company, fiscal_period, release_date, session</td><td>회사 IR, Nasdaq calendar, FMP earnings calendar</td><td>EarningsHub UI</td></tr>
+<tr><td>Actual</td><td>revenue, GAAP EPS, Non-GAAP EPS, EBITDA, segment revenue</td><td>SEC 8-K Ex-99.1, 회사 earnings release/deck</td><td>FMP income statement</td></tr>
+<tr><td>Consensus</td><td>revenue_estimate, EPS_estimate, provider, timestamp</td><td>FactSet/Visible Alpha 보도</td><td>FMP earnings calendar</td></tr>
+<tr><td>주가 반응</td><td>regular, pre_market, after_hours, timestamp</td><td>FMP quote/market data</td><td>언론 보도</td></tr>
+<tr><td>Q&A/메시지</td><td>topic, question, answer, speaker_role</td><td>공식 transcript, DCF transcript</td><td>AlphaSense archive</td></tr>
+<tr><td>과거 추세</td><td>quarter, release_date, revenue_actual, EPS_actual, QoQ, YoY</td><td>FMP historical statements, EarningsHub table</td><td>직접 계산</td></tr>
+</tbody>
+</table>
+
+<h2>6. 작성 프롬프트</h2>
+<pre>너는 life inve 데일리 실적 브리프 작성자임.
+아래 INPUT_JSON만 사용해 당일 실적 발표/프리뷰 기업을 한국어 음슴체로 정리.
+
+[입력 필수]
+- as_of_date, market_session, source_count.
+- earnings_events[]: ticker, company, fiscal_period, status(reported/preview/history), release_date, session.
+- actuals: revenue, GAAP EPS, Non-GAAP EPS, EBITDA, segment_revenue.
+- consensus: revenue_estimate, EPS_estimate, provider, timestamp.
+- price_reaction: regular, after_hours, pre_market, timestamp.
+- guidance: revenue_low/high, EPS_low/high, EBITDA_low/high.
+- transcript: management_message, qa_items.
+- history: prior_quarters, revenue_actual, EPS_actual, QoQ, YoY.
+
+[절대 규칙]
+- 숫자는 INPUT_JSON에 있는 값만 사용.
+- actual과 estimate를 같은 칸에 섞지 말고 provider를 명시.
+- preview/history 기업은 surprise 계산 금지. actual이 없으면 "발표 전" 또는 "과거 추세"로 분리.
+- 주가 반응은 timestamp가 없으면 원인과 연결하지 말 것.
+- 하루 브리프는 모든 기업을 길게 쓰지 말고, 1순위 기업 2~3개만 카드로 확장.
+- Q&A는 기업당 3개 이하. 없으면 생략.
+- 모든 수치는 데이터 투명성 표에서 역추적 가능해야 함.
+
+[출력 섹션]
+오늘의 한 줄 → 데일리 스코어보드 → 발표 기업 요약표 → 주가 반응/서프라이즈 → 기업별 카드 2~3개 → 프리뷰/과거 추세 체크 → 내일 체크포인트 → 데이터 매핑 → 데이터 투명성 표.</pre>
+
+<h2>7. 데이터 투명성</h2>
+<table>
+<thead><tr><th>항목</th><th>출처</th><th>상태</th><th>비고</th></tr></thead>
+<tbody>
+<tr><td>AVAV actual/consensus</td><td>기존 life inve AVAV 샘플 페이지 기준</td><td><span class="tag">sample</span></td><td>실제 발행 시 회사 release/FactSet 재검증</td></tr>
+<tr><td>BOX actual/consensus</td><td>사용자 제공 예시 포맷 기준</td><td><span class="tag">sample</span></td><td>실제 발행 시 SEC/IR/FMP 재검증</td></tr>
+<tr><td>FDS history</td><td>사용자 제공 EarningsHub 캡처 예시 기준</td><td><span class="tag">sample</span></td><td>실제 발행 시 캡처 시각과 URL 명시</td></tr>
+<tr><td>프롬프트</td><td><a href="../docs/prompts/PROMPT_lifeinve_daily_earnings_roundup.md">PROMPT_lifeinve_daily_earnings_roundup.md</a></td><td><span class="tag">template</span></td><td>복붙용</td></tr>
+</tbody>
+</table>
+
+<div class="foot">life inve · daily earnings roundup template · Internal research note. Not investment advice.</div>
+</main>
+</body>
+</html>
