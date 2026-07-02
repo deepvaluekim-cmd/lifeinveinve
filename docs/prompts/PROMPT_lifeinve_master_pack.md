@@ -201,6 +201,7 @@ capsule 한 줄 요약 → 주가 반응 → 기업 개요 → 핵심 실적 vs 
 - Market Commentary Spec: `docs/prompts/lifeinve_market_commentary_prompt_spec.html`
 - Daily Market: `daily/2026-07-01-lifeinve-market-brief-v2.html`
 - Daily Earnings: `earnings/daily_earnings_roundup_template.html`
+- Earnings Summary Master Prompt: `docs/prompts/PROMPT_lifeinve_earnings_summary_master.md`
 - Weekly Market: `daily/2026-06-22-26-lifeinve-weekly-market-wrap.html`
 - Earnings AVAV: `earnings/AVAV_FQ4FY26.html`
 - Earnings SMTC Layout: `earnings/SMTC_FQ1FY27.html`
