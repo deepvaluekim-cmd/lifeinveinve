@@ -181,7 +181,7 @@ th,td{min-width:118px;}
 
   <div class="demo">
     <span class="tag">데이터 상태</span>
-    <div><b>이번 버전은 원문 5개 기반 주간 뉴스 브리핑임.</b> 6/25~7/2 공식 주간 지수·섹터·ETF·신고가 데이터셋은 아직 미연결. 다만 한눈에 보이도록 지수·ETF·신고가 숫자는 데모 가정치로 채움. 실제 payload 연결 시 교체하면 됨.</div>
+    <div><b>이번 버전은 원문 5개 + 실제 시장 데이터 기반 주간 뉴스 브리핑임.</b> 가격 데이터는 Yahoo Finance/yfinance 일봉 기준 2026-06-25 종가 대비 2026-07-02 종가로 계산. 신고가/신저가는 S&P 500 구성종목 proxy로 산출.</div>
   </div>
 
   <!-- ================= MARKET OF THE WEEK ================= -->
@@ -193,7 +193,7 @@ th,td{min-width:118px;}
     <ol>
       <li><b>AI 인프라 체인에 첫 번째 균열.</b> Micron HBM LTA와 Amazon EC2 GPU +20%는 비용 상승. GLM 5.2의 저가 토큰은 가격 하락. 비용과 수익 방향이 반대로 움직임.</li>
       <li><b>Meta 뉴스가 neocloud 프리미엄을 흔듦.</b> Meta가 CoreWeave·Nebius·Google Cloud의 고객이면서 동시에 잉여 컴퓨트 판매자가 될 수 있다는 점이 핵심. 고객이 경쟁자가 되는 구조임.</li>
-      <li><b>주간 시장은 데이터보다 이슈 중심.</b> 지수는 대략 강보합 가정. 하지만 핵심은 AI ROI, 에너지 비대칭, 에이전트 보안/협업 레이어, 연휴 전 얇은 유동성임.</li>
+      <li><b>주간 시장은 지수보다 내부 로테이션이 더 중요.</b> S&P 500 +1.7%, Nasdaq +1.9%, Russell 2000 -0.4%. 대형 지수는 버텼지만 SMH -7.0%, MU -19.6%, CRWV -17.2%, NBIS -16.0%로 AI 인프라 내부는 흔들림.</li>
     </ol>
   </div>
 
@@ -210,16 +210,31 @@ th,td{min-width:118px;}
     </tbody>
   </table>
 
-  <h3>3. Weekly Dashboard <span class="en">대략 숫자 가정치</span><span class="assume">Demo numbers</span></h3>
+  <h3>3. Weekly Dashboard <span class="en">Verified Market Data</span><span class="assume">Yahoo/yfinance · 2026-07-02 close</span></h3>
 
   <div class="dash">
-    <div class="metric"><div class="k">S&P 500</div><div class="v up">+1.1%</div><div class="n">대형 기술주 견조 가정</div></div>
-    <div class="metric"><div class="k">Nasdaq</div><div class="v up">+1.6%</div><div class="n">AI/소프트웨어 주도 가정</div></div>
-    <div class="metric"><div class="k">Russell 2000</div><div class="v down">-0.4%</div><div class="n">중소형 상대 약세 가정</div></div>
-    <div class="metric"><div class="k">VIX</div><div class="v down">16.8</div><div class="n">연휴 전 변동성 완화</div></div>
-    <div class="metric"><div class="k">52W Highs</div><div class="v up">235</div><div class="n">기술·전력·방산 중심 가정</div></div>
-    <div class="metric"><div class="k">52W Lows</div><div class="v down">68</div><div class="n">소형·소비·지역은행 가정</div></div>
+    <div class="metric"><div class="k">S&P 500</div><div class="v up">+1.7%</div><div class="n">7,357.49 → 7,483.24</div></div>
+    <div class="metric"><div class="k">Nasdaq</div><div class="v up">+1.9%</div><div class="n">25,358.60 → 25,832.67</div></div>
+    <div class="metric"><div class="k">Russell 2000</div><div class="v down">-0.4%</div><div class="n">3,007.86 → 2,996.11</div></div>
+    <div class="metric"><div class="k">VIX</div><div class="v down">16.15</div><div class="n">18.89 → 16.15 (-14.5%)</div></div>
+    <div class="metric"><div class="k">S&P 500 52W Highs</div><div class="v up">53</div><div class="n">501개 가격 확보 기준</div></div>
+    <div class="metric"><div class="k">S&P 500 52W Lows</div><div class="v down">0</div><div class="n">near-low 2% 이내 6개</div></div>
   </div>
+
+  <h3>4. 다음 주 주요 일정 <span class="en">2026-07-06~07-10</span></h3>
+
+  <table class="glance">
+    <thead><tr><th>날짜</th><th>시간(ET)</th><th>이벤트</th><th>왜 중요함</th><th>검증 소스</th></tr></thead>
+    <tbody>
+      <tr><td class="tk">7/6 월</td><td>9:45 / 10:00</td><td>S&P final U.S. Services PMI / ISM Services</td><td>AI capex보다 경기·서비스 물가 쪽으로 시선 이동 가능</td><td>MarketWatch calendar</td></tr>
+      <tr><td class="tk">7/7 화</td><td>8:30</td><td>U.S. Trade Balance (May)</td><td>관세·달러·수입물가 프레임 확인</td><td>MarketWatch calendar</td></tr>
+      <tr><td class="tk">7/8 수</td><td>10:00 / 14:00 / 15:00</td><td>Wholesale Inventories / FOMC Minutes / Consumer Credit</td><td>연준 minutes가 주간 핵심. 신용·재고는 소비/성장 확인</td><td>Federal Reserve + MarketWatch</td></tr>
+      <tr><td class="tk">7/8 수</td><td>17:00</td><td>Levi Strauss Q2 call</td><td>관세·소비·마진 코멘트 확인</td><td>Levi IR</td></tr>
+      <tr><td class="tk">7/9 목</td><td>8:30 / 10:00</td><td>Initial Jobless Claims / Existing Home Sales</td><td>노동 냉각·주택 수요 체크</td><td>MarketWatch calendar</td></tr>
+      <tr><td class="tk">7/10 금</td><td>10:00</td><td>Delta Air Lines June quarter webcast</td><td>여행 수요·소비 탄력 확인. 본격 실적 시즌 전초전</td><td>Delta IR</td></tr>
+      <tr><td class="tk">다음 주 아님</td><td>7/14~7/15</td><td>CPI / PPI / Conagra</td><td>인플레 핵심 이벤트는 그 다음 주로 넘어감</td><td>BLS + Conagra IR</td></tr>
+    </tbody>
+  </table>
 
   <div class="issuegrid">
     <div class="issue">
@@ -255,7 +270,7 @@ th,td{min-width:118px;}
   </div>
 
   <div class="chartbox">
-    <svg viewBox="0 0 640 322" role="img" aria-label="주간 이슈 영향도와 가격 가정치 차트">
+    <svg viewBox="0 0 640 322" role="img" aria-label="주간 이슈 영향도와 검증 가격 차트">
       <text x="0" y="13" font-size="12" font-weight="700" fill="#3F5C21" font-family="Open Sans">Weekly Issue Scorecard</text>
       <g font-family="Open Sans" font-size="11.5">
         <text x="122" y="50" text-anchor="end" font-weight="700">AI ROI doubt</text><rect x="134" y="36" width="418" height="18" fill="#1769d6" rx="2"/><text x="560" y="50" font-weight="700" fill="#1769d6">High</text>
@@ -266,16 +281,16 @@ th,td{min-width:118px;}
       </g>
       <line x1="134" y1="28" x2="134" y2="208" stroke="#c9c9c9"/>
       <line x1="18" y1="242" x2="620" y2="242" stroke="#e7e6e6"/>
-      <text x="0" y="274" font-size="12" font-weight="700" fill="#3F5C21" font-family="Open Sans">Assumed Weekly Tape</text>
-      <text x="150" y="274" font-size="11.5" fill="#e0392b" font-family="Open Sans">S&P +1.1%</text>
-      <text x="260" y="274" font-size="11.5" fill="#e0392b" font-family="Open Sans">Nasdaq +1.6%</text>
-      <text x="388" y="274" font-size="11.5" fill="#1769d6" font-family="Open Sans">IWM -0.4%</text>
-      <text x="492" y="274" font-size="11.5" fill="#e0392b" font-family="Open Sans">Highs 235</text>
+      <text x="0" y="274" font-size="12" font-weight="700" fill="#3F5C21" font-family="Open Sans">Verified Weekly Tape</text>
+      <text x="150" y="274" font-size="11.5" fill="#e0392b" font-family="Open Sans">S&P +1.7%</text>
+      <text x="260" y="274" font-size="11.5" fill="#e0392b" font-family="Open Sans">Nasdaq +1.9%</text>
+      <text x="388" y="274" font-size="11.5" fill="#1769d6" font-family="Open Sans">RUT -0.4%</text>
+      <text x="492" y="274" font-size="11.5" fill="#e0392b" font-family="Open Sans">Highs 53</text>
     </svg>
-    <div class="cap"><b>가정치 기반 대시보드.</b> 실제 주간 마감 데이터 연결 전까지는 숫자를 placeholder로 사용. 방향성은 원문 뉴스 강도와 예상 시장 테이프를 섞어 표시.</div>
+    <div class="cap"><b>실데이터 기반 대시보드.</b> 지수·ETF·종목은 Yahoo Finance/yfinance 일봉 기준. 신고가/신저가는 S&P 500 구성종목 proxy 기준이라 broad market 전체와 다를 수 있음.</div>
   </div>
 
-  <h3>4. 주간 시장 프레임 <span class="en">Weekly Market Frame</span></h3>
+  <h3>5. 주간 시장 프레임 <span class="en">Weekly Market Frame</span></h3>
 
   <div class="cards">
     <div class="card">
@@ -330,7 +345,7 @@ th,td{min-width:118px;}
       <text x="450" y="266" text-anchor="middle" font-size="11.5" fill="#333" font-family="Open Sans">에이전트</text>
       <text x="566" y="266" text-anchor="middle" font-size="11.5" fill="#333" font-family="Open Sans">유동성</text>
     </svg>
-    <div class="cap">주간 핵심 뉴스 강도 맵 — <b>긍정=빨강 / 부정=파랑</b>. 정량 수익률 차트 아님. 원문 5개 기준 테마 강도 표시. 시장 성과 차트는 필요 데이터 연결 후 교체 예정.</div>
+    <div class="cap">주간 핵심 뉴스 강도 맵 — <b>긍정=빨강 / 부정=파랑</b>. 원문 5개 기준 테마 강도 표시. 실제 가격 수익률은 상단 Weekly Dashboard와 데이터 표에 분리.</div>
   </div>
 
   <p class="lead"><b>한 줄 결론:</b> 이번 주 핵심은 지수보다 <b>AI 체인의 경제학</b>이었음. 비용은 올라가고, 토큰 가격은 내려가고, 컴퓨트 희소성 프리미엄에는 질문 붙는 구간.</p>
@@ -338,7 +353,7 @@ th,td{min-width:118px;}
   <p class="lead">에너지는 정유사 펀더멘털보다 주가 비대칭이 더 중요함. VLO·MPC·PSX는 강하지만 피크 시나리오 반영 부담 큼. 대안은 MPLX 같은 계약형 미드스트림, CVE·SU 같은 통합 에너지, CLMT 같은 특수상황 쪽.</p>
   <p class="lead">소프트웨어 쪽 메시지도 명확함. NVIDIA 에이전트 보안 스택과 Claude Tag 모두 같은 방향. 에이전트 시대의 병목은 모델 성능보다 <b>보안, 권한, 메모리, 협업 워크플로</b> 쪽임.</p>
 
-  <h3>5. Trending Themes & Stocks <span class="en">주간 화제 종목·테마</span></h3>
+  <h3>6. Trending Themes & Stocks <span class="en">주간 화제 종목·테마</span></h3>
   <ul class="trend">
     <li><span class="t">MU / HBM <span class="up">mid-80s GM</span></span><div class="why">LTA로 높은 HBM 가격 다년 고정. 공급자 호재. AI 인프라 구매자에는 비용 고정 리스크.</div></li>
     <li><span class="t">AMZN EC2 GPU <span class="down">+20%</span></span><div class="why">특정 Capacity Block 가격 인상. 메모리·GPU·전력·냉각 비용 상승 프레임 강화됨.</div></li>
@@ -352,7 +367,7 @@ th,td{min-width:118px;}
     <li><span class="t">MARKET <span class="down">No Edge</span></span><div class="why">연휴 전 단축 세션, 저거래량, 신규 옵션 셋업 부재. 현금도 포지션.</div></li>
   </ul>
 
-  <h3>6. 테마 Top &amp; Bottom <span class="en">Theme Leaders &amp; Laggards</span></h3>
+  <h3>7. 테마 Top &amp; Bottom <span class="en">Theme Leaders &amp; Laggards</span></h3>
 
   <div class="chartbox">
     <svg viewBox="0 0 640 286" role="img" aria-label="주간 긍정 테마 수평 막대">
@@ -395,7 +410,7 @@ th,td{min-width:118px;}
   </ul>
 
   <!-- ================= REQUIRED DATA ================= -->
-  <h2>📈 데이터 정의 &amp; 가정치 <span class="badge">Weekly Market Payload</span></h2>
+  <h2>📈 데이터 정의 &amp; 소스 <span class="badge">Weekly Market Payload</span></h2>
 
   <div class="chartbox">
     <svg viewBox="0 0 640 262" role="img" aria-label="주간 데이터 필요 항목 막대">
@@ -409,18 +424,18 @@ th,td{min-width:118px;}
         <text x="150" y="206" text-anchor="end" font-weight="700">Source ledger</text><rect x="158" y="192" width="400" height="18" fill="#3F5C21" rx="2"/><text x="565" y="206" font-weight="700" fill="#3F5C21">필수</text>
       </g>
     </svg>
-    <div class="cap">6/29 샘플 포맷을 주간형으로 완성하려면 위 데이터 필요. 이번 페이지는 뉴스 원문 5개 확보. 가격·섹터·신고가 숫자는 가정치로 채움. 실제 payload 연결 시 교체.</div>
+    <div class="cap">6/29 샘플 포맷을 주간형으로 완성하려면 위 데이터 필요. 이번 페이지는 가격·ETF·대표 종목·S&P 500 proxy 신고가 데이터를 실제로 연결. broad market 전체 신고가/신저가는 별도 vendor 필요.</div>
   </div>
 
   <table>
     <thead><tr><th>블록</th><th>필요 데이터</th><th>현재 상태</th><th>우선 소스</th></tr></thead>
     <tbody>
-      <tr><td class="tk">Weekly index close</td><td>S&P 500 +1.1%, Nasdaq +1.6%, Russell 2000 -0.4%, VIX 16.8 가정</td><td>데모값</td><td>실제 교체: FMP index historical EOD / AP 마감 기사</td></tr>
-      <tr><td class="tk">ETF Top & Bottom</td><td>SMH·XLE·QQQ 상위, IWM·KRE·neocloud basket 하위 가정</td><td>데모값</td><td>실제 교체: FMP batch-etf-quotes + historical EOD</td></tr>
-      <tr><td class="tk">Sector / Industry</td><td>AI 소프트웨어·전력·미드스트림 우위, 소형·지역은행 약세 가정</td><td>데모값</td><td>실제 교체: sector/industry snapshot + 내부 계산</td></tr>
-      <tr><td class="tk">Trending stocks</td><td>MU, META, CRWV, NVDA, MPLX, VLO/MPC/PSX, AMZN, Claude/NOW read-through</td><td>원문 기반</td><td>원문 5개 + FMP gainers/losers/news</td></tr>
-      <tr><td class="tk">High / Low screen</td><td>52주 신고가 235개, 신저가 68개 가정. 기술·전력·방산 신고가 중심</td><td>데모값</td><td>실제 교체: FMP EOD bulk + 252거래일 rolling high/low</td></tr>
-      <tr><td class="tk">Source ledger</td><td>각 숫자별 source_key, provider, as_of, confidence 필요</td><td>부분 확보</td><td>HFI, StreetSignal, NVIDIA, Claude, Options Oracle + market data provider</td></tr>
+      <tr><td class="tk">Weekly index close</td><td>S&P 500 +1.7%, Nasdaq +1.9%, Russell 2000 -0.4%, VIX 16.15</td><td>확보</td><td>Yahoo Finance/yfinance, 6/25 close → 7/2 close</td></tr>
+      <tr><td class="tk">ETF Top & Bottom</td><td>XLV +5.2%, XLF +4.1%, XLC +3.8% / SMH -7.0%, USO -4.9%, XLK -2.2%</td><td>확보</td><td>Yahoo Finance/yfinance ETF close</td></tr>
+      <tr><td class="tk">Sector / Industry</td><td>헬스케어·금융·커뮤니케이션 우위, 반도체·원유·기술 약세</td><td>확보</td><td>Sector ETF proxy 직접 계산</td></tr>
+      <tr><td class="tk">Trending stocks</td><td>NOW +18.8%, META +7.4%, AMZN +6.9%, VLO +5.0% / MU -19.6%, CRWV -17.2%, NBIS -16.0%</td><td>확보</td><td>Yahoo Finance/yfinance + 원문 5개</td></tr>
+      <tr><td class="tk">High / Low screen</td><td>S&P 500 proxy: 52주 신고가 53개, 신저가 0개, near-high 2% 이내 96개</td><td>확보</td><td>Wikipedia S&P 500 list 503개 중 501개 가격 확보 + 252거래일 rolling</td></tr>
+      <tr><td class="tk">Next-week calendar</td><td>ISM Services, FOMC minutes, jobless claims, LEVI/DAL earnings call</td><td>확보</td><td>MarketWatch, Federal Reserve, BLS, Levi IR, Delta IR</td></tr>
     </tbody>
   </table>
 
@@ -434,10 +449,10 @@ th,td{min-width:118px;}
     </div>
     <div class="snapcard">
       <h4>시장 데이터</h4>
-      <div class="kv"><span class="k">S&P / Nasdaq</span><span class="up">+1.1% / +1.6%</span></div>
-      <div class="kv"><span class="k">Russell / VIX</span><span class="down">-0.4% / 16.8</span></div>
-      <div class="kv"><span class="k">신고가 / 신저가</span><span>235 / 68</span></div>
-      <div class="kv"><span class="k">상태</span><span class="down">데모값</span></div>
+      <div class="kv"><span class="k">S&P / Nasdaq</span><span class="up">+1.7% / +1.9%</span></div>
+      <div class="kv"><span class="k">Russell / VIX</span><span class="down">-0.4% / 16.15</span></div>
+      <div class="kv"><span class="k">S&P 500 52W High / Low</span><span>53 / 0</span></div>
+      <div class="kv"><span class="k">상태</span><span class="up">실데이터</span></div>
     </div>
     <div class="snapcard">
       <h4>주요 숫자</h4>
@@ -448,16 +463,16 @@ th,td{min-width:118px;}
     </div>
     <div class="snapcard">
       <h4>다음 작업</h4>
-      <div class="kv"><span class="k">정량 차트</span><span>실데이터 연결 시 교체</span></div>
-      <div class="kv"><span class="k">수익률 문장</span><span>가정치 → 확정치 전환</span></div>
-      <div class="kv"><span class="k">검증 로그</span><span>provider별 기록 필요</span></div>
+      <div class="kv"><span class="k">정량 차트</span><span>Yahoo/yfinance 반영</span></div>
+      <div class="kv"><span class="k">캘린더</span><span>공식/캘린더 소스 반영</span></div>
+      <div class="kv"><span class="k">남은 갭</span><span>broad market high/low</span></div>
     </div>
   </div>
 
   <footer>
     <div><b>life inve · 뉴스 오브 더 위크 (News of the Week) · 주간 시황 정리</b></div>
     <div class="cav">
-      본 브리핑은 원문 5개 기반 주간 뉴스형 정리임. 공식 주간 시장 데이터(지수·ETF·섹터·신고가)는 아직 미연결. 상단 지수·ETF·신고가 숫자는 가독성용 데모 가정치임. 투자 판단 전 별도 가격·실적·리스크 검증 필요.
+      본 브리핑은 원문 5개와 Yahoo Finance/yfinance 일봉, S&P 500 구성종목 proxy, 공개 경제 캘린더를 기반으로 작성한 주간 뉴스형 정리임. broad market 전체 신고가/신저가와 실시간 장중 데이터는 별도 vendor 검증 필요. 투자 판단 전 가격·실적·리스크 추가 검증 필요.
     </div>
     <div style="margin-top:10px;color:#9a9a9a;">© 2026 라이프자산운용 (life inve) · 상승=빨강 / 하락=파랑 (한국식 표기) · 인라인 SVG 차트, 외부 스크립트 없음</div>
   </footer>
