@@ -51,7 +51,7 @@ display:flex;align-items:center;gap:9px;}
 h3{color:var(--ink);font-size:16.5px;font-weight:700;margin:26px 0 12px;
 padding-left:11px;border-left:4px solid var(--green-mid);}
 h3 .en{color:var(--muted);font-weight:600;font-size:13px;font-family:"Open Sans",sans-serif;}
-p.lead{color:#333;margin:12px 0;font-size:14.5px;}
+p.lead{color:#333;margin:10px 0;font-size:14.5px;line-height:1.75;max-width:940px;}
 
 /* Index cards */
 .cards{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:16px 0;}
@@ -90,14 +90,14 @@ td.r,th.r{text-align:right;}
 background:#fff;transition:.15s;}
 .trend li:hover{border-color:var(--green-light);}
 .trend .t{font-weight:700;font-family:"Open Sans",sans-serif;font-size:14px;}
-.trend .why{color:#444;font-size:12.5px;margin-top:2px;}
+.trend .why{color:#444;font-size:12.5px;margin-top:2px;line-height:1.58;}
 
 /* News */
 .news{list-style:none;margin:12px 0;}
 .news li{border:1px solid var(--line);border-left:4px solid var(--green);border-radius:10px;
 padding:13px 15px;margin-bottom:11px;background:#fdfdfb;}
 .news .h{font-weight:700;font-size:15px;margin-bottom:4px;color:var(--ink);}
-.news .b{font-size:13.5px;color:#3a3a3a;}
+.news .b{font-size:13.5px;color:#3a3a3a;line-height:1.75;}
 .news .no{color:var(--green);font-weight:900;margin-right:6px;font-family:"Open Sans",sans-serif;}
 
 /* Snapshot grid */
@@ -149,7 +149,7 @@ th,td{min-width:118px;}
 
   <div class="demo">
     <span class="tag">데이터 상태</span>
-    <div><b>이번 버전은 원문 5개를 기준으로 한 주간 뉴스 브리핑입니다.</b> 6/25~7/2의 공식 주간 지수·섹터·ETF·신고가 데이터셋은 아직 붙이지 않았습니다. 아래 "필요 데이터 정의"에 정확히 어떤 payload가 필요한지 분리했습니다.</div>
+    <div><b>이번 버전은 원문 5개 기반 주간 뉴스 브리핑임.</b> 6/25~7/2 공식 주간 지수·섹터·ETF·신고가 데이터셋은 아직 미연결. 그래서 가격 성과보다 뉴스 강도와 투자 시사점 중심으로 구성. 필요한 payload는 아래 "필요 데이터 정의"에 따로 정리함.</div>
   </div>
 
   <!-- ================= MARKET OF THE WEEK ================= -->
@@ -210,22 +210,25 @@ th,td{min-width:118px;}
       <text x="450" y="266" text-anchor="middle" font-size="11.5" fill="#333" font-family="Open Sans">에이전트</text>
       <text x="566" y="266" text-anchor="middle" font-size="11.5" fill="#333" font-family="Open Sans">유동성</text>
     </svg>
-    <div class="cap">주간 핵심 뉴스 강도 맵 — <b>긍정=빨강 / 부정=파랑</b>, 정량 수익률 차트가 아니라 원문 5개 기반 테마 강도 표시. 정확한 시장 성과 차트는 아래 필요 데이터가 채워진 뒤 교체.</div>
+    <div class="cap">주간 핵심 뉴스 강도 맵 — <b>긍정=빨강 / 부정=파랑</b>. 정량 수익률 차트 아님. 원문 5개 기준 테마 강도 표시. 시장 성과 차트는 필요 데이터 연결 후 교체 예정.</div>
   </div>
 
-  <p class="lead">이번 주의 핵심은 지수가 아니라 <b>AI 체인의 경제학</b>이었다. Micron HBM 장기계약과 Amazon EC2 GPU 가격 인상은 인프라 비용이 위로 고정되고 있음을 보여줬고, GLM 5.2 같은 저가 오픈모델은 토큰 가격 하락 압력을 만들었다. 동시에 Meta가 컴퓨트를 사는 고객이면서 잉여 컴퓨트를 팔 수 있다는 뉴스가 나오며, neocloud의 희소성 프리미엄에도 질문이 붙었다. 에너지에서는 정유사의 강한 펀더멘털보다 <b>주가가 이미 피크 시나리오를 반영했다</b>는 비대칭이 더 중요했고, MPLX 같은 계약형 인프라가 대안으로 부각됐다. 소프트웨어 쪽에서는 NVIDIA의 에이전트 보안 스택과 Claude Tag의 팀 채널 상주형 AI가 같은 메시지를 냈다. 에이전트 시대의 병목은 모델 성능만이 아니라 <b>보안, 권한, 메모리, 협업 워크플로</b>다.</p>
+  <p class="lead"><b>한 줄 결론:</b> 이번 주 핵심은 지수보다 <b>AI 체인의 경제학</b>이었음. 비용은 올라가고, 토큰 가격은 내려가고, 컴퓨트 희소성 프리미엄에는 질문 붙는 구간.</p>
+  <p class="lead">Micron HBM 장기계약과 Amazon EC2 GPU 가격 인상은 인프라 비용이 위로 고정되고 있음을 보여줌. 반대로 GLM 5.2 같은 저가 오픈모델은 토큰 가격 하락 압력. AI capex가 매출·마진·FCF로 이어지는지 확인해야 하는 국면임.</p>
+  <p class="lead">에너지는 정유사 펀더멘털보다 주가 비대칭이 더 중요함. VLO·MPC·PSX는 강하지만 피크 시나리오 반영 부담 큼. 대안은 MPLX 같은 계약형 미드스트림, CVE·SU 같은 통합 에너지, CLMT 같은 특수상황 쪽.</p>
+  <p class="lead">소프트웨어 쪽 메시지도 명확함. NVIDIA 에이전트 보안 스택과 Claude Tag 모두 같은 방향. 에이전트 시대의 병목은 모델 성능보다 <b>보안, 권한, 메모리, 협업 워크플로</b> 쪽임.</p>
 
   <h3>2. Trending Themes & Stocks <span class="en">주간 화제 종목·테마</span></h3>
   <ul class="trend">
-    <li><span class="t">MU / HBM <span class="up">mid-80s GM</span></span><div class="why">LTA로 높은 HBM 가격이 다년 고정. 공급자에는 호재, AI 인프라 구매자에는 비용 고정 리스크.</div></li>
-    <li><span class="t">AMZN EC2 GPU <span class="down">+20%</span></span><div class="why">특정 Capacity Block 가격 인상. 메모리·GPU·전력·냉각 비용 상승 프레임 강화.</div></li>
-    <li><span class="t">META <span class="down">buyer & seller</span></span><div class="why">CoreWeave·Nebius·Google Cloud 고객이면서 잉여 컴퓨트 판매 가능성. 희소성 프리미엄 질문.</div></li>
-    <li><span class="t">CRWV / Nebius <span class="down">premium risk</span></span><div class="why">고객 집중도와 컴퓨트 재판매 뉴스가 동시에 부각. 다음 계약 경제학이 핵심.</div></li>
-    <li><span class="t">NVDA Agent Stack <span class="up">5x / -30%</span></span><div class="why">Nemotron Ultra, OpenShell, NemoClaw, Nemo Relay. 속도·비용·보안 풀스택을 동시에 제시.</div></li>
-    <li><span class="t">ServiceNow AIQ <span class="up">90%</span></span><div class="why">NVIDIA AIQ 사례에서 L1 티켓 90% 자동 해결. 에이전트 ROI의 구체 사례.</div></li>
-    <li><span class="t">Claude Tag <span class="up">PR 65%</span></span><div class="why">Anthropic 제품팀 PR의 65%를 AI가 작성. 최대 16시간 자율 작업과 메모리가 차별점.</div></li>
-    <li><span class="t">MPLX <span class="up">7.6% yield</span></span><div class="why">정유 크랙스프레드 대신 물량 수수료를 받는 톨로드형 현금흐름.</div></li>
-    <li><span class="t">VLO / MPC / PSX <span class="down">비대칭</span></span><div class="why">강한 펀더멘털에도 주가는 피크 시나리오를 반영. 평균 회귀 시 하방 리스크가 큼.</div></li>
+    <li><span class="t">MU / HBM <span class="up">mid-80s GM</span></span><div class="why">LTA로 높은 HBM 가격 다년 고정. 공급자 호재. AI 인프라 구매자에는 비용 고정 리스크.</div></li>
+    <li><span class="t">AMZN EC2 GPU <span class="down">+20%</span></span><div class="why">특정 Capacity Block 가격 인상. 메모리·GPU·전력·냉각 비용 상승 프레임 강화됨.</div></li>
+    <li><span class="t">META <span class="down">buyer & seller</span></span><div class="why">컴퓨트 구매자이면서 잠재 판매자. neocloud 희소성 프리미엄에 질문 붙음.</div></li>
+    <li><span class="t">CRWV / Nebius <span class="down">premium risk</span></span><div class="why">고객 집중도와 컴퓨트 재판매 이슈 동시 부각. 다음 계약 경제학이 핵심.</div></li>
+    <li><span class="t">NVDA Agent Stack <span class="up">5x / -30%</span></span><div class="why">Nemotron Ultra, OpenShell, NemoClaw, Nemo Relay. 속도·비용·보안 풀스택 제시.</div></li>
+    <li><span class="t">ServiceNow AIQ <span class="up">90%</span></span><div class="why">L1 티켓 90% 자동 해결 사례. 에이전트 ROI를 숫자로 보여준 사례임.</div></li>
+    <li><span class="t">Claude Tag <span class="up">PR 65%</span></span><div class="why">Anthropic 제품팀 PR 65%를 AI가 작성. 16시간 자율 작업과 메모리가 차별점.</div></li>
+    <li><span class="t">MPLX <span class="up">7.6% yield</span></span><div class="why">정유 크랙스프레드보다 물량 수수료를 받는 톨로드형 현금흐름이 매력.</div></li>
+    <li><span class="t">VLO / MPC / PSX <span class="down">비대칭</span></span><div class="why">펀더멘털은 강함. 다만 주가가 피크 시나리오 반영. 평균 회귀 시 하방 큼.</div></li>
     <li><span class="t">MARKET <span class="down">No Edge</span></span><div class="why">연휴 전 단축 세션, 저거래량, 신규 옵션 셋업 부재. 현금도 포지션.</div></li>
   </ul>
 
@@ -243,7 +246,7 @@ th,td{min-width:118px;}
       </g>
       <line x1="136" y1="26" x2="136" y2="214" stroke="#c9c9c9"/>
     </svg>
-    <div class="cap">긍정 테마는 원문 뉴스 강도 기준. 공식 ETF/섹터 주간 수익률 데이터가 들어오면 이 차트는 수익률 기반 Top 10으로 교체.</div>
+    <div class="cap">긍정 테마는 원문 뉴스 강도 기준. 공식 ETF/섹터 주간 수익률 데이터 연결되면 수익률 기반 Top 10으로 교체.</div>
   </div>
 
   <div class="chartbox">
@@ -258,17 +261,17 @@ th,td{min-width:118px;}
       </g>
       <line x1="136" y1="26" x2="136" y2="214" stroke="#c9c9c9"/>
     </svg>
-    <div class="cap">부정 테마 역시 원문 뉴스 강도 기준. 가격 기반 Bottom ETF/종목 랭킹은 별도 market payload 필요.</div>
+    <div class="cap">부정 테마도 원문 뉴스 강도 기준. 가격 기반 Bottom ETF/종목 랭킹은 별도 market payload 필요.</div>
   </div>
 
   <h2>⭐️ News of the Week</h2>
   <ul class="news">
-    <li><div class="h"><span class="no">①</span>AI 체인: 비용은 오르고 토큰 가격은 내려간다</div><div class="b">Micron HBM LTA와 Amazon EC2 GPU +20% 인상은 인프라 비용 상승을 고정시키는 뉴스다. 반대로 GLM 5.2 같은 오픈웨이트 모델은 토큰 가격 하락 압력을 만든다. 이 조합은 hyperscaler와 neocloud가 다음 실적 콜에서 capex의 수익 전환 경로를 직접 증명해야 한다는 뜻이다.</div></li>
-    <li><div class="h"><span class="no">②</span>Meta: 가장 큰 구매자가 잠재 판매자가 될 수 있다</div><div class="b">Meta가 CoreWeave·Nebius·Google Cloud의 고객이면서 잉여 컴퓨트를 팔 수 있다는 뉴스는 neocloud 희소성 프리미엄에 균열을 냈다. 구매자가 판매자가 되는 순간, "컴퓨트는 항상 부족하다"는 전제가 약해진다.</div></li>
-    <li><div class="h"><span class="no">③</span>에너지: 정유사 펀더멘털은 강하지만 롱 비대칭은 약하다</div><div class="b">VLO·MPC·PSX는 강한 크랙스프레드와 현금흐름을 보여도 주가는 이미 피크 시나리오를 많이 반영했다. HFI는 정유주보다 MPLX 같은 계약형 미드스트림, CVE·SU 같은 통합 에너지, CLMT 같은 특수상황을 더 선호한다.</div></li>
-    <li><div class="h"><span class="no">④</span>NVIDIA: 에이전트 시대의 병목은 보안과 관찰 가능성</div><div class="b">OpenShell은 에이전트를 격리 실행환경에 넣고, NemoClaw는 오픈소스 블루프린트를 제공하며, Nemo Relay는 행동 추적과 비용 최적화를 담당한다. AI 에이전트가 오래 자율 실행될수록 보안·권한·로그가 제품 경쟁력이 된다.</div></li>
-    <li><div class="h"><span class="no">⑤</span>Claude Tag: AI가 개인 도구에서 팀원으로 이동</div><div class="b">Anthropic 내부 제품팀 PR의 65%를 Claude Tag가 작성하고, 최대 16시간 자율 작업과 메모리 기능을 전면에 내세웠다. Slack 다음 Teams 확장이 예고되며 협업 플랫폼 안의 AI 에이전트 경쟁이 본격화된다.</div></li>
-    <li><div class="h"><span class="no">⑥</span>연휴 전 시장: 엣지가 없으면 현금도 전략</div><div class="b">독립기념일 연휴 전 단축 세션은 거래량이 얇고 신규 옵션 셋업이 부족했다. 이번 주 가격 신호는 결론보다 다음 풀 거래 주간의 확인 과제로 보는 편이 맞다.</div></li>
+    <li><div class="h"><span class="no">①</span>AI 체인: 비용은 오르고 토큰 가격은 내려감</div><div class="b">Micron HBM LTA와 Amazon EC2 GPU +20% 인상은 인프라 비용 상승 뉴스. 반대로 GLM 5.2 같은 오픈웨이트 모델은 토큰 가격 하락 압력. 결론은 단순함. hyperscaler와 neocloud가 capex의 수익 전환 경로를 증명해야 함.</div></li>
+    <li><div class="h"><span class="no">②</span>Meta: 큰 구매자가 잠재 판매자가 될 수 있음</div><div class="b">Meta는 CoreWeave·Nebius·Google Cloud의 고객. 동시에 잉여 컴퓨트 판매 가능성도 존재. 이 조합은 neocloud 희소성 프리미엄에 부담. "컴퓨트는 항상 부족함"이라는 전제가 약해질 수 있음.</div></li>
+    <li><div class="h"><span class="no">③</span>에너지: 정유사 펀더멘털 강함, 롱 비대칭은 약함</div><div class="b">VLO·MPC·PSX는 크랙스프레드와 현금흐름 강함. 문제는 주가의 피크 시나리오 반영 부담. HFI는 정유주보다 MPLX, CVE·SU, CLMT 쪽을 더 선호.</div></li>
+    <li><div class="h"><span class="no">④</span>NVIDIA: 병목은 보안과 관찰 가능성</div><div class="b">OpenShell은 격리 실행환경. NemoClaw는 오픈소스 블루프린트. Nemo Relay는 행동 추적과 비용 최적화. 에이전트가 오래 자율 실행될수록 보안·권한·로그가 제품 경쟁력 됨.</div></li>
+    <li><div class="h"><span class="no">⑤</span>Claude Tag: AI가 개인 도구에서 팀원으로 이동</div><div class="b">Anthropic 내부 제품팀 PR 65%를 Claude Tag가 작성. 최대 16시간 자율 작업과 메모리 기능 전면에 둠. Slack 다음 Teams 확장 예고. 협업 플랫폼 안의 AI 에이전트 경쟁 본격화.</div></li>
+    <li><div class="h"><span class="no">⑥</span>연휴 전 시장: 엣지 없으면 현금도 전략</div><div class="b">독립기념일 연휴 전 단축 세션. 거래량 얇고 신규 옵션 셋업 부족. 이번 주 가격 신호는 결론보다 다음 풀 거래 주간의 확인 과제로 보는 편이 맞음.</div></li>
   </ul>
 
   <!-- ================= REQUIRED DATA ================= -->
@@ -286,7 +289,7 @@ th,td{min-width:118px;}
         <text x="150" y="206" text-anchor="end" font-weight="700">Source ledger</text><rect x="158" y="192" width="400" height="18" fill="#3F5C21" rx="2"/><text x="565" y="206" font-weight="700" fill="#3F5C21">필수</text>
       </g>
     </svg>
-    <div class="cap">정확한 6/29 샘플 포맷을 주간형으로 완성하려면 위 데이터가 필요합니다. 이번 페이지는 뉴스 원문 5개는 확보했지만, 가격·섹터·신고가 주간 payload는 미연결 상태입니다.</div>
+    <div class="cap">6/29 샘플 포맷을 주간형으로 완성하려면 위 데이터 필요. 이번 페이지는 뉴스 원문 5개 확보. 가격·섹터·신고가 주간 payload는 미연결 상태.</div>
   </div>
 
   <table>
@@ -333,7 +336,7 @@ th,td{min-width:118px;}
   <footer>
     <div><b>life inve · 뉴스 오브 더 위크 (News of the Week) · 주간 시황 정리</b></div>
     <div class="cav">
-      본 브리핑은 원문 5개를 기반으로 작성한 주간 뉴스형 정리입니다. 공식 주간 시장 데이터(지수·ETF·섹터·신고가)는 아직 연결하지 않았으므로, 가격 수익률 차트는 테마 강도 표시로 대체했습니다. 투자 판단 전 별도 가격·실적·리스크 검증이 필요합니다.
+      본 브리핑은 원문 5개 기반 주간 뉴스형 정리임. 공식 주간 시장 데이터(지수·ETF·섹터·신고가)는 아직 미연결. 그래서 가격 수익률 차트는 테마 강도 표시로 대체함. 투자 판단 전 별도 가격·실적·리스크 검증 필요.
     </div>
     <div style="margin-top:10px;color:#9a9a9a;">© 2026 라이프자산운용 (life inve) · 상승=빨강 / 하락=파랑 (한국식 표기) · 인라인 SVG 차트, 외부 스크립트 없음</div>
   </footer>
